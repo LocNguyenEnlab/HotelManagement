@@ -1,0 +1,14 @@
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Web.API.deps.json
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Web.API.runtimeconfig.json
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Web.API.runtimeconfig.dev.json
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Web.API.dll
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.csprojAssemblyReference.cache
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.csproj.CoreCompileInputs.cache
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.RazorAssemblyInfo.cache
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.RazorAssemblyInfo.cs
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.AssemblyInfoInputs.cache
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.AssemblyInfo.cs
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.RazorTargetAssemblyInfo.cache
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Web.API.pdb
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.dll
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.pdb
