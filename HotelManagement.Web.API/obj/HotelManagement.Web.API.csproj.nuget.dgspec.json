@@ -4,6 +4,62 @@
     "C:\\Github\\HotelManagement\\HotelManagement.Web.API\\HotelManagement.Web.API.csproj": {}
   },
   "projects": {
+    "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj",
+        "projectName": "HotelManagement.Entities",
+        "projectPath": "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj",
+        "packagesPath": "C:\\Users\\loc.nguyen.VSERVER0\\.nuget\\packages\\",
+        "outputPath": "C:\\Github\\HotelManagement\\HotelManagement.Entities\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\loc.nguyen.VSERVER0\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
     "C:\\Github\\HotelManagement\\HotelManagement.Web.API\\HotelManagement.Web.API.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -29,7 +85,11 @@
         },
         "frameworks": {
           "netcoreapp2.1": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj": {
+                "projectPath": "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -51,6 +111,16 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.1, )"
             },
             "Microsoft.NETCore.App": {
               "target": "Package",

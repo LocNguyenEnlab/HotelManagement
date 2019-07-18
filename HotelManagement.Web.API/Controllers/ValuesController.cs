@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelManagement.Entities.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,9 @@ namespace HotelManagement.Web.API.Controllers
     public class ValuesController : ControllerBase
     {
         [HttpGet]
-        public object Get()
+        public Room Get()
         {
-            return new { a = 1 };
+            return new Room { Name = "Loc Nguyen" };
         }
     }
 }

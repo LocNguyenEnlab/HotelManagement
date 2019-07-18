@@ -12,3 +12,6 @@ C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelM
 C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Web.API.pdb
 C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.dll
 C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.pdb
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Entities.dll
+C:\Github\HotelManagement\HotelManagement.Web.API\bin\Debug\netcoreapp2.1\HotelManagement.Entities.pdb
+C:\Github\HotelManagement\HotelManagement.Web.API\obj\Debug\netcoreapp2.1\HotelManagement.Web.API.csproj.CopyComplete

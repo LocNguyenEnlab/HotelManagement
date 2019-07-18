@@ -1,0 +1,56 @@
+@import "~src/styles";
+.room-list {
+    margin-top: $top-bar-height;
+    table {
+        width: 100%;
+        border-collapse:separate;
+        border-spacing: 5px 5px;
+
+        th, td {
+            border-radius: 5px;
+            text-align: center;
+            dx-button {
+                width: 100%;
+                padding-top: 30px;
+            }
+        }
+        .floor {
+            background-color: #80ba6c;
+            font-size: $font-size-normal;
+            height: 100px;
+        }
+        .room {
+            height: 100px;
+            font-size: $font-size-normal;
+            .status {
+                margin-top: 35px;
+            }
+        }
+        @media (max-width: 400px) {
+            .floor {
+                font-size: $font-size-small;
+            }
+            .room {
+                font-size: $font-size-small;
+            }
+        }
+    }
+}
+.booking-info-panel {
+    position: relative;
+    border: 1px #ddd solid;
+    z-index: 1;
+    width: 100%;
+    height: 50%;
+    padding: 15px;
+    .title {
+        padding: 5px;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        transform: translateY(-50%);
+        border: 1px #ddd solid;
+        background-color: #f0f0f0;
+        z-index: 3;
+    }
+}

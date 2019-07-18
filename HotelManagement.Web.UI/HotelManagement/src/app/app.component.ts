@@ -7,20 +7,18 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-    apiValues;
+    // apiValues: Test;
     header: HttpHeaders;
 
     constructor(
         private httpService: HttpClient,
     ) {
-        this.header = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
     }
 
     ngOnInit(): void {
-        this.httpService.get('https://localhost:44330/api/values').subscribe(
-            (data) => this.apiValues = data,
-            error => console.log(error)
-        );
-        // this.apiValues = this.httpService.get('https://localhost:44330/api/values', {responseType: 'text'});
+        // this.httpService.get('https://localhost:44330/api/values').subscribe(
+        //     (data: Test) => this.apiValues = data,
+        //     error => console.log(error)
+        // );
     }
 }

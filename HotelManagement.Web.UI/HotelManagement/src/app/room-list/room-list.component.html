@@ -1,0 +1,90 @@
+<div class="room-list">
+    <div class="container">
+        <table>
+            <tbody>
+                <tr></tr>
+                <tr *ngFor="let floor of floors" style="height: 100px;">
+                    <td class="floor">Floor {{floor.name}}</td>
+                    <td *ngFor="let room of floor.rooms" >
+
+                        <dx-button id="{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
+                                (dblclick)="bookRoom($event.currentTarget.id)" class="room"
+                                [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange' : 'red' "
+                                >
+                            {{room.name}}
+                            <p class="status">{{room.status}}</p>
+                        </dx-button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<dx-popup
+    class="popup"
+    width="90%"
+    height="90%"
+    [showTitle]="true"
+    [title]="Information"
+    [dragEnabled]="false"
+    [closeOnOutsideClick]="true"
+    [(visible)]="isVisibleBooking">
+    <div class="booking-info-panel">
+        <div class="title">
+            Booking information
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="dx-field">
+                    <div class="dx-field-label">Price</div>
+                    <div class="dx-field-value">
+                        <dx-text-box [value]="roomBooking.price.toString() | currency: 'VND'"></dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Checkin Date</div>
+                    <div class="dx-field-value">
+                        <dx-date-box
+                            [value]="dateNow"
+                            type="datetime">
+                        </dx-date-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Checkout Date Estimate</div>
+                    <div class="dx-field-value">
+                        <dx-date-box
+                            [value]="dateNow"
+                            type="datetime">
+                        </dx-date-box>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="dx-field">
+                    <div class="dx-field-label">Prepay</div>
+                    <div class="dx-field-value">
+                        <dx-text-box></dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Discount</div>
+                    <div class="dx-field-value">
+                        <dx-text-box></dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Notes</div>
+                    <div class="dx-field-value">
+                        <dx-text-area
+                            height="90">
+
+                        </dx-text-area>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</dx-popup>
