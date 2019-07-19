@@ -9,15 +9,16 @@ import { RoomListComponent } from './room-list/room-list.component';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-    DxButtonModule,
+    DxButtonModule, DxDataGridModule,
     DxDateBoxModule,
     DxFormModule,
     DxPopupModule,
     DxTabPanelModule,
     DxTextAreaModule,
-    DxTextBoxModule
+    DxTextBoxModule, DxValidatorModule
 } from 'devextreme-angular';
 import {FormsModule} from '@angular/forms';
+import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,10 @@ import {FormsModule} from '@angular/forms';
         FormsModule,
         DxButtonModule,
         DxDateBoxModule,
-        DxTextAreaModule
+        DxTextAreaModule,
+        DxDataGridModule,
+        DxoTitleModule,
+        DxValidatorModule
     ],
     bootstrap: [AppComponent]
 })

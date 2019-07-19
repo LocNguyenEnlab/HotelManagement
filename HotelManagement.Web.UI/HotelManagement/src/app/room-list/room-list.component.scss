@@ -36,12 +36,12 @@
         }
     }
 }
-.booking-info-panel {
+.panel {
     position: relative;
     border: 1px #ddd solid;
     z-index: 1;
     width: 100%;
-    height: 50%;
+    height: auto;
     padding: 15px;
     .title {
         padding: 5px;
@@ -52,5 +52,37 @@
         border: 1px #ddd solid;
         background-color: #f0f0f0;
         z-index: 3;
+    }
+    .dx-field-label {
+        width: 30%;
+    }
+    .dx-field-value {
+        width: 70%;
+    }
+    .dx-field {
+        dx-button {
+            margin: 10px 0 0 5px;
+            float: right;
+        }
+    }
+
+    hr {
+        border-color: #ddd;
+        margin-bottom: 10px;
+    }
+    p {
+        font-size: 25px;
+    }
+}
+.group-btn {
+    float: right;
+    dx-button {
+        margin: 0 10px 10px 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    dx-popup {
+        width: 100%;
     }
 }

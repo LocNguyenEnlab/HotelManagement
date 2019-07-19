@@ -8,7 +8,7 @@
                     <td *ngFor="let room of floor.rooms" >
 
                         <dx-button id="{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
-                                (dblclick)="bookRoom($event.currentTarget.id)" class="room"
+                                (dblclick)="inputBookingInfo($event.currentTarget.id)" class="room"
                                 [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange' : 'red' "
                                 >
                             {{room.name}}
@@ -24,14 +24,14 @@
 
 <dx-popup
     class="popup"
-    width="90%"
-    height="90%"
+    width="60%"
+    height="auto"
     [showTitle]="true"
     [title]="Information"
     [dragEnabled]="false"
-    [closeOnOutsideClick]="true"
+    [closeOnOutsideClick]="false"
     [(visible)]="isVisibleBooking">
-    <div class="booking-info-panel">
+    <div class="panel">
         <div class="title">
             Booking information
         </div>
@@ -44,20 +44,29 @@
                     </div>
                 </div>
                 <div class="dx-field">
-                    <div class="dx-field-label">Checkin Date</div>
+                    <div class="dx-field-label">Checkin</div>
                     <div class="dx-field-value">
                         <dx-date-box
                             [value]="dateNow"
-                            type="datetime">
+                            type="datetime"
+                            [(ngModel)]="roomBooking.checkinTime"
+                            invalidDateMessage="The date must have the following format: MM/dd/yyyy">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Checkin time is required"></dxi-validation-rule>
+                            </dx-validator>
                         </dx-date-box>
                     </div>
                 </div>
                 <div class="dx-field">
-                    <div class="dx-field-label">Checkout Date Estimate</div>
+                    <div class="dx-field-label">Checkout Estimate</div>
                     <div class="dx-field-value">
                         <dx-date-box
                             [value]="dateNow"
-                            type="datetime">
+                            type="datetime"
+                            [(ngModel)]="roomBooking.checkoutTime">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Checkout time is required"></dxi-validation-rule>
+                            </dx-validator>
                         </dx-date-box>
                     </div>
                 </div>
@@ -66,25 +75,126 @@
                 <div class="dx-field">
                     <div class="dx-field-label">Prepay</div>
                     <div class="dx-field-value">
-                        <dx-text-box></dx-text-box>
+                        <dx-text-box [(ngModel)]="personalBookingDetail.prePay">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Prepay time is required"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
                     </div>
                 </div>
                 <div class="dx-field">
                     <div class="dx-field-label">Discount</div>
                     <div class="dx-field-value">
-                        <dx-text-box></dx-text-box>
+                        <dx-text-box [(ngModel)]="personalBookingDetail.discount">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Discount is required"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
                     </div>
                 </div>
                 <div class="dx-field">
                     <div class="dx-field-label">Notes</div>
                     <div class="dx-field-value">
                         <dx-text-area
-                            height="90">
-
+                            height="90"
+                            [(ngModel)]="personalBookingDetail.notes">
                         </dx-text-area>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="panel">
+        <div class="title">Client Information</div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="dx-field">
+                    <div class="dx-field-label">Name</div>
+                    <div class="dx-field-value">
+                        <dx-text-box [(ngModel)]="client.name">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Name is required"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Address</div>
+                    <div class="dx-field-value">
+                        <dx-text-box [(ngModel)]="client.address">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Address is required"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Email</div>
+                    <div class="dx-field-value">
+                        <dx-text-box [(ngModel)]="client.email">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>
+                                <dxi-validation-rule type="email" message="Email is invalid"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Nationality</div>
+                    <div class="dx-field-value">
+                        <dx-text-box [(ngModel)]="client.nationality">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Nationality is required"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="dx-field">
+                    <div class="dx-field-label">Identity/Passport</div>
+                    <div class="dx-field-value">
+                        <dx-text-box [(ngModel)]="client.identityOrPassport">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Identity/Passport number is required"></dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <div class="dx-field-label">Notes</div>
+                    <div class="dx-field-value">
+                        <dx-text-area
+                            height="90"
+                            [(ngModel)]="client.notes">
+                        </dx-text-area>
+                    </div>
+                </div>
+                <div class="dx-field">
+                    <form (ngSubmit)="addClientInfo()">
+                        <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>
+                    </form>
+                    <dx-button (onClick)="resetClientInput()" type="danger" icon="close" text="Reset" [useSubmitBehavior]="false"></dx-button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <p class="text-center">Clients list</p>
+        <dx-data-grid
+            height="150px"
+            [dataSource]="roomBooking.clients"
+            [columns]="['name', 'address', 'email', 'identityOrPassport', 'nationality', 'notes']"
+            [showBorders]="true">
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-editing
+                mode="row"
+                [allowUpdating]="true"
+                [allowDeleting]="true">
+            </dxo-editing>
+        </dx-data-grid>
+    </div>
+    <div class="group-btn">
+        <dx-button (onClick)="cancelBooking()" type="danger" icon="close" text="Cancel"></dx-button>
+        <dx-button (onClick)="bookPersonalRoom()" type="success" icon="check" text="Ok"></dx-button>
     </div>
 </dx-popup>
