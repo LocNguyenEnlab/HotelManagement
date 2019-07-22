@@ -1,6 +1,12 @@
 @import "~src/styles";
 .room-list {
-    margin-top: $top-bar-height;
+    //margin-top: $top-bar-height;
+    nav {
+        margin: 10px 0 0 0;
+        dx-button {
+            margin: 5px;
+        }
+    }
     table {
         width: 100%;
         border-collapse:separate;
@@ -86,3 +92,4 @@
         width: 100%;
     }
 }
+

@@ -5,5 +5,8 @@ export class RoomModel {
     status: string;
     price: number;
     type: string;
+    checkinTime: Date;
+    checkoutTime: Date;
     clients: ClientModel[];
+    floor: string;
 }

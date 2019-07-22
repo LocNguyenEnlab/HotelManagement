@@ -1,12 +1,10 @@
 import {ClientModel} from './ClientModel';
+import {RoomModel} from './RoomModel';
 
 export class PersonalBookingDetailModel {
-    roomNumber: string;
-    price: string;
-    checkinTime: string;
-    checkoutTime: string;
+    room: RoomModel;
     prePay: number;
-    discount: string;
+    discount: number;
     notes: string;
     clients: ClientModel[];
 }

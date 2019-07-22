@@ -1,8 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {RoomModel} from '../Model/RoomModel';
-import {FloorModel} from '../Model/FloorModel';
-import {ClientModel} from '../Model/ClientModel';
-import {PersonalBookingDetailModel} from '../Model/PersonalBookingDetailModel';
+import {RoomModel} from '../models/RoomModel';
+import {FloorModel} from '../models/FloorModel';
+import {ClientModel} from '../models/ClientModel';
+import {PersonalBookingDetailModel} from '../models/PersonalBookingDetailModel';
+import {BookingService} from '../services/booking.service';
+import notify from 'devextreme/ui/notify';
+import {RoomService} from '../services/room.service';
+import {GroupBookingDetailModel} from '../models/GroupBookingDetailModel';
+import {ClientService} from '../services/client.service';
 
 @Component({
     selector: 'app-room-list',
@@ -10,163 +15,23 @@ import {PersonalBookingDetailModel} from '../Model/PersonalBookingDetailModel';
     styleUrls: ['./room-list.component.scss']
 })
 export class RoomListComponent implements OnInit {
-    rooms: RoomModel[] = [
-        {
-            name: '100',
-            status: 'Available',
-            price: 300000,
-            type: 'Double',
-            clients: [],
-        },
-        {
-            name: '101',
-            status: 'Available',
-            price: 300045,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '102',
-            status: 'Booking',
-            price: 348000,
-            type: 'Double',
-            clients: []
-        },
-        {
-            name: '200',
-            status: 'Available',
-            price: 400000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '201',
-            status: 'Available',
-            price: 34500000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '300',
-            status: 'Available',
-            price: 300000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '301',
-            status: 'Booked',
-            price: 3000540,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '302',
-            status: 'Available',
-            price: 340000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '303',
-            status: 'Available',
-            price: 300000,
-            type: 'Single',
-            clients: []
-        },
-    ];
-    rooms1: RoomModel[] = [
-        {
-            name: '100',
-            status: 'Available',
-            price: 300000,
-            type: 'Double',
-            clients: null
-        },
-        {
-            name: '101',
-            status: 'Available',
-            price: 300045,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '102',
-            status: 'Booking',
-            price: 348000,
-            type: 'Double',
-            clients: []
-        },
-    ];
-    rooms2: RoomModel[] = [
-        {
-            name: '200',
-            status: 'Available',
-            price: 400000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '201',
-            status: 'Available',
-            price: 34500000,
-            type: 'Single',
-            clients: []
-        },
-    ];
-    rooms3: RoomModel[] = [
-        {
-            name: '300',
-            status: 'Available',
-            price: 300000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '301',
-            status: 'Booked',
-            price: 3000540,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '302',
-            status: 'Available',
-            price: 340000,
-            type: 'Single',
-            clients: []
-        },
-        {
-            name: '303',
-            status: 'Available',
-            price: 300000,
-            type: 'Single',
-            clients: []
-        },
-    ];
-    floors: FloorModel[] = [
-        {name: '1', rooms: this.rooms1},
-        {name: '2', rooms: this.rooms2},
-        {name: '3', rooms: this.rooms3},
-    ];
-    isVisibleBooking = false;
-    Information: string;
+    floors: FloorModel[] = [];
+    rooms: RoomModel[] = [];
+
+    isVisiblePersonalBookingPopup = false;
+    isVisibleGroupBookingPopup = false;
+    bookingTitle: string;
     roomBooking: RoomModel = {
-        name: '303',
-        status: 'Available',
+        name: '',
+        status: '',
         price: 0,
-        type: 'Double',
-        clients: [
-            {
-                name: '',
-                address: '',
-                email: '',
-                nationality: '',
-                identityOrPassport: '',
-                notes: '',
-            }
-        ]
+        type: '',
+        clients: null,
+        floor: null,
+        checkinTime: new Date(),
+        checkoutTime: new Date(),
     };
+    roomsBooking: RoomModel[] = [];
     dateNow: Date;
     client: ClientModel = {
         name: '',
@@ -177,29 +42,41 @@ export class RoomListComponent implements OnInit {
         notes: '',
     };
     personalBookingDetail: PersonalBookingDetailModel = {
-        roomNumber: '',
-        price: '',
-        checkinTime: '',
-        checkoutTime: '',
+        room: this.roomBooking,
         prePay: 0,
-        discount: '',
+        discount: 0,
         notes: '',
         clients: []
     };
+    groupBookingDetail: GroupBookingDetailModel = {
+        checkinTime: new Date(),
+        checkoutTime: new Date(),
+        prePay: 0,
+        discount: 0,
+        notes: '',
+        clients: [],
+        rooms: []
+    };
 
-    constructor() {
+    constructor(
+        private bookingService: BookingService,
+        private roomService: RoomService,
+        private clientService: ClientService,
+    ) {
     }
 
     ngOnInit() {
         this.dateNow = new Date();
+        this.rooms = this.roomService.getRooms();
+        this.floors = this.roomService.getFloors();
     }
 
     chooseRoom(id) {
         if (this.rooms.find(s => s.name === id).status === 'Available') {
             // @ts-ignore
             document.getElementById(id).style.backgroundColor = 'violet';
-            this.rooms.find(s => s.name === id).status = 'BookingTemp';
-        } else if (this.rooms.find(s => s.name === id).status === 'BookingTemp') {
+            this.rooms.find(s => s.name === id).status = 'Selected';
+        } else if (this.rooms.find(s => s.name === id).status === 'Selected') {
             this.rooms.find(s => s.name === id).status = 'Available';
             // @ts-ignore
             document.getElementById(id).style.backgroundColor = 'green';
@@ -212,18 +89,22 @@ export class RoomListComponent implements OnInit {
             if (room) {
                 if (room.status !== 'Booking' && room.status !== 'Booked') {
                     this.roomBooking = room;
-                    this.Information = 'Booking Room' + id + ' (' + this.roomBooking.type + ')';
-                    this.isVisibleBooking = true;
+                    this.bookingTitle = 'Booking Room' + id + ' (' + this.roomBooking.type + ')';
+                    this.isVisiblePersonalBookingPopup = true;
                 }
             }
         }
     }
 
     addClientInfo() {
-        const clientTemp: ClientModel = Object.assign({}, this.client);
-        this.roomBooking.clients.push(clientTemp);
-        this.resetClientInput();
-        this.personalBookingDetail.clients.push(clientTemp);
+        if ((this.roomBooking.type === 'Single' && this.roomBooking.clients.length === 0) || this.roomBooking.type === 'Double') {
+            const clientTemp: ClientModel = Object.assign({}, this.client);
+            this.roomBooking.clients.push(clientTemp);
+            this.resetClientInput();
+            this.personalBookingDetail.clients.push(clientTemp);
+        } else {
+            notify('Can not add more than one client for Single room!', 'warning');
+        }
     }
 
     resetClientInput() {
@@ -238,10 +119,68 @@ export class RoomListComponent implements OnInit {
     }
 
     bookPersonalRoom() {
-
+        if (this.personalBookingDetail.clients.length > 0) {
+            notify('Booking successfully!', 'success');
+            this.bookingService.saveClients(this.personalBookingDetail.clients);
+            this.isVisiblePersonalBookingPopup = false;
+            this.roomBooking.status = 'Booking';
+            for (const floor of this.floors) {
+                if (floor.rooms.find(s => s.name === this.roomBooking.name)) {
+                    floor.rooms.find(s => s.name === this.roomBooking.name).status = 'Booking';
+                }
+            }
+            this.personalBookingDetail.room = this.roomBooking;
+            this.clientService.saveBookedClients(this.personalBookingDetail.clients);
+        } else {
+            notify('Please add client for this room!', 'error');
+        }
     }
 
     cancelBooking() {
+        this.isVisiblePersonalBookingPopup = false;
+    }
 
+    groupBooking() {
+        for (const room of this.rooms) {
+            if (room.status === 'Selected') {
+                this.roomsBooking.push(room);
+            }
+        }
+        if (this.roomsBooking.length < 2) {
+            alert('Please select at least 2 rooms for group booking!');
+            this.roomsBooking = [];
+        } else {
+            this.isVisibleGroupBookingPopup = true;
+        }
+    }
+
+    cancelGroupBooking() {
+        this.roomsBooking = [];
+        this.isVisibleGroupBookingPopup = false;
+    }
+
+    bookGroupRooms() {
+        if (this.groupBookingDetail.clients.length > 0) {
+            notify('Group Booking successfully!', 'success');
+            for (const roomBooking of this.roomsBooking) {
+                for (const floor of this.floors) {
+                    if (floor.rooms.find(s => s.name === roomBooking.name)) {
+                        floor.rooms.find(s => s.name === roomBooking.name).status = 'Booking';
+                    }
+                }
+            }
+            this.roomsBooking = [];
+            this.isVisibleGroupBookingPopup = false;
+            this.groupBookingDetail.rooms = this.roomsBooking;
+            this.clientService.saveBookedClients(this.groupBookingDetail.clients);
+        } else {
+            notify('Please add client for this rooms!', 'error');
+        }
+    }
+
+    addClientInfoOfGroupBooking() {
+        const clientTemp: ClientModel = Object.assign({}, this.client);
+        this.groupBookingDetail.clients.push(clientTemp);
+        this.resetClientInput();
     }
 }

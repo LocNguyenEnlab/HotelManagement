@@ -11,20 +11,23 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
     DxButtonModule, DxDataGridModule,
     DxDateBoxModule,
-    DxFormModule,
-    DxPopupModule,
+    DxFormModule, DxNumberBoxModule,
+    DxPopupModule, DxScrollViewModule,
     DxTabPanelModule,
     DxTextAreaModule,
     DxTextBoxModule, DxValidatorModule
 } from 'devextreme-angular';
 import {FormsModule} from '@angular/forms';
 import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
+import {DxoScrollBarModule} from 'devextreme-angular/ui/nested/scroll-bar';
+import { BookedClientsListComponent } from './booked-clients-list/booked-clients-list.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         TopBarComponent,
-        RoomListComponent
+        RoomListComponent,
+        BookedClientsListComponent
     ],
     imports: [
         BrowserModule,
@@ -32,7 +35,8 @@ import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
         AppRoutingModule,
         HttpClientModule,
         RouterModule.forRoot([
-            {path: '', component: RoomListComponent}
+            {path: '', component: RoomListComponent},
+            {path: 'booked-clients-list', component: BookedClientsListComponent},
         ]),
         DxPopupModule,
         DxTabPanelModule,
@@ -44,7 +48,10 @@ import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
         DxTextAreaModule,
         DxDataGridModule,
         DxoTitleModule,
-        DxValidatorModule
+        DxValidatorModule,
+        DxScrollViewModule,
+        DxoScrollBarModule,
+        DxNumberBoxModule
     ],
     bootstrap: [AppComponent]
 })
