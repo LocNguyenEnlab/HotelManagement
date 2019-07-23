@@ -9,7 +9,7 @@ import { RoomListComponent } from './room-list/room-list.component';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-    DxButtonModule, DxDataGridModule,
+    DxButtonModule, DxContextMenuModule, DxDataGridModule,
     DxDateBoxModule,
     DxFormModule, DxNumberBoxModule,
     DxPopupModule, DxScrollViewModule,
@@ -21,13 +21,15 @@ import {FormsModule} from '@angular/forms';
 import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
 import {DxoScrollBarModule} from 'devextreme-angular/ui/nested/scroll-bar';
 import { BookedClientsListComponent } from './booked-clients-list/booked-clients-list.component';
+import { CheckInComponent } from './check-in/check-in.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         TopBarComponent,
         RoomListComponent,
-        BookedClientsListComponent
+        BookedClientsListComponent,
+        CheckInComponent
     ],
     imports: [
         BrowserModule,
@@ -37,6 +39,7 @@ import { BookedClientsListComponent } from './booked-clients-list/booked-clients
         RouterModule.forRoot([
             {path: '', component: RoomListComponent},
             {path: 'booked-clients-list', component: BookedClientsListComponent},
+            {path: 'check-in', component: CheckInComponent},
         ]),
         DxPopupModule,
         DxTabPanelModule,
@@ -51,7 +54,8 @@ import { BookedClientsListComponent } from './booked-clients-list/booked-clients
         DxValidatorModule,
         DxScrollViewModule,
         DxoScrollBarModule,
-        DxNumberBoxModule
+        DxNumberBoxModule,
+        DxContextMenuModule,
     ],
     bootstrap: [AppComponent]
 })

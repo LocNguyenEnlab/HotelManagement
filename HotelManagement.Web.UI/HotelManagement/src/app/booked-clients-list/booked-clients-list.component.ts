@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ClientService} from '../services/client.service';
-import {ClientModel} from '../models/ClientModel';
+import {BookedClientsListModel} from '../models/BookedClientsListModel';
+import {BookedClientsListService} from '../services/booked-clients-list.service';
 
 @Component({
     selector: 'app-booked-clients-list',
@@ -8,15 +8,15 @@ import {ClientModel} from '../models/ClientModel';
     styleUrls: ['./booked-clients-list.component.scss']
 })
 export class BookedClientsListComponent implements OnInit {
-    bookedClients: ClientModel[];
+    bookedClientsList: BookedClientsListModel[];
 
     constructor(
-        private clientService: ClientService,
+        private bookedClientsListService: BookedClientsListService,
     ) {
     }
 
     ngOnInit() {
-        this.bookedClients = this.clientService.getBookedClients();
+        this.bookedClientsList = this.bookedClientsListService.getBookedClientsList();
     }
 
 }

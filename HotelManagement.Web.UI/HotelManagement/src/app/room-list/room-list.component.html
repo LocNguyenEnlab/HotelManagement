@@ -1,3 +1,4 @@
+<app-check-in></app-check-in>
 <div class="room-list">
     <div class="container">
         <nav>
@@ -11,6 +12,14 @@
                 type="default"
                 routerLink="booked-clients-list">
             </dx-button>
+            <dx-button
+                text="Group checkin"
+                type="default">
+            </dx-button>
+            <dx-button
+                text="Group checkout"
+                type="default">
+            </dx-button>
         </nav>
         <table>
             <tbody>
@@ -18,20 +27,30 @@
                 <tr *ngFor="let floor of floors" style="height: 100px;">
                     <td class="floor">Floor {{floor.name}}</td>
                     <td *ngFor="let room of floor.rooms" >
-                        <dx-button id="{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
+                        <dx-button id="R{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
                                 (dblclick)="inputBookingInfo($event.currentTarget.id)" class="room"
                                 [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange' : 'red' "
                                 >
                             {{room.name}}
                             <p class="status">{{room.status}}</p>
                         </dx-button>
-
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<!--Popup when right click-->
+<div *ngFor="let name of availableRoomsName">
+    <dx-context-menu
+        [dataSource]="dataRightClick"
+        [width]="200"
+        target="#R{{name}}"
+        (onItemClick)="rightClick($event, name)">
+    </dx-context-menu>
+</div>
+
 
 <dx-popup
     width="60%"
@@ -405,3 +424,5 @@
         </div>
     </dx-scroll-view>
 </dx-popup>
+
+

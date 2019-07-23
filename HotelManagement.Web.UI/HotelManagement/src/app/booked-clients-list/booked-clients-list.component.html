@@ -1,4 +1,13 @@
-<h2>Booked Clients List</h2>
-<div *ngFor="let client of bookedClients">
-    <h3>{{client.name}}</h3>
-</div>
+<h2 class="text-center">Booked Clients List</h2>
+<dx-data-grid
+    [dataSource]="bookedClientsList"
+    [columns]="['type', 'contactName', 'checkinTime', 'checkoutTime', 'code', 'bookType', 'prePay', 'notes', 'createdTime', 'roomName']"
+    showBorders="true">
+    <dxo-scrolling mode="virtual"></dxo-scrolling>
+    <dxo-editing
+        mode="row"
+        [allowAdding]="true"
+        [allowUpdating]="true"
+        [allowDeleting]="true">
+    </dxo-editing>
+</dx-data-grid>

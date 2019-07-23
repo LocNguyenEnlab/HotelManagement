@@ -211,4 +211,9 @@ export class RoomService {
     getRooms(): RoomModel[] {
         return this.rooms;
     }
+
+    udpateRooms(rooms) {
+        this.rooms = [];
+        this.rooms = rooms;
+    }
 }
