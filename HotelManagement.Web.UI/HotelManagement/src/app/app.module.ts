@@ -12,7 +12,7 @@ import {
     DxButtonModule, DxContextMenuModule, DxDataGridModule,
     DxDateBoxModule,
     DxFormModule, DxNumberBoxModule,
-    DxPopupModule, DxScrollViewModule,
+    DxPopupModule, DxRadioGroupModule, DxScrollViewModule,
     DxTabPanelModule,
     DxTextAreaModule,
     DxTextBoxModule, DxValidatorModule
@@ -56,6 +56,7 @@ import { CheckInComponent } from './check-in/check-in.component';
         DxoScrollBarModule,
         DxNumberBoxModule,
         DxContextMenuModule,
+        DxRadioGroupModule,
     ],
     bootstrap: [AppComponent]
 })

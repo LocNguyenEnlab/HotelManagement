@@ -7,6 +7,7 @@ import {BookedClientsListService} from '../services/booked-clients-list.service'
 import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';
 import {Router} from '@angular/router';
+import {GroupBookingDetailModel} from '../models/GroupBookingDetailModel';
 
 @Component({
     selector: 'app-check-in',
@@ -15,8 +16,9 @@ import {Router} from '@angular/router';
 })
 export class CheckInComponent implements OnInit {
     static isVisiblePersonalCheckinPopup = false;
+    static isVisibleGroupCheckinPopup = false;
     titlePersonalCheckin: string;
-    roomBooking: RoomModel = {
+    roomCheckin: RoomModel = {
         name: '',
         status: '',
         price: 0,
@@ -27,7 +29,7 @@ export class CheckInComponent implements OnInit {
         floor: '',
     };
     personalBookingDetail: PersonalBookingDetailModel = {
-        room: this.roomBooking,
+        room: this.roomCheckin,
         prePay: 0,
         discount: 0,
         notes: '',
@@ -42,6 +44,16 @@ export class CheckInComponent implements OnInit {
         notes: 'x',
     };
     rooms: RoomModel[] = [];
+    groupBookingDetail: GroupBookingDetailModel = {
+        checkinTime: new Date(),
+        checkoutTime: new Date(),
+        prePay: 0,
+        discount: 0,
+        notes: '',
+        clients: [],
+        rooms: []
+    };
+    roomsCheckin: RoomModel[] = [];
 
     constructor(
         private bookedClientsListService: BookedClientsListService,
@@ -54,23 +66,39 @@ export class CheckInComponent implements OnInit {
         this.rooms = this.roomService.getRooms();
     }
 
-    onInit(roomBooking: RoomModel) {
-        this.roomBooking = roomBooking;
-        this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomBooking.name;
+    onInit(roomCheckin: RoomModel, roomsCheckin: RoomModel[], personalBookingDetail: PersonalBookingDetailModel, groupBookingDetail: GroupBookingDetailModel) {
+        if (roomCheckin != null) {
+             this.roomCheckin = roomCheckin;
+        }
+        if (roomsCheckin != null) {
+            this.roomsCheckin = roomsCheckin;
+        }
+        if (personalBookingDetail != null) {
+            this.personalBookingDetail = personalBookingDetail;
+        }
+        if (groupBookingDetail != null) {
+            this.groupBookingDetail = groupBookingDetail;
+        }
+        this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name;
     }
 
     get staticIsVisiblePersonalCheckinPopup() {
         return CheckInComponent.isVisiblePersonalCheckinPopup;
     }
 
+    get staticIsVisibleGroupCheckinPopup() {
+        return CheckInComponent.isVisibleGroupCheckinPopup;
+    }
+
     cancel() {
         CheckInComponent.isVisiblePersonalCheckinPopup = false;
     }
 
-    addBookedClientsList(clients: ClientModel[], checkinTime: Date, checkoutTime: Date, bookType, code, prePay, roomName) {
+    addBookedClientsList(clients: ClientModel[], checkinTime: Date, checkoutTime: Date, bookType, code, prePay, rooms, discount) {
         for (const client of clients) {
             const bookedClient: BookedClientsListModel = {
-                contactName: client.name,
+                id: null,
+                client,
                 checkinTime,
                 checkoutTime,
                 code,
@@ -78,44 +106,66 @@ export class CheckInComponent implements OnInit {
                 prePay,
                 notes: client.notes,
                 createdTime: new Date(),
-                roomName,
-                type: 'Checkin'
+                rooms,
+                type: 'Checkin',
+                discount
             };
             this.bookedClientsListService.saveBookedClientsList(bookedClient);
         }
     }
 
     checkinForPersonal() {
-        this.addBookedClientsList(this.personalBookingDetail.clients, this.roomBooking.checkinTime, this.roomBooking.checkoutTime,
-            'Personal Booking', '000', this.personalBookingDetail.prePay, this.roomBooking.name);
+        this.addBookedClientsList(this.personalBookingDetail.clients, this.roomCheckin.checkinTime, this.roomCheckin.checkoutTime,
+            'Personal Booking', '-1', this.personalBookingDetail.prePay, this.roomCheckin, this.personalBookingDetail.discount);
         notify('Checkin successfully', 'success');
+        this.updateRooms(Object.assign(this.personalBookingDetail.clients));
+        this.router.navigate(['/booked-clients-list']);
         CheckInComponent.isVisiblePersonalCheckinPopup = false;
-        this.updateRoomsStatus();
-        this.router.navigate(['/']);
     }
 
-    updateRoomsStatus() {
-        const bookedList = this.bookedClientsListService.getBookedClientsList();
-        for (const bookedClient of bookedList) {
-            if (bookedClient.type === 'Checkin') {
-                // for (const roomName of bookedClient.roomName) {
-                //
-                // }
-                if (this.rooms.find(s => s.name === '100')) {
-                    this.rooms.find(s => s.name === '100').status = 'Booked';
+    updateRooms(clients) {
+        if (CheckInComponent.isVisiblePersonalCheckinPopup) {
+            const roomName = this.roomCheckin.name;
+            this.rooms.find(s => s.name === roomName).status = 'Booked';
+            this.rooms.find(s => s.name === roomName).clients = clients;
+        } else if (CheckInComponent.isVisibleGroupCheckinPopup) {
+            for (const room of this.roomsCheckin) {
+                if (this.rooms.find(s => s.name === room.name)) {
+                    this.rooms.find(s => s.name === room.name).status = 'Booked';
+                    this.rooms.find(s => s.name === room.name).clients = clients;
                 }
             }
         }
+        this.roomService.updateRooms(this.rooms);
     }
 
-    addClientInfo() {
-        if ((this.roomBooking.type === 'Single' && this.roomBooking.clients.length === 0) || this.roomBooking.type === 'Double') {
+    addClientInfoOfPersonalBooking() {
+        if ((this.roomCheckin.type === 'Single' && this.roomCheckin.clients.length === 0) || this.roomCheckin.type === 'Double') {
             const clientTemp: ClientModel = Object.assign({}, this.client);
-            this.roomBooking.clients.push(clientTemp);
+            this.roomCheckin.clients.push(clientTemp);
             // this.resetClientInput();
             this.personalBookingDetail.clients.push(clientTemp);
         } else {
             notify('Can not add more than one client for Single room!', 'warning');
         }
+    }
+
+    addClientInfoOfGroupBooking() {
+        const clientTemp: ClientModel = Object.assign({}, this.client);
+        this.groupBookingDetail.clients.push(clientTemp);
+        // this.resetClientInput();
+    }
+
+    checkinForGroup() {
+        this.addBookedClientsList(this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime, this.groupBookingDetail.checkoutTime,
+            'Group Booking', '-1', this.groupBookingDetail.prePay, this.roomsCheckin, this.groupBookingDetail.discount);
+        notify('Checkin successfully', 'success');
+        this.updateRooms(this.groupBookingDetail.clients);
+        this.router.navigate(['/booked-clients-list']);
+        CheckInComponent.isVisibleGroupCheckinPopup = false;
+    }
+
+    cancelGroupCheckin() {
+        CheckInComponent.isVisibleGroupCheckinPopup = false;
     }
 }

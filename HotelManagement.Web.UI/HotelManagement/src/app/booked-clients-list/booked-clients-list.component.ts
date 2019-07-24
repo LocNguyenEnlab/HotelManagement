@@ -1,6 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BookedClientsListModel} from '../models/BookedClientsListModel';
 import {BookedClientsListService} from '../services/booked-clients-list.service';
+import notify from 'devextreme/ui/notify';
+// @ts-ignore
+import {event} from 'devextreme/bundles/dx.all';
+import {CheckInComponent} from '../check-in/check-in.component';
 
 @Component({
     selector: 'app-booked-clients-list',
@@ -8,7 +12,13 @@ import {BookedClientsListService} from '../services/booked-clients-list.service'
     styleUrls: ['./booked-clients-list.component.scss']
 })
 export class BookedClientsListComponent implements OnInit {
+    @ViewChild(CheckInComponent, {static: false}) checkinComponent;
     bookedClientsList: BookedClientsListModel[];
+    searchOptions: string[];
+    searchOption: string;
+    searchText: string;
+    focusClient: number;
+    bookedClientCheckin: BookedClientsListModel;
 
     constructor(
         private bookedClientsListService: BookedClientsListService,
@@ -17,6 +27,45 @@ export class BookedClientsListComponent implements OnInit {
 
     ngOnInit() {
         this.bookedClientsList = this.bookedClientsListService.getBookedClientsList();
+        this.searchOptions = [
+            'Code',
+            'Room Name'
+        ];
+        this.searchOption = this.searchOptions[0];
     }
 
+    checkin() {
+        if (this.bookedClientCheckin && this.bookedClientCheckin.type === 'Booking') {
+            if (this.bookedClientCheckin.bookType === 'Personal Booking') {
+                this.checkinComponent.onInit(null, null, this.bookedClientCheckin, null);
+            } else {
+
+            }
+        } else if (this.bookedClientCheckin) {
+            notify('This client already check in!', 'error', 2000);
+        } else {
+            notify('Please select a client to check in!', 'error', 2000);
+        }
+    }
+
+    changeSearchOption(e) {
+        this.searchOption = e.value;
+    }
+
+    search() {
+        if (this.searchText) {
+            if (this.searchOption === this.searchOptions[0]) {
+                this.focusClient = this.bookedClientsListService.getBookedClientByCode(this.searchText);
+            } else if (this.searchOption === this.searchOptions[1]) {
+                this.focusClient = this.bookedClientsListService.getBookedClientByRoomName(this.searchText);
+            }
+        } else {
+            notify('Please fill in search text box to search!', 'warning', 2000);
+        }
+    }
+
+    onFocusedRowChanged(e: event) {
+        this.focusClient = e.rowIndex;
+        this.bookedClientCheckin = e.row.data;
+    }
 }

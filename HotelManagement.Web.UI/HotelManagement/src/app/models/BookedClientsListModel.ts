@@ -1,5 +1,9 @@
+import {ClientModel} from './ClientModel';
+import {RoomModel} from './RoomModel';
+
 export class BookedClientsListModel {
-    contactName: string;
+    id: number;
+    client: ClientModel;
     checkinTime: Date;
     checkoutTime: Date;
     code: string;
@@ -7,6 +11,7 @@ export class BookedClientsListModel {
     prePay: number;
     notes: string;
     createdTime: Date;
-    roomName: string[];
+    rooms: RoomModel[];
     type: string; // booking or checkin
+    discount: number;
 }

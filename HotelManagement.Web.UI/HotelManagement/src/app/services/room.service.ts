@@ -29,7 +29,7 @@ export class RoomService {
         },
         {
             name: '102',
-            status: 'Booking',
+            status: 'Available',
             price: 348000,
             type: 'Double',
             clients: [],
@@ -69,7 +69,7 @@ export class RoomService {
         },
         {
             name: '301',
-            status: 'Booked',
+            status: 'Available',
             price: 3000540,
             type: 'Single',
             clients: [],
@@ -98,113 +98,35 @@ export class RoomService {
             checkoutTime: new Date(),
         },
     ];
-    rooms1: RoomModel[] = [
-        {
-            name: '100',
-            status: 'Available',
-            price: 300000,
-            type: 'Double',
-            clients: null,
-            floor: '1',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-        {
-            name: '101',
-            status: 'Available',
-            price: 300045,
-            type: 'Single',
-            clients: [],
-            floor: '1',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-        {
-            name: '102',
-            status: 'Booking',
-            price: 348000,
-            type: 'Double',
-            clients: [],
-            floor: '1',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-    ];
-    rooms2: RoomModel[] = [
-        {
-            name: '200',
-            status: 'Available',
-            price: 400000,
-            type: 'Single',
-            clients: [],
-            floor: '2',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-        {
-            name: '201',
-            status: 'Available',
-            price: 34500000,
-            type: 'Single',
-            clients: [],
-            floor: '2',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-    ];
-    rooms3: RoomModel[] = [
-        {
-            name: '300',
-            status: 'Available',
-            price: 300000,
-            type: 'Single',
-            clients: [],
-            floor: '3',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-        {
-            name: '301',
-            status: 'Booked',
-            price: 3000540,
-            type: 'Single',
-            clients: [],
-            floor: '3',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-        {
-            name: '302',
-            status: 'Available',
-            price: 340000,
-            type: 'Single',
-            clients: [],
-            floor: '3',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-        {
-            name: '303',
-            status: 'Available',
-            price: 300000,
-            type: 'Single',
-            clients: [],
-            floor: '3',
-            checkinTime: new Date(),
-            checkoutTime: new Date(),
-        },
-    ];
-    floors: FloorModel[] = [
-        {name: '1', rooms: this.rooms1},
-        {name: '2', rooms: this.rooms2},
-        {name: '3', rooms: this.rooms3},
-    ];
+    rooms1: RoomModel[] = [];
+    rooms2: RoomModel[] = [];
+    rooms3: RoomModel[] = [];
+    floors: FloorModel[] = [];
 
 
     constructor() {
     }
 
     getFloors(): FloorModel[] {
+        this.floors = [];
+        this.rooms1 = [];
+        this.rooms2 = [];
+        this.rooms3 = [];
+
+        for (const room of this.rooms) {
+            if (room.floor === '1') {
+                this.rooms1.push(room);
+            } else if (room.floor === '2') {
+                this.rooms2.push(room);
+            } else if (room.floor === '3') {
+                this.rooms3.push(room);
+            }
+        }
+        this.floors = [
+            {name: '1', rooms: this.rooms1},
+            {name: '2', rooms: this.rooms2},
+            {name: '3', rooms: this.rooms3},
+        ];
         return this.floors;
     }
 
@@ -212,7 +134,7 @@ export class RoomService {
         return this.rooms;
     }
 
-    udpateRooms(rooms) {
+    updateRooms(rooms) {
         this.rooms = [];
         this.rooms = rooms;
     }

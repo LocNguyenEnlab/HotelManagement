@@ -13,6 +13,7 @@
                 routerLink="booked-clients-list">
             </dx-button>
             <dx-button
+                (onClick)="groupCheckin()"
                 text="Group checkin"
                 type="default">
             </dx-button>
@@ -29,10 +30,15 @@
                     <td *ngFor="let room of floor.rooms" >
                         <dx-button id="R{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
                                 (dblclick)="inputBookingInfo($event.currentTarget.id)" class="room"
-                                [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange' : 'red' "
+                                [style.background-color]="room.status === 'Available' ? '#98ad44' : room.status === 'Booking' ? 'orange'
+                                    : room.status === 'Selected' ? 'Violet' : 'Red' "
                                 >
-                            {{room.name}}
-                            <p class="status">{{room.status}}</p>
+                            <p>{{room.type}}</p>
+                            <p>{{room.name}}</p>
+                            <p *ngIf="room.status != 'Booked'">{{room.status}}</p>
+                            <p *ngIf="room.status === 'Booked'">
+                                <span *ngFor="let client of room.clients">{{client.name}} </span>
+                            </p>
                         </dx-button>
                     </td>
                 </tr>
@@ -204,7 +210,7 @@
                         </div>
                     </div>
                     <div class="dx-field">
-                        <form id="personalBooking" (ngSubmit)="addClientInfo()">
+                        <form id="personalBooking" (ngSubmit)="addClientInfoOfPersonalBooking()">
                             <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>
                         </form>
                         <dx-button (onClick)="resetClientInput()" type="danger" icon="close" text="Reset" [useSubmitBehavior]="false"></dx-button>
@@ -411,11 +417,6 @@
                 [dataSource]="roomsBooking"
                 [columns]="['name', 'price', 'type', 'floor', 'notes']">
                 <dxo-scrolling mode="virtual"></dxo-scrolling>
-                <dxo-editing
-                    mode="row"
-                    [allowUpdating]="true"
-                    [allowDeleting]="true">
-                </dxo-editing>
             </dx-data-grid>
         </div>
         <div class="group-btn">
