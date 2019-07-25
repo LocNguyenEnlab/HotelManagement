@@ -4,46 +4,92 @@
     nav {
         margin: 10px 0 0 0;
         dx-button {
-            margin: 5px;
+            margin: 5px 0 5px 15px;
+            width: 100%;
         }
     }
-    table {
-        width: 100%;
-        border-collapse:separate;
-        border-spacing: 5px 5px;
+    .room-diagram {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        padding: 0;
+        table {
+            width: 100%;
+            border-collapse:separate;
+            border-spacing: 5px 5px;
 
-        th, td {
-            border-radius: 5px;
-            text-align: center;
-            dx-button {
-                width: 100%;
-                //padding-top: 30px;
-                p {
-                    margin: 20px 0 25px 0;
+            th, td {
+                border-radius: 5px;
+                text-align: center;
+                width: 200px;
+                max-width: 200px;
+                min-width: 200px;
+                //max-width: 200px;
+                dx-button {
+                    width: 100%;
+                    //padding-top: 30px;
+                    p {
+                        margin: 10px 0 25px 0;
+                    }
+                    .custom-time {
+                        font-size: 15px;
+                    }
+                }
+            }
+            .floor {
+                background-color: #80ba6c;
+                font-size: $font-size-normal;
+                height: 100px;
+            }
+            .room {
+                height: 100px;
+                font-size: $font-size-normal;
+                .status {
+                    margin-top: 35px;
+                }
+                .room-name {
+                    position: absolute;
+                    right: -20%;
+                    top: -10px;
+                }
+            }
+
+            @media (max-width: 400px) {
+                .floor {
+                    font-size: $font-size-small;
+                }
+                .room {
+                    font-size: $font-size-small;
                 }
             }
         }
-        .floor {
-            background-color: #80ba6c;
-            font-size: $font-size-normal;
-            height: 100px;
-        }
-        .room {
-            height: 100px;
-            font-size: $font-size-normal;
-            .status {
-                margin-top: 35px;
-            }
-        }
-        @media (max-width: 400px) {
-            .floor {
-                font-size: $font-size-small;
-            }
-            .room {
-                font-size: $font-size-small;
-            }
-        }
     }
+    .room-diagram::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+
+    .room-diagram::-webkit-scrollbar
+    {
+        width: 5px;
+        height: 10px;
+        background-color: #F5F5F5;
+        margin-left: 10px;
+    }
+
+    .room-diagram::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        background-color: #FFF;
+        background-image: -webkit-gradient(linear,
+            40% 0%,
+            75% 84%,
+            from(#4D9C41),
+            to(#19911D),
+            color-stop(.6,#54DE5D))
+    }
+
 }
 .panel {
     position: relative;

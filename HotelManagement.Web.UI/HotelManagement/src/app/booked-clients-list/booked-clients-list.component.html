@@ -1,65 +1,71 @@
-<h2 class="text-center">Booked Clients List</h2>
-<div class="dx-field">
-    <div class="text-box-search">
-        <dx-text-box
-            id="search"
-            placeholder="Code or room name"
-            [(value)]="searchText">
-        </dx-text-box>
+<app-check-in></app-check-in>
+<div class="booked-clients-list">
+    <h2 class="text-center">Booked Clients List</h2>
+    <div class="dx-field">
+        <div class="text-box-search">
+            <dx-text-box
+                id="search"
+                placeholder="Code or room name"
+                [(value)]="searchText"
+                (onChange)="search()">
+            </dx-text-box>
+        </div>
+        <div class="search-option">
+            <dx-radio-group
+                [items]="searchOptions"
+                [value]="searchOptions[0]"
+                layout="horizontal"
+                (onValueChanged)="changeSearchOption($event)">
+            </dx-radio-group>
+        </div>
+        <div class="btn-search">
+            <dx-button
+                type="default"
+                text="Search"
+                (onClick)="search()">
+            </dx-button>
+        </div>
     </div>
-    <div class="search-option">
-        <dx-radio-group
-            [items]="searchOptions"
-            [value]="searchOptions[0]"
-            layout="horizontal"
-            (onValueChanged)="changeSearchOption($event)">
-        </dx-radio-group>
-    </div>
-    <div class="btn-search">
-        <dx-button
-            type="default"
-            text="Search"
-            (onClick)="search()">
-        </dx-button>
-    </div>
+
+    <dx-data-grid
+        [dataSource]="bookedClientsList"
+        keyExpr="id"
+        [hoverStateEnabled]="true"
+        [selectedRowKeys]="[]"
+        [focusedRowEnabled]="true"
+        [(focusedRowKey)]="focusBookedClientId"
+        (onFocusedRowChanged)="onFocusedRowChanged($event)"
+        height="700"
+        width="100%"
+        showBorders="true">
+        <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+        <dxo-selection mode="single"></dxo-selection>
+<!--        <dxo-paging enabled="false"></dxo-paging>-->
+        <dxi-column dataField="id"></dxi-column>
+        <dxi-column dataField="type"></dxi-column>
+        <dxi-column dataField="client.name"></dxi-column>
+        <dxi-column dataField="checkinTime"></dxi-column>
+        <dxi-column dataField="checkoutTime"></dxi-column>
+        <dxi-column dataField="code"></dxi-column>
+        <dxi-column dataField="bookType"></dxi-column>
+        <dxi-column dataField="prePay" caption="Prepay"></dxi-column>
+        <dxi-column dataField="notes"></dxi-column>
+        <dxi-column dataField="createdTime"></dxi-column>
+        <dxi-column dataField="rooms" [customizeText]="customRoomsText"></dxi-column>
+        <dxi-column dataField="discount"></dxi-column>
+        <dxo-editing
+            mode="row"
+            [allowAdding]="true"
+            [allowUpdating]="true"
+            [allowDeleting]="true"
+            [useIcons]="true">
+        </dxo-editing>
+    </dx-data-grid>
+
+    <dx-button
+        class="btn-check-in"
+        type="default"
+        text="Checkin"
+        (onClick)="checkin()">
+    </dx-button>
 </div>
-
-<dx-data-grid
-    #grid
-    [dataSource]="bookedClientsList"
-    keyExpr="id"
-    [hoverStateEnabled]="true"
-    [selectedRowKeys]="[]"
-    [focusedRowEnabled]="true"
-    [(focusedRowIndex)]="focusClient"
-    (onFocusedRowChanged)="onFocusedRowChanged($event)"
-    showBorders="true">
-    <dxo-scrolling mode="virtual"></dxo-scrolling>
-    <dxo-selection mode="single"></dxo-selection>
-    <dxo-paging [pageSize]="10"></dxo-paging>
-    <dxi-column dataField="id"></dxi-column>
-    <dxi-column dataField="type"></dxi-column>
-    <dxi-column dataField="client.name" dataType="string"></dxi-column>
-    <dxi-column dataField="checkinTime"></dxi-column>
-    <dxi-column dataField="checkoutTime"></dxi-column>
-    <dxi-column dataField="code"></dxi-column>
-    <dxi-column dataField="bookType"></dxi-column>
-    <dxi-column dataField="prePay"></dxi-column>
-    <dxi-column dataField="notes"></dxi-column>
-    <dxi-column dataField="createdTime"></dxi-column>
-    <dxi-column dataField="rooms.name"></dxi-column>
-    <dxi-column dataField="discount"></dxi-column>
-    <dxo-editing
-        mode="row"
-        [allowAdding]="true"
-        [allowUpdating]="true"
-        [allowDeleting]="true">
-    </dxo-editing>
-</dx-data-grid>
-
-<dx-button
-    class="btn-check-in"
-    type="default"
-    text="Checkin"
-    (onClick)="checkin()">
-</dx-button>

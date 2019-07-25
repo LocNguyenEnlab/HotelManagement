@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BookedClientsListModel} from '../models/BookedClientsListModel';
+import {RoomModel} from '../models/RoomModel';
 
 @Injectable({
     providedIn: 'root'
@@ -14,25 +15,30 @@ export class BookedClientsListService {
         return this.bookedClientsList;
     }
 
-    saveBookedClientsList(bookedClients: BookedClientsListModel) {
+    addBookedClientList(bookedClient: BookedClientsListModel) {
         if (this.bookedClientsList.length === 0) {
-            bookedClients.id = 0;
+            bookedClient.id = 0;
         } else {
-            bookedClients.id = this.bookedClientsList[this.bookedClientsList.length - 1].id + 1;
+            bookedClient.id = this.bookedClientsList[this.bookedClientsList.length - 1].id + 1;
         }
-        this.bookedClientsList.push(bookedClients);
+        this.bookedClientsList.push(bookedClient);
+    }
+
+    updateBookedClientList(bookedClient: BookedClientsListModel) {
+        const index = this.bookedClientsList.findIndex(s => s.id === bookedClient.id);
+        this.bookedClientsList.splice(index, 1);
+        this.bookedClientsList.splice(index, 0, bookedClient);
     }
 
     getBookedClientByCode(code: string) {
-        return this.bookedClientsList.findIndex(s => s.code === code);
+        return this.bookedClientsList.find(s => s.code === code).id;
     }
 
     getBookedClientByRoomName(roomName: string) {
-        for (let i = 0; i < this.bookedClientsList.length; i++) {
-            for (const clientRoomName of this.bookedClientsList[i].roomsName) {
-                if (clientRoomName === roomName) {
-                    return i;
-                }
+        for (const bookedClient of this.bookedClientsList) {
+            const rooms: RoomModel[] = bookedClient.rooms;
+            if (rooms.find(s => s.name === roomName)) {
+                return bookedClient.id;
             }
         }
     }

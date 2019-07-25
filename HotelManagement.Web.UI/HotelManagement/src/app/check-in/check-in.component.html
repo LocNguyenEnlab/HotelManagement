@@ -154,7 +154,8 @@
 <!--                        <form id="personalBooking" (ngSubmit)="addClientInfo()">-->
 <!--                            <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>-->
 <!--                        </form>-->
-                        <dx-button (onClick)="addClientInfoOfPersonalBooking()" type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>
+                        <dx-button (onClick)="addClientInfoOfPersonalBooking()" type="success" icon="arrowdown"
+                                   text="Add Client" [useSubmitBehavior]="true"></dx-button>
                         <dx-button (onClick)="resetClientInput()" type="danger" icon="close" text="Reset" [useSubmitBehavior]="false"></dx-button>
                     </div>
                 </div>
@@ -170,7 +171,8 @@
                 <dxo-editing
                     mode="row"
                     [allowUpdating]="true"
-                    [allowDeleting]="true">
+                    [allowDeleting]="true"
+                    [useIcons]="true">
                 </dxo-editing>
             </dx-data-grid>
         </div>
@@ -348,7 +350,8 @@
                 <dxo-editing
                     mode="row"
                     [allowUpdating]="true"
-                    [allowDeleting]="true">
+                    [allowDeleting]="true"
+                    [useIcons]="true">
                 </dxo-editing>
             </dx-data-grid>
         </div>
@@ -361,11 +364,6 @@
                 [dataSource]="roomsCheckin"
                 [columns]="['name', 'price', 'type', 'floor', 'notes']">
                 <dxo-scrolling mode="virtual"></dxo-scrolling>
-                <dxo-editing
-                    mode="row"
-                    [allowUpdating]="true"
-                    [allowDeleting]="true">
-                </dxo-editing>
             </dx-data-grid>
         </div>
         <div class="group-btn">

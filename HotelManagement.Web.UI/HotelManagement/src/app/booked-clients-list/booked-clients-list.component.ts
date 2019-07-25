@@ -17,7 +17,7 @@ export class BookedClientsListComponent implements OnInit {
     searchOptions: string[];
     searchOption: string;
     searchText: string;
-    focusClient: number;
+    focusBookedClientId: number;
     bookedClientCheckin: BookedClientsListModel;
 
     constructor(
@@ -37,9 +37,11 @@ export class BookedClientsListComponent implements OnInit {
     checkin() {
         if (this.bookedClientCheckin && this.bookedClientCheckin.type === 'Booking') {
             if (this.bookedClientCheckin.bookType === 'Personal Booking') {
-                this.checkinComponent.onInit(null, null, this.bookedClientCheckin, null);
+                this.checkinComponent.onInit(null, null, this.bookedClientCheckin);
+                CheckInComponent.isVisiblePersonalCheckinPopup = true;
             } else {
-
+                this.checkinComponent.onInit(null, null, this.bookedClientCheckin);
+                CheckInComponent.isVisibleGroupCheckinPopup = true;
             }
         } else if (this.bookedClientCheckin) {
             notify('This client already check in!', 'error', 2000);
@@ -55,9 +57,9 @@ export class BookedClientsListComponent implements OnInit {
     search() {
         if (this.searchText) {
             if (this.searchOption === this.searchOptions[0]) {
-                this.focusClient = this.bookedClientsListService.getBookedClientByCode(this.searchText);
+                this.focusBookedClientId = this.bookedClientsListService.getBookedClientByCode(this.searchText);
             } else if (this.searchOption === this.searchOptions[1]) {
-                this.focusClient = this.bookedClientsListService.getBookedClientByRoomName(this.searchText);
+                this.focusBookedClientId = this.bookedClientsListService.getBookedClientByRoomName(this.searchText);
             }
         } else {
             notify('Please fill in search text box to search!', 'warning', 2000);
@@ -65,7 +67,18 @@ export class BookedClientsListComponent implements OnInit {
     }
 
     onFocusedRowChanged(e: event) {
-        this.focusClient = e.rowIndex;
+        console.log(e);
+        this.focusBookedClientId = e.row.data.id;
         this.bookedClientCheckin = e.row.data;
+        console.log('focusBookedClientID ' + this.focusBookedClientId);
+        console.log('' + e.row.data.id);
+    }
+
+    customRoomsText(params) {
+        let roomName = '';
+        for (const param of params.value) {
+            roomName += param.name + ', ';
+        }
+        return roomName;
     }
 }
