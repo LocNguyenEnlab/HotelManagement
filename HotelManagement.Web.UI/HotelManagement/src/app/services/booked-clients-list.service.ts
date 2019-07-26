@@ -42,4 +42,8 @@ export class BookedClientsListService {
             }
         }
     }
+
+    getBookedClientById(id: number) {
+        return this.bookedClientsList.find(s => s.id === id);
+    }
 }

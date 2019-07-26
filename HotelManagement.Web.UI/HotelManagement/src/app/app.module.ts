@@ -22,6 +22,7 @@ import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
 import {DxoScrollBarModule} from 'devextreme-angular/ui/nested/scroll-bar';
 import { BookedClientsListComponent } from './booked-clients-list/booked-clients-list.component';
 import { CheckInComponent } from './check-in/check-in.component';
+import { BookingComponent } from './booking/booking.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { CheckInComponent } from './check-in/check-in.component';
         TopBarComponent,
         RoomListComponent,
         BookedClientsListComponent,
-        CheckInComponent
+        CheckInComponent,
+        BookingComponent
     ],
     imports: [
         BrowserModule,

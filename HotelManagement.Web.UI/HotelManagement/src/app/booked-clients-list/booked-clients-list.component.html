@@ -1,4 +1,5 @@
 <app-check-in></app-check-in>
+<app-booking></app-booking>
 <div class="booked-clients-list">
     <h2 class="text-center">Booked Clients List</h2>
     <div class="dx-field">
@@ -33,14 +34,14 @@
         [hoverStateEnabled]="true"
         [selectedRowKeys]="[]"
         [focusedRowEnabled]="true"
-        [(focusedRowKey)]="focusBookedClientId"
+        [focusedRowKey]="focusBookedClientId"
         (onFocusedRowChanged)="onFocusedRowChanged($event)"
         height="700"
         width="100%"
         showBorders="true">
         <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
         <dxo-selection mode="single"></dxo-selection>
-<!--        <dxo-paging enabled="false"></dxo-paging>-->
+        <dxo-paging enabled="true"></dxo-paging>
         <dxi-column dataField="id"></dxi-column>
         <dxi-column dataField="type"></dxi-column>
         <dxi-column dataField="client.name"></dxi-column>
@@ -53,13 +54,11 @@
         <dxi-column dataField="createdTime"></dxi-column>
         <dxi-column dataField="rooms" [customizeText]="customRoomsText"></dxi-column>
         <dxi-column dataField="discount"></dxi-column>
-        <dxo-editing
-            mode="row"
-            [allowAdding]="true"
-            [allowUpdating]="true"
-            [allowDeleting]="true"
-            [useIcons]="true">
-        </dxo-editing>
+<!--        <dxo-editing-->
+<!--            mode="row"-->
+<!--            [allowDeleting]="true"-->
+<!--            [useIcons]="true">-->
+<!--        </dxo-editing>-->
     </dx-data-grid>
 
     <dx-button
@@ -67,5 +66,17 @@
         type="default"
         text="Checkin"
         (onClick)="checkin()">
+    </dx-button>
+    <dx-button
+        class="btn-update"
+        type="default"
+        text="Update"
+        (onClick)="update()">
+    </dx-button>
+    <dx-button
+        class="btn-delete"
+        type="default"
+        text="Delete"
+        (onClick)="delete()">
     </dx-button>
 </div>

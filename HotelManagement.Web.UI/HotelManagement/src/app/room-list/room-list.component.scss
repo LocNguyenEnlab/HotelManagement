@@ -1,6 +1,7 @@
 @import "~src/styles";
 .room-list {
     //margin-top: $top-bar-height;
+    padding-right: 15px;
     nav {
         margin: 10px 0 0 0;
         dx-button {
@@ -24,14 +25,45 @@
                 max-width: 200px;
                 min-width: 200px;
                 //max-width: 200px;
-                dx-button {
+                .room {
                     width: 100%;
-                    //padding-top: 30px;
+                    height: 100px;
+                    font-size: $font-size-normal;
+                    position: relative;
+                    color: #fff;
+                    .room-name {
+                        //position: absolute;
+                        //right: -20%;
+                        //top: -10px;
+                    }
                     p {
                         margin: 10px 0 25px 0;
                     }
-                    .custom-time {
-                        font-size: 15px;
+                    .above {
+                        height: 25px;
+                        .room-type {
+                            font-size: $font-size-small;
+                            float: left;
+                        }
+                        .custom-time {
+                            float: right;
+                            font-size: $font-size-small;
+                            position: absolute;
+                            right: -18px;
+                            top: 10px;
+                        }
+                        @media (min-width: 1880px) {
+                            .custom-time {
+                                right: -46px;
+                            }
+                        }
+                    }
+                    .room-name {
+                        font-size: $font-size-large;
+                    }
+                    .client-name {
+                        font-size: $font-size-small;
+                        padding-top: 5px;
                     }
                 }
             }
@@ -40,18 +72,7 @@
                 font-size: $font-size-normal;
                 height: 100px;
             }
-            .room {
-                height: 100px;
-                font-size: $font-size-normal;
-                .status {
-                    margin-top: 35px;
-                }
-                .room-name {
-                    position: absolute;
-                    right: -20%;
-                    top: -10px;
-                }
-            }
+
 
             @media (max-width: 400px) {
                 .floor {
@@ -72,7 +93,6 @@
 
     .room-diagram::-webkit-scrollbar
     {
-        width: 5px;
         height: 10px;
         background-color: #F5F5F5;
         margin-left: 10px;
@@ -89,56 +109,38 @@
             to(#19911D),
             color-stop(.6,#54DE5D))
     }
-
-}
-.panel {
-    position: relative;
-    border: 1px #ddd solid;
-    z-index: 1;
-    width: 100%;
-    height: auto;
-    padding: 15px;
-    .title {
-        padding: 5px;
-        position: absolute;
-        top: 0;
-        left: 10px;
-        transform: translateY(-50%);
-        border: 1px #ddd solid;
-        background-color: #f0f0f0;
-        z-index: 3;
-    }
-    .dx-field-label {
-        width: 30%;
-    }
-    .dx-field-value {
-        width: 70%;
-    }
-    .dx-field {
-        dx-button {
-            margin: 10px 0 0 5px;
-            float: right;
+    .notes {
+        .note-item {
+            height: 30px;
+            p {
+                font-size: $font-size-normal;
+                margin-left: 30px;
+                width: 200px;
+            }
+            .available-note {
+                width: 25px;
+                height: 25px;
+                background-color: green;
+                margin: 10px;
+            }
+            .booking-note {
+                width: 25px;
+                height: 25px;
+                background-color: orange;
+                margin: 10px;
+            }
+            .booked-note {
+                width: 25px;
+                height: 25px;
+                background-color: red;
+                margin: 10px;
+            }
+            .selection-note {
+                width: 25px;
+                height: 25px;
+                background-color: violet;
+                margin: 10px;
+            }
         }
     }
-
-    hr {
-        border-color: #ddd;
-        margin-bottom: 10px;
-    }
-    p {
-        font-size: 25px;
-    }
 }
-.group-btn {
-    float: right;
-    dx-button {
-        margin: 0 10px 10px 10px;
-    }
-}
-
-@media (max-width: 400px) {
-    dx-popup {
-        width: 100%;
-    }
-}
-

@@ -2,12 +2,12 @@
     width="60%"
     height="auto"
     maxHeight="90%"
+    showCloseButton="false"
     [showTitle]="true"
-    [title]="titlePersonalCheckin"
+    [title]="bookingTitle"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false"
-    [showCloseButton]="false"
-    [visible]="staticIsVisiblePersonalCheckinPopup">
+    [visible]="staticIsVisiblePersonalBookingPopup">
     <dx-scroll-view>
         <div style="padding-top: 14px">
             <div class="panel">
@@ -19,7 +19,7 @@
                         <div class="dx-field">
                             <div class="dx-field-label">Price</div>
                             <div class="dx-field-value">
-                                <dx-text-box [value]="roomCheckin.price.toString() | currency: 'VND'"></dx-text-box>
+                                <dx-text-box [value]="roomBooking.price.toString() | currency: 'VND'"></dx-text-box>
                             </div>
                         </div>
                         <div class="dx-field">
@@ -28,7 +28,7 @@
                                 <dx-date-box
                                     [value]="dateNow"
                                     type="datetime"
-                                    [(ngModel)]="roomCheckin.checkinTime"
+                                    [(ngModel)]="roomBooking.checkinTime"
                                     invalidDateMessage="The date must have the following format: MM/dd/yyyy">
                                     <dx-validator>
                                         <dxi-validation-rule type="required" message="Checkin time is required"></dxi-validation-rule>
@@ -42,7 +42,7 @@
                                 <dx-date-box
                                     [value]="dateNow"
                                     type="datetime"
-                                    [(ngModel)]="roomCheckin.checkoutTime">
+                                    [(ngModel)]="roomBooking.checkoutTime">
                                     <dx-validator>
                                         <dxi-validation-rule type="required" message="Checkout time is required"></dxi-validation-rule>
                                     </dx-validator>
@@ -151,11 +151,9 @@
                         </div>
                     </div>
                     <div class="dx-field">
-<!--                        <form id="personalBooking" (ngSubmit)="addClientInfo()">-->
-<!--                            <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>-->
-<!--                        </form>-->
-                        <dx-button (onClick)="addClientInfoOfPersonalBooking()" type="success" icon="arrowdown"
-                                   text="Add Client" [useSubmitBehavior]="true"></dx-button>
+                        <form id="personalBooking" (ngSubmit)="addClientInfoOfPersonalBooking()">
+                            <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>
+                        </form>
                         <dx-button (onClick)="resetClientInput()" type="danger" icon="close" text="Reset" [useSubmitBehavior]="false"></dx-button>
                     </div>
                 </div>
@@ -164,7 +162,7 @@
             <p class="text-center">Clients list</p>
             <dx-data-grid
                 height="150px"
-                [dataSource]="roomCheckin.clients"
+                [dataSource]="roomBooking.clients"
                 [columns]="['name', 'address', 'email', 'identityOrPassport', 'nationality', 'notes']"
                 [showBorders]="true">
                 <dxo-scrolling mode="virtual"></dxo-scrolling>
@@ -177,28 +175,29 @@
             </dx-data-grid>
         </div>
         <div class="group-btn">
-            <dx-button (onClick)="cancel()" type="danger" icon="close" text="Cancel"></dx-button>
-            <dx-button (onClick)="checkinForPersonal()" type="success" icon="check" text="Checkin"></dx-button>
+            <dx-button (onClick)="cancelBooking()" type="danger" icon="close" text="Cancel"></dx-button>
+            <dx-button *ngIf="!updateBooking" (onClick)="bookPersonalRoom()" type="success" icon="check" text="Booking"></dx-button>
+            <dx-button *ngIf="updateBooking" (onClick)="updatePersonalBooking()" type="success" icon="check" text="Update"></dx-button>
         </div>
     </dx-scroll-view>
 </dx-popup>
-
 
 <dx-popup
     width="60%"
     height="auto"
     maxHeight="90%"
+    showCloseButton="false"
     [showTitle]="true"
-    title="Group checkin"
+    title="Group booking"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false"
-    [visible]="staticIsVisibleGroupCheckinPopup"
+    [visible]="staticIsVisibleGroupBookingPopup"
     [showCloseButton]="false">
     <dx-scroll-view>
         <div style="padding-top: 14px">
             <div class="panel">
                 <div class="title">
-                    Checkin information
+                    Booking information
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -331,10 +330,9 @@
                         </div>
                     </div>
                     <div class="dx-field">
-<!--                        <form id="groupBooking" (ngSubmit)="addClientInfoOfGroupBooking()">-->
-<!--                            <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>-->
-<!--                        </form>-->
-                        <dx-button (onClick)="addClientInfoOfGroupBooking()" type="success" icon="arrowdown" text="Add Client"></dx-button>
+                        <form id="groupBooking" (ngSubmit)="addClientInfoOfGroupBooking()">
+                            <dx-button type="success" icon="arrowdown" text="Add Client" [useSubmitBehavior]="true"></dx-button>
+                        </form>
                         <dx-button (onClick)="resetClientInput()" type="danger" icon="close" text="Reset"></dx-button>
                     </div>
                 </div>
@@ -361,14 +359,15 @@
             </div>
             <dx-data-grid
                 height="150px"
-                [dataSource]="roomsCheckin"
+                [dataSource]="roomsBooking"
                 [columns]="['name', 'price', 'type', 'floor', 'notes']">
                 <dxo-scrolling mode="virtual"></dxo-scrolling>
             </dx-data-grid>
         </div>
         <div class="group-btn">
-            <dx-button (onClick)="cancelGroupCheckin()" type="danger" icon="close" text="Cancel"></dx-button>
-            <dx-button (onClick)="checkinForGroup()" type="success" icon="check" text="Checkin"></dx-button>
+            <dx-button (onClick)="cancelGroupBooking()" type="danger" icon="close" text="Cancel"></dx-button>
+            <dx-button *ngIf="!updateBooking" (onClick)="bookGroupRooms()" type="success" icon="check" text="Booking"></dx-button>
+            <dx-button *ngIf="updateBooking" (onClick)="updateGroupBooking()" type="success" icon="check" text="Update"></dx-button>
         </div>
     </dx-scroll-view>
 </dx-popup>
