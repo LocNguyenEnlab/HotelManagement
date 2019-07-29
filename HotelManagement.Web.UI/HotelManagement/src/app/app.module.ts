@@ -10,8 +10,8 @@ import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
     DxButtonModule, DxContextMenuModule, DxDataGridModule,
-    DxDateBoxModule,
-    DxFormModule, DxNumberBoxModule,
+    DxDateBoxModule, DxDropDownBoxModule,
+    DxFormModule, DxListModule, DxNumberBoxModule,
     DxPopupModule, DxRadioGroupModule, DxScrollViewModule,
     DxTabPanelModule,
     DxTextAreaModule,
@@ -23,6 +23,7 @@ import {DxoScrollBarModule} from 'devextreme-angular/ui/nested/scroll-bar';
 import { BookedClientsListComponent } from './booked-clients-list/booked-clients-list.component';
 import { CheckInComponent } from './check-in/check-in.component';
 import { BookingComponent } from './booking/booking.component';
+import { CheckOutComponent } from './check-out/check-out.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { BookingComponent } from './booking/booking.component';
         RoomListComponent,
         BookedClientsListComponent,
         CheckInComponent,
-        BookingComponent
+        BookingComponent,
+        CheckOutComponent
     ],
     imports: [
         BrowserModule,
@@ -42,6 +44,7 @@ import { BookingComponent } from './booking/booking.component';
             {path: '', component: RoomListComponent},
             {path: 'booked-clients-list', component: BookedClientsListComponent},
             {path: 'check-in', component: CheckInComponent},
+            {path: 'check-out', component: CheckOutComponent},
         ]),
         DxPopupModule,
         DxTabPanelModule,
@@ -59,6 +62,8 @@ import { BookingComponent } from './booking/booking.component';
         DxNumberBoxModule,
         DxContextMenuModule,
         DxRadioGroupModule,
+        DxDropDownBoxModule,
+        DxListModule,
     ],
     bootstrap: [AppComponent]
 })

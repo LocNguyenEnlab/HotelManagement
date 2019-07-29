@@ -8,6 +8,11 @@ import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';
 import {Router} from '@angular/router';
 import {GroupBookingDetailModel} from '../models/GroupBookingDetailModel';
+import {ServiceModel} from '../models/ServiceModel';
+import {ServiceService} from '../services/service.service';
+import {ServiceTypeModel} from '../models/ServiceTypeModel';
+import {InvoiceService} from '../services/invoice.service';
+import {InvoiceModel} from '../models/InvoiceModel';
 
 @Component({
     selector: 'app-check-in',
@@ -18,16 +23,14 @@ export class CheckInComponent implements OnInit {
     static isVisiblePersonalCheckinPopup = false;
     static isVisibleGroupCheckinPopup = false;
     titlePersonalCheckin: string;
-    roomCheckin: RoomModel = {
-        name: '',
-        status: '',
-        price: 0,
-        type: '',
-        checkinTime: new Date(),
-        checkoutTime: new Date(),
-        clients: [],
-        floor: '',
-    };
+    serviceValue: ServiceModel;
+    serviceSource: ServiceModel[] = [];
+    serviceName: string = null;
+    serviceQuantitySource: number[] = [];
+    serviceQuantityValue: number = null;
+    serviceTypeSource: ServiceTypeModel[] = [];
+    serviceTypeName: string = null;
+    roomCheckin: RoomModel = new RoomModel();
     personalBookingDetail: PersonalBookingDetailModel = {
         room: this.roomCheckin,
         prePay: 0,
@@ -35,14 +38,7 @@ export class CheckInComponent implements OnInit {
         notes: '',
         clients: [],
     };
-    client: ClientModel = {
-        name: 'x',
-        address: 'x',
-        email: 'A@A.A',
-        identityOrPassport: 'x',
-        nationality: 'x',
-        notes: 'x',
-    };
+    client: ClientModel = new ClientModel();
     rooms: RoomModel[] = [];
     groupBookingDetail: GroupBookingDetailModel = {
         checkinTime: new Date(),
@@ -60,11 +56,16 @@ export class CheckInComponent implements OnInit {
         private bookedClientsListService: BookedClientsListService,
         private roomService: RoomService,
         private router: Router,
+        private service: ServiceService,
+        private invoiceService: InvoiceService,
     ) {
     }
 
     ngOnInit() {
         this.rooms = this.roomService.getRooms();
+        this.serviceSource = this.service.getServices();
+        this.serviceQuantitySource = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10];
+        this.serviceTypeSource = this.service.getServicesType();
     }
 
     onInit(roomCheckin: RoomModel, roomsCheckin: RoomModel[], bookedClientCheckin: BookedClientsListModel) {
@@ -153,6 +154,7 @@ export class CheckInComponent implements OnInit {
                     this.roomCheckin.checkoutTime, 'Personal Booking', '-1',
                     this.personalBookingDetail.prePay, rooms, this.personalBookingDetail.discount);
             }
+            this.invoiceService.addInvoice(this.createInvoice(this.roomCheckin, this.personalBookingDetail.discount));
             notify('Checkin successfully', 'success');
             this.router.navigate(['/booked-clients-list']);
             CheckInComponent.isVisiblePersonalCheckinPopup = false;
@@ -161,13 +163,28 @@ export class CheckInComponent implements OnInit {
         }
     }
 
+    createInvoice(roomBooking: RoomModel, discount: number) {
+        let totalPayment = roomBooking.price;
+        for (const service of roomBooking.services) {
+            totalPayment += service.price * service.quantity;
+        }
+        if (discount) {
+            totalPayment = totalPayment * discount;
+        }
+        const invoice: InvoiceModel = {
+            id: null,
+            room: roomBooking,
+            totalPayment: totalPayment
+        };
+        return invoice;
+    }
+
     updateRooms(clients) {
         if (CheckInComponent.isVisiblePersonalCheckinPopup) {
             const roomName = this.roomCheckin.name;
             if (this.rooms.find(s => s.name === roomName)) {
                 this.rooms.find(s => s.name === roomName).status = 'Booked';
                 for (const client of clients) {
-                    // this.rooms.find(s => s.name === roomName).clients.push(client);
                     this.rooms.find(s => s.name === roomName).checkinTime = this.roomCheckin.checkinTime;
                     this.rooms.find(s => s.name === roomName).checkoutTime = this.roomCheckin.checkoutTime;
                 }
@@ -177,7 +194,6 @@ export class CheckInComponent implements OnInit {
                 if (this.rooms.find(s => s.name === room.name)) {
                     this.rooms.find(s => s.name === room.name).status = 'Booked';
                     for (const client of clients) {
-                        this.rooms.find(s => s.name === room.name).clients.push(client);
                         this.rooms.find(s => s.name === room.name).checkinTime = this.groupBookingDetail.checkinTime;
                         this.rooms.find(s => s.name === room.name).checkoutTime = this.groupBookingDetail.checkoutTime;
                     }
@@ -222,5 +238,38 @@ export class CheckInComponent implements OnInit {
 
     cancelGroupCheckin() {
         CheckInComponent.isVisibleGroupCheckinPopup = false;
+    }
+
+    chooseService(event: Event) {
+        // @ts-ignore
+        this.serviceValue = event.addedItems[0];
+        this.serviceName = this.serviceValue.name;
+    }
+
+    chooseQuantity(event: Event) {
+        // @ts-ignore
+        this.serviceQuantityValue = event.addedItems[0];
+    }
+
+    chooseServiceType(event: Event) {
+        // @ts-ignore
+        this.serviceTypeName = event.addedItems[0].typeName;
+        // @ts-ignore
+        this.serviceSource = this.service.getServicesByTypeId(event.addedItems[0].id);
+        this.serviceName = null;
+    }
+
+    addService() {
+        if (this.serviceQuantityValue != null && this.serviceValue != null) {
+            const service: ServiceModel = this.roomCheckin.services.find(_ => _.id === this.serviceValue.id);
+            if (service) {
+                service.quantity += this.serviceQuantityValue;
+            } else {
+                this.serviceValue.quantity = this.serviceQuantityValue;
+                this.roomCheckin.services.push(this.serviceValue);
+            }
+        } else {
+            notify('Please select service and quantity of it', 'error');
+        }
     }
 }

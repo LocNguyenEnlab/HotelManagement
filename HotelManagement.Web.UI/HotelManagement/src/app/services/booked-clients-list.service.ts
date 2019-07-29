@@ -30,11 +30,11 @@ export class BookedClientsListService {
         this.bookedClientsList.splice(index, 0, bookedClient);
     }
 
-    getBookedClientByCode(code: string) {
+    getBookedClientIdByCode(code: string) {
         return this.bookedClientsList.find(s => s.code === code).id;
     }
 
-    getBookedClientByRoomName(roomName: string) {
+    getBookedClientIdByRoomName(roomName: string) {
         for (const bookedClient of this.bookedClientsList) {
             const rooms: RoomModel[] = bookedClient.rooms;
             if (rooms.find(s => s.name === roomName)) {
@@ -45,5 +45,19 @@ export class BookedClientsListService {
 
     getBookedClientById(id: number) {
         return this.bookedClientsList.find(s => s.id === id);
+    }
+
+    getBookedClientsByRoomName(roomName: string): BookedClientsListModel[] {
+        const bookedClients: BookedClientsListModel[] = [];
+        for (const bookedClient of this.bookedClientsList) {
+            if (bookedClient.rooms.find(s => s.name === roomName)) {
+                bookedClients.push(bookedClient);
+            }
+        }
+        return bookedClients;
+    }
+
+    delete(bookedClientList) {
+        this.bookedClientsList = bookedClientList;
     }
 }

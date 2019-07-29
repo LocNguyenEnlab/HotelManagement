@@ -85,6 +85,65 @@
             </div>
         </div>
         <div class="panel">
+            <div class="title">Room Service</div>
+            <div class="row" style="margin: 15px 0 15px 0">
+                <div class="col-sm-4">
+                    <dx-drop-down-box
+                        [(value)]="serviceName"
+                        placeholder="Select a service...">
+                        <dx-list
+                            [dataSource]="serviceSource"
+                            displayExpr="name"
+                            selectionMode="single"
+                            (onSelectionChanged)="chooseService($event)">
+                        </dx-list>
+                    </dx-drop-down-box>
+                </div>
+                <div class="col-sm-3">
+                    <dx-drop-down-box
+                        placeholder="Quantity"
+                        [(value)]="serviceQuantityValue">
+                        <dx-list
+                            [dataSource]="serviceQuantitySource"
+                            selectionMode="single"
+                            (onSelectionChanged)="chooseQuantity($event)">
+                        </dx-list>
+                    </dx-drop-down-box>
+                </div>
+                <div class="col-sm-3">
+                    <dx-drop-down-box
+                        placeholder="Service Type"
+                        [(value)]="serviceTypeName">
+                        <dx-list
+                            [dataSource]="serviceTypeSource"
+                            (onSelectionChanged)="chooseServiceType($event)"
+                            displayExpr="typeName"
+                            selectionMode="single">
+                        </dx-list>
+                    </dx-drop-down-box>
+                </div>
+                <div class="col-sm-2">
+                    <dx-button
+                        type="success"
+                        icon="arrowdown"
+                        text="Add"
+                        (onClick)="addService()"></dx-button>
+                </div>
+            </div>
+            <dx-data-grid
+                height="150px"
+                [dataSource]="roomCheckin.services"
+                [columns]="['name', 'price', 'quantity']"
+                [showBorders]="true">
+                <dxo-scrolling mode="virtual"></dxo-scrolling>
+                <dxo-editing
+                    mode="row"
+                    [allowDeleting]="true"
+                    [useIcons]="true">
+                </dxo-editing>
+            </dx-data-grid>
+        </div>
+        <div class="panel">
             <div class="title">Client Information</div>
             <div class="row">
                 <div class="col-sm-6">

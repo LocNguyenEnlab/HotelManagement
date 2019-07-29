@@ -8,6 +8,8 @@ import {CheckInComponent} from '../check-in/check-in.component';
 import {DxDataGridComponent} from 'devextreme-angular';
 import {BookingComponent} from '../booking/booking.component';
 import {RoomModel} from '../models/RoomModel';
+import { confirm } from 'devextreme/ui/dialog';
+import {RoomService} from '../services/room.service';
 
 @Component({
     selector: 'app-booked-clients-list',
@@ -27,6 +29,7 @@ export class BookedClientsListComponent implements OnInit {
 
     constructor(
         private bookedClientsListService: BookedClientsListService,
+        private roomService: RoomService,
     ) {
     }
 
@@ -62,11 +65,11 @@ export class BookedClientsListComponent implements OnInit {
     search() {
         if (this.searchText) {
             if (this.searchOption === this.searchOptions[0]) {
-                this.focusBookedClientId = this.bookedClientsListService.getBookedClientByCode(this.searchText);
+                this.focusBookedClientId = this.bookedClientsListService.getBookedClientIdByCode(this.searchText);
                 this.dataGrid.instance.option('focusedRowKey', this.focusBookedClientId);
                 console.log('search ' + this.focusBookedClientId);
             } else if (this.searchOption === this.searchOptions[1]) {
-                this.focusBookedClientId = this.bookedClientsListService.getBookedClientByRoomName(this.searchText);
+                this.focusBookedClientId = this.bookedClientsListService.getBookedClientIdByRoomName(this.searchText);
                 this.dataGrid.instance.option('focusedRowKey', this.focusBookedClientId);
             }
         } else {
@@ -92,7 +95,7 @@ export class BookedClientsListComponent implements OnInit {
             const bookedClient: BookedClientsListModel = this.bookedClientsListService.getBookedClientById(this.focusBookedClientId);
             if (bookedClient.bookType === 'Personal Booking') {
                 const roomBooking: RoomModel = bookedClient.rooms[0];
-                this.bookingComponent.onInit(roomBooking, null, bookedClient);
+                this.bookingComponent.onInit(roomBooking, null, bookedClient, null);
                 BookingComponent.isVisiblePersonalBookingPopup = true;
             }
         } else {
@@ -100,12 +103,46 @@ export class BookedClientsListComponent implements OnInit {
         }
     }
 
-    delete() {
+    cancelBooking() {
         if (this.focusBookedClientId != null) {
             const bookedClient: BookedClientsListModel = this.bookedClientsListService.getBookedClientById(this.focusBookedClientId);
-
+            if (bookedClient.type === 'Booking') {
+                const confirmResult = confirm('Are you sure cancel this booking?', 'Confirm before cancel booking');
+                confirmResult.then((dialogResult) => {
+                    if (dialogResult) {
+                        if (bookedClient.bookType === 'Personal Booking') {
+                            const room = bookedClient.rooms[0];
+                            const clientIndex = room.clients.findIndex(_ => _.identityOrPassport === bookedClient.client.identityOrPassport);
+                            room.clients.splice(clientIndex, 1);
+                            if (room.clients.length === 0) {
+                                room.status = 'Available';
+                            }
+                            this.roomService.updateRoom(room);
+                        } else if (bookedClient.bookType === 'Group Booking') {
+                            for (const room of bookedClient.rooms) {
+                                const clientIndex = room.clients.findIndex(_ => _.identityOrPassport === bookedClient.client.identityOrPassport);
+                                if (clientIndex !== -1) {
+                                    room.clients.splice(clientIndex, 1);
+                                }
+                                if (room.clients.length === 0) {
+                                    room.status = 'Available';
+                                }
+                            }
+                        }
+                        const index = this.bookedClientsList.findIndex(s => s.id === this.focusBookedClientId);
+                        this.bookedClientsList.splice(index, 1);
+                        this.deleteBookedClientsList(this.bookedClientsList);
+                    }
+                });
+            } else {
+                notify('This client was check in, can not cancel booking!', 'warning');
+            }
         } else {
-            notify('Please select a client to delete!', 'error', 2000);
+            notify('Please select a client to cancel booking!', 'error', 2000);
         }
+    }
+
+    deleteBookedClientsList(bookedClientList) {
+        this.bookedClientsListService.delete(bookedClientList);
     }
 }

@@ -16,6 +16,7 @@ export class RoomService {
             floor: '1',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '101',
@@ -26,6 +27,7 @@ export class RoomService {
             floor: '1',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '102',
@@ -36,6 +38,7 @@ export class RoomService {
             floor: '1',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '200',
@@ -46,6 +49,7 @@ export class RoomService {
             floor: '2',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '201',
@@ -56,6 +60,7 @@ export class RoomService {
             floor: '2',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '300',
@@ -66,6 +71,7 @@ export class RoomService {
             floor: '3',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '301',
@@ -76,6 +82,7 @@ export class RoomService {
             floor: '3',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '302',
@@ -86,6 +93,7 @@ export class RoomService {
             floor: '3',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         {
             name: '303',
@@ -96,6 +104,7 @@ export class RoomService {
             floor: '3',
             checkinTime: new Date(),
             checkoutTime: new Date(),
+            services: []
         },
         // {
         //     name: '300',
@@ -215,7 +224,6 @@ export class RoomService {
     }
 
     updateRooms(rooms) {
-        this.rooms = [];
         this.rooms = rooms;
     }
 
