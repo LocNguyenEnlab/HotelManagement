@@ -3,3 +3,9 @@ $top-bar-height: 100px;
 $font-size-small: 15px;
 $font-size-normal: 20px;
 $font-size-large: 30px;
+$background-color: #337ab7;
+
+/deep/ .dx-popup-title {
+    color: #fff;
+    background-color: $background-color;
+}

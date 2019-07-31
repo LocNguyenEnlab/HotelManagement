@@ -30,6 +30,8 @@
 
     <dx-data-grid
         [dataSource]="bookedClientsList"
+        [showColumnLines]="true"
+        [showRowLines]="true"
         keyExpr="id"
         [hoverStateEnabled]="true"
         [selectedRowKeys]="[]"
@@ -43,7 +45,7 @@
         <dxo-selection mode="single"></dxo-selection>
         <dxo-paging enabled="true"></dxo-paging>
         <dxi-column dataField="id"></dxi-column>
-        <dxi-column dataField="type"></dxi-column>
+        <dxi-column dataField="status"></dxi-column>
         <dxi-column dataField="client.name"></dxi-column>
         <dxi-column dataField="checkinTime"></dxi-column>
         <dxi-column dataField="checkoutTime"></dxi-column>

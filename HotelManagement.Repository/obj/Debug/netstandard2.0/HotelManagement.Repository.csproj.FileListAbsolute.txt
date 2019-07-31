@@ -1,0 +1,12 @@
+C:\Github\HotelManagement\HotelManagement.Repository\bin\Debug\netstandard2.0\HotelManagement.Repository.deps.json
+C:\Github\HotelManagement\HotelManagement.Repository\bin\Debug\netstandard2.0\HotelManagement.Repository.dll
+C:\Github\HotelManagement\HotelManagement.Repository\bin\Debug\netstandard2.0\HotelManagement.Repository.pdb
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.csprojAssemblyReference.cache
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.csproj.CoreCompileInputs.cache
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.AssemblyInfoInputs.cache
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.AssemblyInfo.cs
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.dll
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.pdb
+C:\Github\HotelManagement\HotelManagement.Repository\bin\Debug\netstandard2.0\HotelManagement.Entities.dll
+C:\Github\HotelManagement\HotelManagement.Repository\bin\Debug\netstandard2.0\HotelManagement.Entities.pdb
+C:\Github\HotelManagement\HotelManagement.Repository\obj\Debug\netstandard2.0\HotelManagement.Repository.csproj.CopyComplete

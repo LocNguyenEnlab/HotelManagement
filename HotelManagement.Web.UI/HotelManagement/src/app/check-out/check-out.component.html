@@ -1,6 +1,6 @@
 <dx-popup
-    [visible]="staticIsVisiblePersonalCheckoutPopup"
-    width="60%"
+    [(visible)]="isVisiblePersonalCheckoutPopup"
+    width="40%"
     height="auto"
     maxHeight="90%"
     [showTitle]="true"
@@ -8,4 +8,119 @@
     [dragEnabled]="false"
     [closeOnOutsideClick]="false">
 
+    <div class="row">
+        <div class="col-sm-6">
+            <p>
+                <span>Client Name: </span>
+                <span *ngFor="let client of invoice.clients">{{client.name}}, </span>
+            </p>
+            <p>
+                <span>Checkin Date: </span>
+                <span>{{roomCheckout.checkinTime.toLocaleDateString()}} {{roomCheckout.checkinTime.toLocaleTimeString()}}</span>
+            </p>
+            <p>
+                <span>Checkout Date: </span>
+                <span>{{roomCheckout.checkoutTime.toLocaleDateString()}} {{roomCheckout.checkoutTime.toLocaleTimeString()}}</span>
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <p>
+                <span>Room: </span>
+                <span>{{roomCheckout.name}}, </span>
+            </p>
+            <p>
+                <span>Price: </span>
+                <span>{{roomCheckout.price | currency: 'USD'}}</span>
+            </p>
+            <p>
+                <span>Type: </span>
+                <span>{{roomCheckout.type}}</span>
+            </p>
+        </div>
+    </div>
+    <hr>
+    <span>Room money: {{roomCheckout.price}} x {{invoice.rentTime}} = {{invoice.totalRoomMoney}}</span>
+    <hr>
+    <p>Service money: {{invoice.totalServiceMoney | currency}}</p>
+    <dx-data-grid
+        height="150"
+        [showRowLines]="true"
+        [dataSource]="invoice.services"
+        [showBorders]="true">
+        <dx-scroll-view></dx-scroll-view>
+        <dxi-column dataField="name"></dxi-column>
+        <dxi-column dataField="price"></dxi-column>
+        <dxi-column dataField="quantity"></dxi-column>
+        <dxi-column dataField="totalMoney"></dxi-column>
+    </dx-data-grid>
+    <hr>
+    <div class="row" style="margin: 15px 0 15px 0">
+        <div class="col-sm-4">
+            <dx-drop-down-box
+                #serviceBox
+                [(value)]="serviceName"
+                placeholder="Select a service...">
+                <dx-list
+                    [dataSource]="serviceSource"
+                    displayExpr="name"
+                    selectionMode="single"
+                    (onSelectionChanged)="chooseService($event)">
+                </dx-list>
+            </dx-drop-down-box>
+        </div>
+        <div class="col-sm-3">
+            <dx-drop-down-box
+                #quantityBox
+                placeholder="Quantity"
+                [(value)]="serviceQuantityValue">
+                <dx-list
+                    [dataSource]="serviceQuantitySource"
+                    selectionMode="single"
+                    (onSelectionChanged)="chooseQuantity($event)">
+                </dx-list>
+            </dx-drop-down-box>
+        </div>
+        <div class="col-sm-3">
+            <dx-drop-down-box
+                #typeBox
+                placeholder="Service Type"
+                [(value)]="serviceTypeName">
+                <dx-list
+                    [dataSource]="serviceTypeSource"
+                    (onSelectionChanged)="chooseServiceType($event)"
+                    displayExpr="typeName"
+                    selectionMode="single">
+                </dx-list>
+            </dx-drop-down-box>
+        </div>
+        <div class="col-sm-2">
+            <dx-button
+                type="success"
+                icon="arrowup"
+                text="Add"
+                (onClick)="addService()"></dx-button>
+        </div>
+    </div>
+    <hr>
+    <p>Discount: {{invoice.discount}}%</p>
+    <p>Total Payment: {{invoice.totalPayment | currency}}</p>
+    <span>Notes </span>
+    <span>
+        <dx-text-area
+            height="90"
+            width="90%"
+            [(value)]="invoice.notes"></dx-text-area>
+    </span>
+    <div class="group-btn">
+        <dx-button
+            type="danger"
+            icon="close"
+            text="Cancel"
+            (onClick)="cancelCheckout()"></dx-button>
+        <dx-button
+            type="success"
+            icon="check"
+            text="Checkout"
+            (onClick)="checkOut()"></dx-button>
+    </div>
 </dx-popup>

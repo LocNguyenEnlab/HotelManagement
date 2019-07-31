@@ -2,12 +2,11 @@
     width="60%"
     height="auto"
     maxHeight="90%"
-    showCloseButton="false"
     [showTitle]="true"
     [title]="bookingTitle"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false"
-    [visible]="staticIsVisiblePersonalBookingPopup">
+    [(visible)]="isVisiblePersonalBookingPopup">
     <dx-scroll-view>
         <div style="padding-top: 14px">
             <div class="panel">
@@ -191,7 +190,7 @@
     title="Group booking"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false"
-    [visible]="staticIsVisibleGroupBookingPopup"
+    [(visible)]="isVisibleGroupBookingPopup"
     [showCloseButton]="false">
     <dx-scroll-view>
         <div style="padding-top: 14px">

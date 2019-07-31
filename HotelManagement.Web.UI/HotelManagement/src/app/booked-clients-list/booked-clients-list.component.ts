@@ -43,13 +43,13 @@ export class BookedClientsListComponent implements OnInit {
     }
 
     checkin() {
-        if (this.bookedClientCheckin && this.bookedClientCheckin.type === 'Booking') {
+        if (this.bookedClientCheckin && this.bookedClientCheckin.status === 'Booking') {
             if (this.bookedClientCheckin.bookType === 'Personal Booking') {
                 this.checkinComponent.onInit(null, null, this.bookedClientCheckin);
-                CheckInComponent.isVisiblePersonalCheckinPopup = true;
+                this.checkinComponent.isVisiblePersonalCheckinPopup = true;
             } else {
                 this.checkinComponent.onInit(null, null, this.bookedClientCheckin);
-                CheckInComponent.isVisibleGroupCheckinPopup = true;
+                this.checkinComponent.isVisibleGroupCheckinPopup = true;
             }
         } else if (this.bookedClientCheckin) {
             notify('This client already check in!', 'error', 2000);
@@ -96,7 +96,7 @@ export class BookedClientsListComponent implements OnInit {
             if (bookedClient.bookType === 'Personal Booking') {
                 const roomBooking: RoomModel = bookedClient.rooms[0];
                 this.bookingComponent.onInit(roomBooking, null, bookedClient, null);
-                BookingComponent.isVisiblePersonalBookingPopup = true;
+                this.bookingComponent.isVisiblePersonalBookingPopup = true;
             }
         } else {
             notify('Please select a client to update!', 'error', 2000);
@@ -106,7 +106,7 @@ export class BookedClientsListComponent implements OnInit {
     cancelBooking() {
         if (this.focusBookedClientId != null) {
             const bookedClient: BookedClientsListModel = this.bookedClientsListService.getBookedClientById(this.focusBookedClientId);
-            if (bookedClient.type === 'Booking') {
+            if (bookedClient.status === 'Booking') {
                 const confirmResult = confirm('Are you sure cancel this booking?', 'Confirm before cancel booking');
                 confirmResult.then((dialogResult) => {
                     if (dialogResult) {

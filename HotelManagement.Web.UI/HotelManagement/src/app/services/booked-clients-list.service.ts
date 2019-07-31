@@ -60,4 +60,15 @@ export class BookedClientsListService {
     delete(bookedClientList) {
         this.bookedClientsList = bookedClientList;
     }
+
+    deleteByRoomName(roomName: string) {
+        for (let i = 0; i < this.bookedClientsList.length; i++) {
+            for (const room of this.bookedClientsList[i].rooms) {
+                if (room.name === roomName) {
+                    this.bookedClientsList.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,23 @@
+<div class="invoice-list">
+    <h3>Invoice list</h3>
+    <dx-data-grid
+        width="100%"
+        height="500px"
+        [showBorders]="true"
+        [showColumnLines]="true"
+        [showRowLines]="true"
+        [columns]="['id', 'room.name', 'rentTime', 'totalRoomMoney', 'totalServiceMoney', 'totalPayment', 'discount', 'status', 'notes']"
+        [dataSource]="invoiceList">
+        <dxi-column dataField="id"></dxi-column>
+        <dxi-column dataField="clients" [customizeText]="customClientName"></dxi-column>
+        <dxi-column dataField="room.name"></dxi-column>
+        <dxi-column dataField="rentTime"></dxi-column>
+        <dxi-column dataField="totalRoomMoney"></dxi-column>
+        <dxi-column dataField="totalServiceMoney"></dxi-column>
+        <dxi-column dataField="totalPayment"></dxi-column>
+        <dxi-column dataField="discount"></dxi-column>
+        <dxi-column dataField="status"></dxi-column>
+        <dxi-column dataField="notes"></dxi-column>
+    </dx-data-grid>
+
+</div>

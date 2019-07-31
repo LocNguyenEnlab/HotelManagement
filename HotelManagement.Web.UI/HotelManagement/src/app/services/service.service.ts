@@ -12,16 +12,16 @@ export class ServiceService {
     ];
 
     services: ServiceModel[] = [
-        {id: 1, name: 'Water', price: 30000, typeId: 1, quantity: 0},
-        {id: 2, name: 'Coca Cola', price: 35000, typeId: 1, quantity: 0},
-        {id: 3, name: 'Pepsi', price: 40000, typeId: 1, quantity: 0},
-        {id: 4, name: 'Huda', price: 20000, typeId: 1, quantity: 0},
-        {id: 5, name: 'Tiger', price: 40000, typeId: 1, quantity: 0},
-        {id: 6, name: 'Budweiser', price: 50000, typeId: 1, quantity: 0},
-        {id: 7, name: 'Voka', price: 80000, typeId: 1, quantity: 0},
-        {id: 8, name: 'Hamburger', price: 20000, typeId: 2, quantity: 0},
-        {id: 9, name: 'Pizza', price: 800000, typeId: 2, quantity: 0},
-        {id: 10, name: 'Sushi', price: 180000, typeId: 2, quantity: 0},
+        {id: 1, name: 'Water', price: 30000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 2, name: 'Coca Cola', price: 35000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 3, name: 'Pepsi', price: 40000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 4, name: 'Huda', price: 20000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 5, name: 'Tiger', price: 40000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 6, name: 'Budweiser', price: 50000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 7, name: 'Voka', price: 80000, typeId: 1, quantity: 0, totalMoney: 0},
+        {id: 8, name: 'Hamburger', price: 20000, typeId: 2, quantity: 0, totalMoney: 0},
+        {id: 9, name: 'Pizza', price: 800000, typeId: 2, quantity: 0, totalMoney: 0},
+        {id: 10, name: 'Sushi', price: 180000, typeId: 2, quantity: 0, totalMoney: 0},
     ];
 
     constructor() {

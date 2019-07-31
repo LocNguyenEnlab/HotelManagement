@@ -1,5 +1,4 @@
 import {ClientModel} from './ClientModel';
-import {ServiceModel} from './ServiceModel';
 
 export class RoomModel {
     name: string;
@@ -9,7 +8,6 @@ export class RoomModel {
     checkinTime: Date;
     checkoutTime: Date;
     clients: ClientModel[];
-    services: ServiceModel[];
     floor: string;
 
     constructor() {
@@ -20,7 +18,6 @@ export class RoomModel {
         this.checkinTime = new Date();
         this.checkoutTime = new Date();
         this.clients = [];
-        this.services = [];
         this.floor = '';
     }
 }

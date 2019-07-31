@@ -10,17 +10,16 @@ namespace HotelManagement.Entities.Model
     public class Client
     {
         [Key]
-        public string IdentityNumber { get; set; }
+        public int Id { get; set; }
+        public string IdentityOrPassport { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
         public string Nationality { get; set; }
         public string Notes { get; set; }
-        public string RoomNumber { get; set; }
+        public string RoomName { get; set; }
         public Room Room { get; set; }
-        public string BookedClientsListId { get; set; }
+        public int BookedClientsListId { get; set; }
         public BookedClientsList BookedClientsList { get; set; }
-        public string GroupCheckinId { get; set; }
-        public BookedClientsList GroupCheckin { get; set; }
     }
 }

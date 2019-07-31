@@ -6,6 +6,9 @@ export class ClientModel {
     identityOrPassport: string;
     nationality: string;
     notes: string;
+    roomName: string;
+    bookedClientListId: number;
+    invoiceId: number;
 
     constructor() {
         this.id = null;
@@ -15,6 +18,9 @@ export class ClientModel {
         this.nationality = 'test';
         this.identityOrPassport = 'test';
         this.notes = 'test';
+        this.roomName = null;
+        this.bookedClientListId = 0;
+        this.invoiceId = 0;
     }
 
 }

@@ -6,7 +6,7 @@ import {InvoiceModel} from '../models/InvoiceModel';
 })
 export class InvoiceService {
     invoices: InvoiceModel[] = [];
-    id: 1;
+    id = 1;
     constructor() {
     }
 
@@ -22,7 +22,7 @@ export class InvoiceService {
         this.invoices.splice(index, 0, invoice);
     }
 
-    getInvocies(): InvoiceModel[] {
+    getInvoices(): InvoiceModel[] {
         return this.invoices;
     }
 

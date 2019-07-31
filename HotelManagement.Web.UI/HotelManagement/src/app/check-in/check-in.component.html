@@ -6,8 +6,7 @@
     [title]="titlePersonalCheckin"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false"
-    [showCloseButton]="false"
-    [visible]="staticIsVisiblePersonalCheckinPopup">
+    [(visible)]="isVisiblePersonalCheckinPopup">
     <dx-scroll-view>
         <div style="padding-top: 14px">
             <div class="panel">
@@ -89,6 +88,7 @@
             <div class="row" style="margin: 15px 0 15px 0">
                 <div class="col-sm-4">
                     <dx-drop-down-box
+                        #serviceBox
                         [(value)]="serviceName"
                         placeholder="Select a service...">
                         <dx-list
@@ -101,6 +101,7 @@
                 </div>
                 <div class="col-sm-3">
                     <dx-drop-down-box
+                        #quantityBox
                         placeholder="Quantity"
                         [(value)]="serviceQuantityValue">
                         <dx-list
@@ -112,6 +113,7 @@
                 </div>
                 <div class="col-sm-3">
                     <dx-drop-down-box
+                        #typeBox
                         placeholder="Service Type"
                         [(value)]="serviceTypeName">
                         <dx-list
@@ -132,8 +134,9 @@
             </div>
             <dx-data-grid
                 height="150px"
-                [dataSource]="roomCheckin.services"
-                [columns]="['name', 'price', 'quantity']"
+                [showRowLines]="true"
+                [dataSource]="servicesCheckin"
+                [columns]="['name', 'price', 'quantity', 'totalMoney']"
                 [showBorders]="true">
                 <dxo-scrolling mode="virtual"></dxo-scrolling>
                 <dxo-editing
@@ -251,8 +254,7 @@
     title="Group checkin"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false"
-    [visible]="staticIsVisibleGroupCheckinPopup"
-    [showCloseButton]="false">
+    [(visible)]="isVisibleGroupCheckinPopup">
     <dx-scroll-view>
         <div style="padding-top: 14px">
             <div class="panel">

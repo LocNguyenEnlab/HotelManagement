@@ -2,7 +2,7 @@
 .top-bar {
     width: 100%;
     height: $top-bar-height;
-    background-color: #337ab7;
+    background-color: $background-color;
     z-index: 1;
     //position: fixed;
     overflow: visible;

@@ -1,0 +1,20 @@
+@media (max-width: 1025px) {
+    /deep/ .dx-overlay-content.dx-resizable
+    {
+        width: 60% !important;
+    }
+}
+hr {
+    border-color: #ddd;
+}
+dx-text-area {
+    float: right;
+    margin-bottom: 15px;
+}
+.group-btn {
+    float: right;
+    margin: 15px;
+    dx-button {
+        margin: 0 0 0 15px;
+    }
+}

@@ -4628,6 +4628,33 @@
         "runtime": {
           "bin/placeholder/HotelManagement.Entities.dll": {}
         }
+      },
+      "HotelManagement.Repository/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "HotelManagement.Entities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/HotelManagement.Repository.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HotelManagement.Repository.dll": {}
+        }
+      },
+      "HotelManagement.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "HotelManagement.Entities": "1.0.0",
+          "HotelManagement.Repository": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/HotelManagement.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HotelManagement.Services.dll": {}
+        }
       }
     }
   },
@@ -12539,11 +12566,22 @@
       "type": "project",
       "path": "../HotelManagement.Entities/HotelManagement.Entities.csproj",
       "msbuildProject": "../HotelManagement.Entities/HotelManagement.Entities.csproj"
+    },
+    "HotelManagement.Repository/1.0.0": {
+      "type": "project",
+      "path": "../HotelManagement.Repository/HotelManagement.Repository.csproj",
+      "msbuildProject": "../HotelManagement.Repository/HotelManagement.Repository.csproj"
+    },
+    "HotelManagement.Services/1.0.0": {
+      "type": "project",
+      "path": "../HotelManagement.Services/HotelManagement.Services.csproj",
+      "msbuildProject": "../HotelManagement.Services/HotelManagement.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "HotelManagement.Entities >= 1.0.0",
+      "HotelManagement.Services >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.1.1",
@@ -12584,6 +12622,9 @@
           "projectReferences": {
             "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj": {
               "projectPath": "C:\\Github\\HotelManagement\\HotelManagement.Entities\\HotelManagement.Entities.csproj"
+            },
+            "C:\\Github\\HotelManagement\\HotelManagement.Services\\HotelManagement.Services.csproj": {
+              "projectPath": "C:\\Github\\HotelManagement\\HotelManagement.Services\\HotelManagement.Services.csproj"
             }
           }
         }

@@ -12,6 +12,6 @@ export class BookedClientsListModel {
     notes: string;
     createdTime: Date;
     rooms: RoomModel[];
-    type: string; // booking or checkin
+    status: string; // booking or checkin
     discount: number;
 }

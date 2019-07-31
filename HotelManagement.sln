@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelManagement.Web.API", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelManagement.Web.UI", "HotelManagement.Web.UI\HotelManagement.Web.UI.csproj", "{E66F8764-775D-4E17-A3B8-81261B58D8D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelManagement.Entities", "HotelManagement.Entities\HotelManagement.Entities.csproj", "{F9E45A1F-3474-4044-B685-D9A650D1DF0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelManagement.Entities", "HotelManagement.Entities\HotelManagement.Entities.csproj", "{F9E45A1F-3474-4044-B685-D9A650D1DF0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelManagement.Repository", "HotelManagement.Repository\HotelManagement.Repository.csproj", "{8C61A880-4F0D-4B31-B289-01E9FA9D821F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelManagement.Services", "HotelManagement.Services\HotelManagement.Services.csproj", "{C57151DE-D022-479C-8817-9692669C5496}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{F9E45A1F-3474-4044-B685-D9A650D1DF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9E45A1F-3474-4044-B685-D9A650D1DF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9E45A1F-3474-4044-B685-D9A650D1DF0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C61A880-4F0D-4B31-B289-01E9FA9D821F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C61A880-4F0D-4B31-B289-01E9FA9D821F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C61A880-4F0D-4B31-B289-01E9FA9D821F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C61A880-4F0D-4B31-B289-01E9FA9D821F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C57151DE-D022-479C-8817-9692669C5496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57151DE-D022-479C-8817-9692669C5496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57151DE-D022-479C-8817-9692669C5496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57151DE-D022-479C-8817-9692669C5496}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

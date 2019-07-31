@@ -4,4 +4,5 @@ export class ServiceModel {
     price: number;
     typeId: number;
     quantity: number;
+    totalMoney: number;
 }

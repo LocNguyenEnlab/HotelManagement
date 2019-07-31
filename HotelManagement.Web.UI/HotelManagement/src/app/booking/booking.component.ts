@@ -18,8 +18,8 @@ import {Router} from '@angular/router';
     styleUrls: ['./booking.component.scss']
 })
 export class BookingComponent implements OnInit {
-    static isVisibleGroupBookingPopup = false;
-    static isVisiblePersonalBookingPopup = false;
+    isVisibleGroupBookingPopup = false;
+    isVisiblePersonalBookingPopup = false;
     updateBooking = false;
     client: ClientModel = new ClientModel();
     roomBooking: RoomModel = new RoomModel();
@@ -44,6 +44,7 @@ export class BookingComponent implements OnInit {
     dateNow: Date;
     bookedClient: BookedClientsListModel = new BookedClientsListModel();
     bookedClientsList: BookedClientsListModel[] = [];
+    bookingTitle: string;
 
     constructor(
         private clientService: ClientService,
@@ -56,7 +57,9 @@ export class BookingComponent implements OnInit {
     ngOnInit() {
         this.dateNow = new Date();
         this.rooms = [];
-        this.rooms = this.roomService.getRooms();
+        this.roomService.getRooms().subscribe(data => {
+            this.rooms = data;
+        });
         this.bookedClientsList = this.bookedClientsListService.getBookedClientsList();
     }
 
@@ -72,6 +75,7 @@ export class BookingComponent implements OnInit {
                     }
                 }
             }
+            this.bookingTitle = 'Booking room ' + roomBooking.name + ' (' + roomBooking.type + ')';
         }
         if (roomsBooking) {
             this.roomsBooking = roomsBooking;
@@ -88,15 +92,8 @@ export class BookingComponent implements OnInit {
                 this.groupBookingDetail.clients.push(bookedClient.client);
             }
             this.updateBooking = true;
+            this.bookingTitle = 'Update booking';
         }
-    }
-
-    get staticIsVisiblePersonalBookingPopup() {
-        return BookingComponent.isVisiblePersonalBookingPopup;
-    }
-
-    get staticIsVisibleGroupBookingPopup() {
-        return BookingComponent.isVisibleGroupBookingPopup;
     }
 
     addClientInfoOfGroupBooking() {
@@ -114,7 +111,7 @@ export class BookingComponent implements OnInit {
                 roomBooking.clients = this.groupBookingDetail.clients;
                 this.updateRoom(roomBooking);
             }
-            BookingComponent.isVisibleGroupBookingPopup = false;
+            this.isVisibleGroupBookingPopup = false;
             this.groupBookingDetail.rooms = this.roomsBooking;
             this.clientService.saveBookedClients(this.groupBookingDetail.clients);
             this.addBookedClientsList(null, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
@@ -139,7 +136,7 @@ export class BookingComponent implements OnInit {
             clients: [],
             rooms: []
         };
-        BookingComponent.isVisibleGroupBookingPopup = false;
+        this.isVisibleGroupBookingPopup = false;
     }
 
     cancelBooking() {
@@ -151,7 +148,7 @@ export class BookingComponent implements OnInit {
             notes: '',
             clients: []
         };
-        BookingComponent.isVisiblePersonalBookingPopup = false;
+        this.isVisiblePersonalBookingPopup = false;
     }
 
     addClientInfoOfPersonalBooking() {
@@ -174,6 +171,9 @@ export class BookingComponent implements OnInit {
             nationality: '',
             identityOrPassport: '',
             notes: '',
+            roomName: '',
+            bookedClientListId: 0,
+            invoiceId: 0
         };
     }
 
@@ -182,7 +182,7 @@ export class BookingComponent implements OnInit {
             const code = Math.floor(Math.random() * 1000);
             notify('Code: ' + code, 'success');
             // this.bookingService.saveClients(this.personalBookingDetail.clients);
-            BookingComponent.isVisiblePersonalBookingPopup = false;
+            this.isVisiblePersonalBookingPopup = false;
             this.roomBooking.status = 'Booking';
             this.updateRoom(this.roomBooking);
             const rooms: RoomModel[] = [];
@@ -222,7 +222,7 @@ export class BookingComponent implements OnInit {
                 notes: client.notes,
                 createdTime: new Date(),
                 rooms,
-                type: 'Booking',
+                status: 'Booking',
                 discount
             };
             if (this.bookedClient.id != null) {
@@ -247,12 +247,12 @@ export class BookingComponent implements OnInit {
         this.addBookedClientsList(null, this.roomBooking.clients, this.roomBooking.checkinTime, this.roomBooking.checkoutTime,
             'Personal Booking', this.bookedClient.code, this.personalBookingDetail.prePay, rooms, this.personalBookingDetail.discount);
         notify('Update personal booking successfully!', 'success');
-        BookingComponent.isVisiblePersonalBookingPopup = false;
+        this.isVisiblePersonalBookingPopup = false;
     }
 
     updateGroupBooking() {
         notify('update group');
-        BookingComponent.isVisibleGroupBookingPopup = false;
+        this.isVisibleGroupBookingPopup = false;
     }
 
     updateRoom(room: RoomModel) {

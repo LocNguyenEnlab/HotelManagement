@@ -24,6 +24,7 @@ import { BookedClientsListComponent } from './booked-clients-list/booked-clients
 import { CheckInComponent } from './check-in/check-in.component';
 import { BookingComponent } from './booking/booking.component';
 import { CheckOutComponent } from './check-out/check-out.component';
+import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { CheckOutComponent } from './check-out/check-out.component';
         BookedClientsListComponent,
         CheckInComponent,
         BookingComponent,
-        CheckOutComponent
+        CheckOutComponent,
+        InvoiceListComponent
     ],
     imports: [
         BrowserModule,
@@ -45,6 +47,7 @@ import { CheckOutComponent } from './check-out/check-out.component';
             {path: 'booked-clients-list', component: BookedClientsListComponent},
             {path: 'check-in', component: CheckInComponent},
             {path: 'check-out', component: CheckOutComponent},
+            {path: 'invoice-list', component: InvoiceListComponent},
         ]),
         DxPopupModule,
         DxTabPanelModule,
