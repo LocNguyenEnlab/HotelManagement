@@ -3,6 +3,7 @@ using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
 using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,38 +15,34 @@ namespace HotelManagement.Web.API.Controllers
     {
         private IClientService _service;
 
-        public ClientController()
+        public ClientController(IClientService clientService)
         {
-            if (_service == null)
-            {
-                _service = new ClientService(new EnlabHotelContext());
-            }
+            _service = clientService;
         }
         [HttpGet]
         public List<Client> Get()
         {
-            return _service.GetAll().ToList();
+            //return _service.GetAll().ToList();
+            var context = new EnlabHotelContext();
+            return context.Client.Include("Room").ToList();
         } 
 
         [HttpPost]
         public void Post(Client client)
         {
             _service.Add(client);
-            _service.SaveChange();
         }
 
         [HttpPut]
         public void Put(Client client)
         {
             _service.Update(client);
-            _service.SaveChange();
         }
 
         [HttpDelete]
         public void Delete(int clientId)
         {
             _service.Delete(clientId);
-            _service.SaveChange();
         }
     }
 }

@@ -4,14 +4,16 @@ using HotelManagement.Entities.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelManagement.Entities.Migrations
 {
     [DbContext(typeof(EnlabHotelContext))]
-    partial class EnlabHotelContextModelSnapshot : ModelSnapshot
+    [Migration("20190801004609_updateRelationshipForInvoieAndBookedClientsList")]
+    partial class updateRelationshipForInvoieAndBookedClientsList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,13 +21,11 @@ namespace HotelManagement.Entities.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HotelManagement.Entities.Model.Client", b =>
+            modelBuilder.Entity("HotelManagement.Entities.Model.BookedClientsList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
 
                     b.Property<string>("BookType");
 
@@ -35,7 +35,30 @@ namespace HotelManagement.Entities.Migrations
 
                     b.Property<int>("Code");
 
+                    b.Property<DateTime>("CreatedTime");
+
                     b.Property<double>("Discount");
+
+                    b.Property<string>("Notes");
+
+                    b.Property<double>("Prepay");
+
+                    b.Property<string>("Status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookedClientsList");
+                });
+
+            modelBuilder.Entity("HotelManagement.Entities.Model.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.Property<int>("BookedClientsListId");
 
                     b.Property<string>("Email");
 
@@ -49,13 +72,12 @@ namespace HotelManagement.Entities.Migrations
 
                     b.Property<string>("Notes");
 
-                    b.Property<double>("Prepay");
-
                     b.Property<string>("RoomName");
 
-                    b.Property<string>("Status");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("BookedClientsListId")
+                        .IsUnique();
 
                     b.HasIndex("InvoiceId");
 
@@ -159,6 +181,11 @@ namespace HotelManagement.Entities.Migrations
 
             modelBuilder.Entity("HotelManagement.Entities.Model.Client", b =>
                 {
+                    b.HasOne("HotelManagement.Entities.Model.BookedClientsList", "BookedClientsList")
+                        .WithOne("Client")
+                        .HasForeignKey("HotelManagement.Entities.Model.Client", "BookedClientsListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("HotelManagement.Entities.Model.Invoice")
                         .WithMany("Clients")
                         .HasForeignKey("InvoiceId");

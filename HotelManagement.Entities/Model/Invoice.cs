@@ -22,7 +22,6 @@ namespace HotelManagement.Entities.Model
         public string Status { get; set; }
         public string Notes { get; set; }
         public ICollection<Service> Services { get; set; }
-        public Room Room { get; set; }
         public ICollection<Client> Clients { get; set; }
     }
 }

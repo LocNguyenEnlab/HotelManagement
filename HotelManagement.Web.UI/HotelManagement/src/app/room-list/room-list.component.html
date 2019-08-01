@@ -51,9 +51,10 @@
                                         <span>{{room.type}}</span>
                                     </div>
                                     <div class="col-sm-9 col-xs-9 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Booking'">
-                                        <span>{{room.checkinTime.getMonth()+1}}/{{room.checkinTime.getDate()}}</span>
+<!--                                        <span>{{room.checkinTime.getMonth()+1}}/{{room.checkinTime.getDate()}}</span>-->
+                                        <span>{{room.checkinTime}}}</span>
                                         <i class="dx-icon-arrowright"></i>
-                                        <span>{{room.checkoutTime.toLocaleDateString()}}</span>
+                                        <span>{{room.checkoutTime}}</span>
                                     </div>
                                 </div>
                                 <div>

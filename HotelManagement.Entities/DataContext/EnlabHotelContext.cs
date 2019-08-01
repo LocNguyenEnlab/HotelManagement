@@ -8,7 +8,6 @@ namespace HotelManagement.Entities.DataContext
 {
     public class EnlabHotelContext : DbContext
     { 
-        public DbSet<BookedClientsList> BookedClientsList { get; set; }
         public DbSet<Client> Client { get; set; }
         public DbSet<Invoice> Invoice { get; set; }
         public DbSet<Room> Room { get; set; }

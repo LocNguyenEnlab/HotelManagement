@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelManagement.Entities.DataContext;
+using HotelManagement.Services.Interfaces;
+using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +26,10 @@ namespace HotelManagement.Web.API
                         .AllowCredentials());
             });
             services.AddMvc();
+
+            services.AddDbContext<EnlabHotelContext>();
+            services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IClientService, ClientService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

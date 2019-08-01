@@ -25,11 +25,12 @@ namespace HotelManagement.Services.Services
         public void UpdateRoom(Room room)
         {
             _roomRepository.Update(room);
+            _roomRepository.Save();
         }
 
-        public void SaveChange()
+        public Room GetRoom(string roomName)
         {
-            _roomRepository.Save();
+            return _roomRepository.Get(roomName);
         }
     }
 }

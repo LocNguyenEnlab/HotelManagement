@@ -6,7 +6,9 @@ namespace HotelManagement.Services.Interfaces
     public interface IRoomService
     {
         List<Room> GetRooms();
+
         void UpdateRoom(Room room);
-        void SaveChange();
+
+        Room GetRoom(string roomName);
     }
 }

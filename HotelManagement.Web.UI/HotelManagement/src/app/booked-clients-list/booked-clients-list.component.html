@@ -29,7 +29,7 @@
     </div>
 
     <dx-data-grid
-        [dataSource]="bookedClientsList"
+        [dataSource]="clientsList"
         [showColumnLines]="true"
         [showRowLines]="true"
         keyExpr="id"
@@ -46,15 +46,14 @@
         <dxo-paging enabled="true"></dxo-paging>
         <dxi-column dataField="id"></dxi-column>
         <dxi-column dataField="status"></dxi-column>
-        <dxi-column dataField="client.name"></dxi-column>
+        <dxi-column dataField="name"></dxi-column>
+        <dxi-column dataField="roomName"></dxi-column>
         <dxi-column dataField="checkinTime"></dxi-column>
         <dxi-column dataField="checkoutTime"></dxi-column>
         <dxi-column dataField="code"></dxi-column>
         <dxi-column dataField="bookType"></dxi-column>
-        <dxi-column dataField="prePay" caption="Prepay"></dxi-column>
+        <dxi-column dataField="prepay"></dxi-column>
         <dxi-column dataField="notes"></dxi-column>
-        <dxi-column dataField="createdTime"></dxi-column>
-        <dxi-column dataField="rooms" [customizeText]="customRoomsText"></dxi-column>
         <dxi-column dataField="discount"></dxi-column>
 <!--        <dxo-editing-->
 <!--            mode="row"-->

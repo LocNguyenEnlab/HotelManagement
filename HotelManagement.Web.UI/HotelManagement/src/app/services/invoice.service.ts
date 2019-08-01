@@ -27,6 +27,6 @@ export class InvoiceService {
     }
 
     getInvoiceByRoomName(roomName: string) {
-        return this.invoices.find(_ => _.room.name === roomName);
+        return this.invoices.find(_ => _.clients[0].name === roomName);
     }
 }

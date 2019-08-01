@@ -2,19 +2,13 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {RoomModel} from '../models/RoomModel';
 import {FloorModel} from '../models/FloorModel';
 import {ClientModel} from '../models/ClientModel';
-import {PersonalBookingDetailModel} from '../models/PersonalBookingDetailModel';
 import {BookingService} from '../services/booking.service';
 import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';
-import {GroupBookingDetailModel} from '../models/GroupBookingDetailModel';
-import {ClientService} from '../services/client.service';
-import {BookedClientsListModel} from '../models/BookedClientsListModel';
-import {BookedClientsListService} from '../services/booked-clients-list.service';
 import {CheckInComponent} from '../check-in/check-in.component';
-import {__assign} from 'tslib';
 import {BookingComponent} from '../booking/booking.component';
 import {CheckOutComponent} from '../check-out/check-out.component';
-import {HttpClient, HttpHandler} from '@angular/common/http';
+import {ClientService} from '../services/client.service';
 
 @Component({
     selector: 'app-room-list',
@@ -35,7 +29,7 @@ export class RoomListComponent implements OnInit {
     constructor(
         private bookingService: BookingService,
         private roomService: RoomService,
-        private bookedClientListService: BookedClientsListService,
+        private clientService: ClientService,
     ) {}
 
     ngOnInit() {
@@ -142,17 +136,19 @@ export class RoomListComponent implements OnInit {
     }
 
     updateBooking(event, roomName) {
-        const bookedClient: BookedClientsListModel[] = this.bookedClientListService.getBookedClientsByRoomName(roomName);
-        if (bookedClient[0].rooms.length === 1) {
-            // personal update
-            const roomUpdate: RoomModel = bookedClient[0].rooms[0];
-            this.bookingComponent.onInit(roomUpdate, null, null, bookedClient);
-            this.bookingComponent.isVisiblePersonalBookingPopup = true;
-        } else {
-            // group update
-            const roomsUpdate: RoomModel[] = bookedClient[0].rooms;
-            this.bookingComponent.onInit(null, roomsUpdate, null, bookedClient);
-            this.bookingComponent.isVisibleGroupBookingPopup = true;
-        }
+        // const bookedClient: BookedClientsListModel[] = this.bookedClientListService.getBookedClientsByRoomName(roomName);
+        // if (bookedClient[0].client.roomName === ) {
+        //     // personal update
+        //     const roomUpdate: RoomModel = bookedClient[0].rooms[0];
+        //     this.bookingComponent.onInit(roomUpdate, null, null, bookedClient);
+        //     this.bookingComponent.isVisiblePersonalBookingPopup = true;
+        // } else {
+        //     // group update
+        //     // const roomsUpdate: RoomModel[] = this.roomService.getRoom(bookedClient[0].client.roomName).subscribe(data => {
+        //     //
+        //     // })
+        //     // this.bookingComponent.onInit(null, roomsUpdate, null, bookedClient);
+        //     // this.bookingComponent.isVisibleGroupBookingPopup = true;
+        // }
     }
 }

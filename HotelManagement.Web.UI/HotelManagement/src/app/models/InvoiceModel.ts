@@ -1,11 +1,9 @@
-import {RoomModel} from './RoomModel';
 import {ClientModel} from './ClientModel';
 import {ServiceModel} from './ServiceModel';
 
 export class InvoiceModel {
     id: number;
     clients: ClientModel[];
-    room: RoomModel;
     rentTime: number;
     totalRoomMoney: number;
     totalServiceMoney: number;
@@ -21,7 +19,6 @@ export class InvoiceModel {
     constructor() {
         this.id = 0;
         this.clients = [];
-        this.room = null;
         this.rentTime = 0;
         this.totalServiceMoney = 0;
         this.totalRoomMoney = 0;

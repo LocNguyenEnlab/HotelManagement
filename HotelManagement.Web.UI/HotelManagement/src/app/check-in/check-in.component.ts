@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {RoomModel} from '../models/RoomModel';
 import {PersonalBookingDetailModel} from '../models/PersonalBookingDetailModel';
 import {ClientModel} from '../models/ClientModel';
-import {BookedClientsListModel} from '../models/BookedClientsListModel';
-import {BookedClientsListService} from '../services/booked-clients-list.service';
 import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';
 import {Router} from '@angular/router';
@@ -55,10 +53,8 @@ export class CheckInComponent implements OnInit {
         rooms: []
     };
     roomsCheckin: RoomModel[] = [];
-    bookedClientCheckin: BookedClientsListModel;
 
     constructor(
-        private bookedClientsListService: BookedClientsListService,
         private roomService: RoomService,
         private router: Router,
         private service: ServiceService,
@@ -76,38 +72,12 @@ export class CheckInComponent implements OnInit {
         this.serviceTypeSource = this.service.getServicesType();
     }
 
-    onInit(roomCheckin: RoomModel, roomsCheckin: RoomModel[], bookedClientCheckin: BookedClientsListModel) {
+    onInit(roomCheckin: RoomModel, roomsCheckin: RoomModel[]) {
         if (roomCheckin != null) {
              this.roomCheckin = roomCheckin;
         }
         if (roomsCheckin != null) {
             this.roomsCheckin = roomsCheckin;
-        }
-        if (bookedClientCheckin != null && bookedClientCheckin.bookType === 'Personal Booking') {
-            this.personalBookingDetail = {
-                room: bookedClientCheckin.rooms[0],
-                prePay: bookedClientCheckin.prePay,
-                discount: bookedClientCheckin.discount,
-                notes: bookedClientCheckin.notes,
-                clients: [bookedClientCheckin.client],
-            };
-            this.bookedClientCheckin = bookedClientCheckin;
-            this.client = Object.assign({}, this.personalBookingDetail.clients[0]);
-            this.roomCheckin = this.personalBookingDetail.room;
-        }
-        if (bookedClientCheckin != null && bookedClientCheckin.bookType === 'Group Booking') {
-            this.groupBookingDetail = {
-                checkinTime: bookedClientCheckin.checkoutTime,
-                checkoutTime: bookedClientCheckin.checkoutTime,
-                prePay: bookedClientCheckin.prePay,
-                discount: bookedClientCheckin.discount,
-                notes: bookedClientCheckin.notes,
-                clients: [bookedClientCheckin.client],
-                rooms: bookedClientCheckin.rooms,
-            };
-            this.bookedClientCheckin = bookedClientCheckin;
-            this.client = Object.assign({}, this.groupBookingDetail.clients[0]);
-            this.roomsCheckin = this.groupBookingDetail.rooms;
         }
         this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
     }
@@ -117,50 +87,49 @@ export class CheckInComponent implements OnInit {
 
     addBookedClientsList(id: number = null, clients: ClientModel[], checkinTime: Date, checkoutTime: Date, bookType, code, prePay, rooms, discount) {
         for (const client of clients) {
-            const bookedClient: BookedClientsListModel = {
-                id,
-                client,
-                checkinTime,
-                checkoutTime,
-                code,
-                bookType,
-                prePay,
-                notes: client.notes,
-                createdTime: new Date(),
-                rooms,
-                status: 'Checkin',
-                discount
-            };
-            if (id != null) {
-                this.bookedClientsListService.updateBookedClientList(bookedClient);
-            } else {
-                this.bookedClientsListService.addBookedClientList(bookedClient);
-            }
+            // const bookedClient: BookedClientsListModel = {
+            //     id,
+            //     client,
+            //     checkinTime,
+            //     checkoutTime,
+            //     code,
+            //     bookType,
+            //     prePay,
+            //     notes: client.notes,
+            //     createdTime: new Date(),
+            //     status: 'Checkin',
+            //     discount
+            // };
+            // if (id != null) {
+            //     this.bookedClientsListService.updateBookedClientList(bookedClient);
+            // } else {
+            //     this.bookedClientsListService.addBookedClientList(bookedClient);
+            // }
         }
     }
 
     checkinForPersonal() {
-        if (this.roomCheckin.clients.length > 0) {
-            this.updateRooms(this.roomCheckin.clients);
-            const rooms: RoomModel[] = [];
-            rooms.push(this.roomCheckin);
-            if (this.bookedClientCheckin) { // add new
-                this.addBookedClientsList(this.bookedClientCheckin.id, this.roomCheckin.clients, this.roomCheckin.checkinTime,
-                    this.roomCheckin.checkoutTime, 'Personal Booking', '-1', this.personalBookingDetail.prePay, rooms,
-                    this.personalBookingDetail.discount);
-            } else { // update booking exists
-                this.addBookedClientsList(null, this.roomCheckin.clients, this.roomCheckin.checkinTime,
-                    this.roomCheckin.checkoutTime, 'Personal Booking', '-1',
-                    this.personalBookingDetail.prePay, rooms, this.personalBookingDetail.discount);
-            }
-            this.invoiceService.addInvoice(this.createInvoice(this.roomCheckin, this.personalBookingDetail.discount,
-                this.personalBookingDetail.prePay));
-            notify('Checkin successfully', 'success');
-            this.router.navigate(['/booked-clients-list']);
-            this.isVisiblePersonalCheckinPopup = false;
-        } else {
-            notify('Please add clients for this room!', 'error');
-        }
+        // if (this.roomCheckin.clients.length > 0) {
+        //     this.updateRooms(this.roomCheckin.clients);
+        //     const rooms: RoomModel[] = [];
+        //     rooms.push(this.roomCheckin);
+        //     if (this.bookedClientCheckin) { // add new
+        //         this.addBookedClientsList(this.bookedClientCheckin.id, this.roomCheckin.clients, this.roomCheckin.checkinTime,
+        //             this.roomCheckin.checkoutTime, 'Personal Booking', '-1', this.personalBookingDetail.prePay, rooms,
+        //             this.personalBookingDetail.discount);
+        //     } else { // update booking exists
+        //         this.addBookedClientsList(null, this.roomCheckin.clients, this.roomCheckin.checkinTime,
+        //             this.roomCheckin.checkoutTime, 'Personal Booking', '-1',
+        //             this.personalBookingDetail.prePay, rooms, this.personalBookingDetail.discount);
+        //     }
+        //     this.invoiceService.addInvoice(this.createInvoice(this.roomCheckin, this.personalBookingDetail.discount,
+        //         this.personalBookingDetail.prePay));
+        //     notify('Checkin successfully', 'success');
+        //     this.router.navigate(['/booked-clients-list']);
+        //     this.isVisiblePersonalCheckinPopup = false;
+        // } else {
+        //     notify('Please add clients for this room!', 'error');
+        // }
     }
 
     createInvoice(roomBooking: RoomModel, discount: number, prePay: number) {
@@ -178,7 +147,6 @@ export class CheckInComponent implements OnInit {
         }
         const invoice: InvoiceModel = {
             id: null,
-            room: roomBooking,
             clients: roomBooking.clients,
             rentTime,
             totalRoomMoney,
@@ -222,17 +190,17 @@ export class CheckInComponent implements OnInit {
     }
 
     addClientInfoOfPersonalBooking() {
-        if ((this.roomCheckin.type === 'Single' && !this.roomCheckin.clients) || this.roomCheckin.type === 'Double') {
-            const clientTemp: ClientModel = Object.assign({}, this.client);
-            clientTemp.bookedClientListId = 1;
-            this.roomCheckin.clients = [];
-            this.roomCheckin.clients.push(clientTemp);
-            this.clientService.addClient(clientTemp).subscribe();
-            // this.resetClientInput();
-            // this.personalBookingDetail.clients.push(clientTemp);
-        } else {
-            notify('Can not add more than one client for Single room!', 'warning');
-        }
+        // if ((this.roomCheckin.type === 'Single' && !this.roomCheckin.clients) || this.roomCheckin.type === 'Double') {
+        //     const clientTemp: ClientModel = Object.assign({}, this.client);
+        //     clientTemp.bookedClientListId = 1;
+        //     this.roomCheckin.clients = [];
+        //     this.roomCheckin.clients.push(clientTemp);
+        //     this.clientService.addClient(clientTemp).subscribe();
+        //     // this.resetClientInput();
+        //     // this.personalBookingDetail.clients.push(clientTemp);
+        // } else {
+        //     notify('Can not add more than one client for Single room!', 'warning');
+        // }
     }
 
     addClientInfoOfGroupBooking() {
@@ -242,19 +210,19 @@ export class CheckInComponent implements OnInit {
     }
 
     checkinForGroup() {
-        if (this.bookedClientCheckin) {
-            this.addBookedClientsList(this.bookedClientCheckin.id, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
-                this.groupBookingDetail.checkoutTime, 'Group Booking', '-1', this.groupBookingDetail.prePay, this.roomsCheckin,
-                this.groupBookingDetail.discount);
-        } else {
-            this.addBookedClientsList(null, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
-                this.groupBookingDetail.checkoutTime, 'Group Booking', '-1', this.groupBookingDetail.prePay,
-                this.roomsCheckin, this.groupBookingDetail.discount);
-        }
-        notify('Checkin successfully', 'success');
-        this.updateRooms(this.groupBookingDetail.clients);
-        this.router.navigate(['/booked-clients-list']);
-        this.isVisibleGroupCheckinPopup = false;
+        // if (this.bookedClientCheckin) {
+        //     this.addBookedClientsList(this.bookedClientCheckin.id, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
+        //         this.groupBookingDetail.checkoutTime, 'Group Booking', '-1', this.groupBookingDetail.prePay, this.roomsCheckin,
+        //         this.groupBookingDetail.discount);
+        // } else {
+        //     this.addBookedClientsList(null, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
+        //         this.groupBookingDetail.checkoutTime, 'Group Booking', '-1', this.groupBookingDetail.prePay,
+        //         this.roomsCheckin, this.groupBookingDetail.discount);
+        // }
+        // notify('Checkin successfully', 'success');
+        // this.updateRooms(this.groupBookingDetail.clients);
+        // this.router.navigate(['/booked-clients-list']);
+        // this.isVisibleGroupCheckinPopup = false;
     }
 
     cancelGroupCheckin() {

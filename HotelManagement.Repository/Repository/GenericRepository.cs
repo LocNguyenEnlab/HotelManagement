@@ -18,12 +18,12 @@ namespace HotelManagement.Repository.Repository
             _table = _context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public IList<T> GetAll()
         {
             return _table.ToList();
         }
 
-        public T Get(int id)
+        public T Get(object id)
         {
             return _table.Find(id);
         }

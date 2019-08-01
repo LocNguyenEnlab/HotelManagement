@@ -17,9 +17,14 @@ namespace HotelManagement.Entities.Model
         public string Email { get; set; }
         public string Nationality { get; set; }
         public string Notes { get; set; }
+        public DateTime CheckinTime { get; set; }
+        public DateTime CheckoutTime { get; set; }
+        public int Code { get; set; }
+        public string BookType { get; set; }
+        public double Prepay { get; set; }
+        public string Status { get; set; }
+        public double Discount { get; set; }
         public string RoomName { get; set; }
         public Room Room { get; set; }
-        public int BookedClientsListId { get; set; }
-        public BookedClientsList BookedClientsList { get; set; }
     }
 }

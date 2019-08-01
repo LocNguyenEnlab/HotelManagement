@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {ClientModel} from '../models/ClientModel';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {ApiService} from './api.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClientService {
-    bookedClients: ClientModel[] = [];
-    apiUrl = 'https://localhost:44330/api/client';
+    apiUrl = ApiService.apiUrl + 'client';
 
     constructor(private http: HttpClient) {
     }
@@ -17,13 +17,7 @@ export class ClientService {
         return this.http.post<ClientModel>(this.apiUrl, client);
     }
 
-    saveBookedClients(clients) {
-        for (const client of clients) {
-            this.bookedClients.push(client);
-        }
-    }
-
-    getBookedClients(): ClientModel[] {
-        return this.bookedClients;
+    getClients(): Observable<ClientModel[]> {
+        return this.http.get<ClientModel[]>(this.apiUrl);
     }
 }

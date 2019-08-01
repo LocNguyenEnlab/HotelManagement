@@ -8,7 +8,7 @@ import {ServiceTypeModel} from '../models/ServiceTypeModel';
 import notify from 'devextreme/ui/notify';
 import {ServiceService} from '../services/service.service';
 import {confirm} from 'devextreme/ui/dialog';
-import {BookedClientsListService} from '../services/booked-clients-list.service';
+import {ClientService} from '../services/client.service';
 
 @Component({
     selector: 'app-check-out',
@@ -35,7 +35,7 @@ export class CheckOutComponent implements OnInit {
         private invoiceService: InvoiceService,
         private roomService: RoomService,
         private service: ServiceService,
-        private bookedClientService: BookedClientsListService,
+        private clientService: ClientService,
     ) {
     }
 
@@ -68,7 +68,7 @@ export class CheckOutComponent implements OnInit {
                 this.roomService.updateRoom(this.roomCheckout);
                 this.isVisiblePersonalCheckoutPopup = false;
 
-                this.bookedClientService.deleteByRoomName(this.roomCheckout.name);
+                // this.bookedClientService.deleteByRoomName(this.roomCheckout.name);
             }
         });
     }

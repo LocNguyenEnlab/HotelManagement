@@ -7,20 +7,19 @@ export class ClientModel {
     nationality: string;
     notes: string;
     roomName: string;
-    bookedClientListId: number;
     invoiceId: number;
+    checkinTime: Date;
+    checkoutTime: Date;
+    code: string;
+    bookType: string;
+    prePay: number;
+    status: string; // booking or checkin
+    discount: number;
 
-    constructor() {
-        this.id = null;
-        this.name = 'test';
-        this.address = 'test';
-        this.email = 'test@test.test';
-        this.nationality = 'test';
-        this.identityOrPassport = 'test';
-        this.notes = 'test';
-        this.roomName = null;
-        this.bookedClientListId = 0;
-        this.invoiceId = 0;
+    constructor(init?: Partial<ClientModel>) {
+        if (init) {
+            Object.assign(this, init);
+        }
     }
 
 }
