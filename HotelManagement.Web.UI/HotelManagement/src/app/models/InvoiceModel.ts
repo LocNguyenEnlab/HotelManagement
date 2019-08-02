@@ -11,13 +11,12 @@ export class InvoiceModel {
     discount: number;
     status: string;
     notes: string;
-    prePay: number;
+    prepay: number;
     checkinTime: Date;
     checkoutTime: Date;
     services: ServiceModel[];
 
     constructor() {
-        this.id = 0;
         this.clients = [];
         this.rentTime = 0;
         this.totalServiceMoney = 0;
@@ -26,7 +25,7 @@ export class InvoiceModel {
         this.discount = 0;
         this.status = '';
         this.notes = '';
-        this.prePay = 0;
+        this.prepay = 0;
         this.checkinTime = new Date();
         this.checkoutTime = new Date();
         this.services = [];

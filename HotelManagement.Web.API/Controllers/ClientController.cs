@@ -1,11 +1,7 @@
-﻿using HotelManagement.Entities.DataContext;
-using HotelManagement.Entities.Model;
+﻿using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
-using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace HotelManagement.Web.API.Controllers
 {
@@ -15,34 +11,28 @@ namespace HotelManagement.Web.API.Controllers
     {
         private IClientService _service;
 
+
         public ClientController(IClientService clientService)
         {
             _service = clientService;
         }
+
         [HttpGet]
         public List<Client> Get()
         {
-            //return _service.GetAll().ToList();
-            var context = new EnlabHotelContext();
-            return context.Client.Include("Room").ToList();
-        } 
-
-        [HttpPost]
-        public void Post(Client client)
-        {
-            _service.Add(client);
+            return _service.GetAll();
         }
 
-        [HttpPut]
-        public void Put(Client client)
+        [HttpGet("/api/client/{id}")]
+        public Client Get(int id)
         {
-            _service.Update(client);
+            return _service.Get(id);
         }
 
-        [HttpDelete]
-        public void Delete(int clientId)
+        [HttpGet("/api/client/roomname/{roomName}")]
+        public List<Client> Get(string roomName)
         {
-            _service.Delete(clientId);
+            return _service.Get(roomName);
         }
     }
 }

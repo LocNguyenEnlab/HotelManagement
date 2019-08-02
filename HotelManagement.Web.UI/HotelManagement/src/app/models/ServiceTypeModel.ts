@@ -1,4 +1,7 @@
+import {ServiceModel} from './ServiceModel';
+
 export class ServiceTypeModel {
     id: number;
-    typeName: string;
+    name: string;
+    services: ServiceModel[];
 }

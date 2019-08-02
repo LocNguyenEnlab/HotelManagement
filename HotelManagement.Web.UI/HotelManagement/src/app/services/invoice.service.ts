@@ -1,32 +1,33 @@
 import {Injectable} from '@angular/core';
 import {InvoiceModel} from '../models/InvoiceModel';
+import {Observable} from 'rxjs';
+import {ApiService} from './api.service';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class InvoiceService {
-    invoices: InvoiceModel[] = [];
-    id = 1;
-    constructor() {
+    apiUrl = ApiService.apiUrl + 'invoice/';
+
+    constructor(
+        private http: HttpClient,
+    ) {
     }
 
-    addInvoice(invoice: InvoiceModel) {
-        invoice.id = this.id;
-        this.invoices.push(invoice);
-        this.id++;
+    addInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
+        return this.http.post<InvoiceModel>(this.apiUrl, invoice);
     }
 
     updateInvoice(invoice: InvoiceModel) {
-        const index = this.invoices.findIndex(_ => _.id === invoice.id);
-        this.invoices.splice(index, 1);
-        this.invoices.splice(index, 0, invoice);
+
     }
 
-    getInvoices(): InvoiceModel[] {
-        return this.invoices;
+    getInvoices(): Observable<InvoiceModel[]> {
+        return this.http.get<InvoiceModel[]>(this.apiUrl);
     }
 
     getInvoiceByRoomName(roomName: string) {
-        return this.invoices.find(_ => _.clients[0].name === roomName);
+
     }
 }

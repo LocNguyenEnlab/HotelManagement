@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagement.Entities.DataContext;
+﻿using HotelManagement.Entities.DataContext;
+using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
 using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace HotelManagement.Web.API
 {
@@ -25,11 +22,15 @@ namespace HotelManagement.Web.API
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
             services.AddDbContext<EnlabHotelContext>();
-            services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IGenericService<Room>, RoomService>();
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IGenericService<Invoice>, InvoiceService>();
+            services.AddTransient<IGenericService<Service>, ServiceService>();
+            services.AddTransient<IServiceTypeService, ServiceTypeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

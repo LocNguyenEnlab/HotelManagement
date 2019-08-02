@@ -33,26 +33,8 @@ export class CheckInComponent implements OnInit {
     serviceTypeSource: ServiceTypeModel[] = [];
     serviceTypeName: string = null;
     roomCheckin: RoomModel = new RoomModel();
-    servicesCheckin: ServiceModel[] = [];
-    personalBookingDetail: PersonalBookingDetailModel = {
-        room: this.roomCheckin,
-        prePay: 0,
-        discount: 0,
-        notes: '',
-        clients: [],
-    };
+    invoice: InvoiceModel = new InvoiceModel();
     client: ClientModel = new ClientModel();
-    rooms: RoomModel[] = [];
-    groupBookingDetail: GroupBookingDetailModel = {
-        checkinTime: new Date(),
-        checkoutTime: new Date(),
-        prePay: 0,
-        discount: 0,
-        notes: '',
-        clients: [],
-        rooms: []
-    };
-    roomsCheckin: RoomModel[] = [];
 
     constructor(
         private roomService: RoomService,
@@ -63,23 +45,26 @@ export class CheckInComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
-        this.roomService.getRooms().subscribe(data => {
-            this.rooms = data;
+    async ngOnInit() {
+        await this.service.getServices().toPromise().then(data => {
+            this.serviceSource = data;
         });
-        this.serviceSource = this.service.getServices();
         this.serviceQuantitySource = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10];
-        this.serviceTypeSource = this.service.getServicesType();
+        await this.service.getServicesType().toPromise().then(data => {
+            this.serviceTypeSource = data;
+        });
     }
 
-    onInit(roomCheckin: RoomModel, roomsCheckin: RoomModel[]) {
-        if (roomCheckin != null) {
-             this.roomCheckin = roomCheckin;
+    async onInit(clientCheckin: ClientModel) {
+        if (clientCheckin != null) {
+             await this.roomService.getRoom(clientCheckin.roomName).toPromise().then(data => {
+                 this.roomCheckin = data;
+             });
+             await this.clientService.getClientsByRoomName(this.roomCheckin.name).toPromise().then(data => {
+                 this.roomCheckin.clients = data;
+             });
+             this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
         }
-        if (roomsCheckin != null) {
-            this.roomsCheckin = roomsCheckin;
-        }
-        this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
     }
     cancel() {
         this.isVisiblePersonalCheckinPopup = false;
@@ -109,104 +94,57 @@ export class CheckInComponent implements OnInit {
     }
 
     checkinForPersonal() {
-        // if (this.roomCheckin.clients.length > 0) {
-        //     this.updateRooms(this.roomCheckin.clients);
-        //     const rooms: RoomModel[] = [];
-        //     rooms.push(this.roomCheckin);
-        //     if (this.bookedClientCheckin) { // add new
-        //         this.addBookedClientsList(this.bookedClientCheckin.id, this.roomCheckin.clients, this.roomCheckin.checkinTime,
-        //             this.roomCheckin.checkoutTime, 'Personal Booking', '-1', this.personalBookingDetail.prePay, rooms,
-        //             this.personalBookingDetail.discount);
-        //     } else { // update booking exists
-        //         this.addBookedClientsList(null, this.roomCheckin.clients, this.roomCheckin.checkinTime,
-        //             this.roomCheckin.checkoutTime, 'Personal Booking', '-1',
-        //             this.personalBookingDetail.prePay, rooms, this.personalBookingDetail.discount);
-        //     }
-        //     this.invoiceService.addInvoice(this.createInvoice(this.roomCheckin, this.personalBookingDetail.discount,
-        //         this.personalBookingDetail.prePay));
-        //     notify('Checkin successfully', 'success');
-        //     this.router.navigate(['/booked-clients-list']);
-        //     this.isVisiblePersonalCheckinPopup = false;
-        // } else {
-        //     notify('Please add clients for this room!', 'error');
-        // }
+        if (this.roomCheckin.clients) {
+            this.roomCheckin.status = 'Booked';
+            for (const client of this.roomCheckin.clients) {
+                client.status = 'Check in';
+            }
+            this.roomService.updateRoom(this.roomCheckin).subscribe();
+            this.createInvoice();
+            this.invoiceService.addInvoice(this.invoice).subscribe();
+            notify('Checkin successfully', 'success');
+            this.router.navigate(['/booked-clients-list']);
+            this.isVisiblePersonalCheckinPopup = false;
+        } else {
+            notify('Please add clients for this room!', 'error');
+        }
     }
 
-    createInvoice(roomBooking: RoomModel, discount: number, prePay: number) {
+    createInvoice() {
         let totalPayment: number;
         let totalRoomMoney: number;
         let totalServiceMoney = 0;
-        const rentTime = Math.ceil((+roomBooking.checkoutTime - +roomBooking.checkinTime) / (24 * 60 * 60 * 1000));
-        for (const service of this.servicesCheckin) {
+        const rentTime =
+            Math.ceil((new Date(this.roomCheckin.checkoutTime).getTime() - new Date(this.roomCheckin.checkinTime).getTime()) / (24 * 60 * 60 * 1000));
+        for (const service of this.invoice.services) {
             totalServiceMoney += service.price * service.quantity;
         }
-        totalRoomMoney = roomBooking.price * rentTime;
+        totalRoomMoney = this.roomCheckin.price * rentTime;
         totalPayment = totalRoomMoney + totalServiceMoney;
-        if (discount) {
-            totalPayment *= (discount / 100);
+        if (this.invoice.discount) {
+            totalPayment *= (this.invoice.discount / 100);
         }
-        const invoice: InvoiceModel = {
-            id: null,
-            clients: roomBooking.clients,
-            rentTime,
-            totalRoomMoney,
-            totalServiceMoney,
-            totalPayment,
-            discount,
-            status: 'Unpaid',
-            notes: '',
-            checkinTime: roomBooking.checkinTime,
-            checkoutTime: roomBooking.checkoutTime,
-            prePay,
-            services: this.servicesCheckin
-        };
-        return invoice;
-    }
-
-    updateRooms(clients) {
-        if (this.isVisiblePersonalCheckinPopup) {
-            // const roomName = this.roomCheckin.name;
-            // if (this.rooms.find(s => s.name === roomName)) {
-            //     this.rooms.find(s => s.name === roomName).status = 'Booked';
-            //     for (const client of clients) {
-            //         this.rooms.find(s => s.name === roomName).checkinTime = this.roomCheckin.checkinTime;
-            //         this.rooms.find(s => s.name === roomName).checkoutTime = this.roomCheckin.checkoutTime;
-            //     }
-            // }
-            this.roomCheckin.status = 'Booked';
-            this.roomService.updateRoom(this.roomCheckin).subscribe();
-        } else if (this.isVisibleGroupCheckinPopup) {
-            for (const room of this.roomsCheckin) {
-                if (this.rooms.find(s => s.name === room.name)) {
-                    this.rooms.find(s => s.name === room.name).status = 'Booked';
-                    for (const client of clients) {
-                        this.rooms.find(s => s.name === room.name).checkinTime = this.groupBookingDetail.checkinTime;
-                        this.rooms.find(s => s.name === room.name).checkoutTime = this.groupBookingDetail.checkoutTime;
-                    }
-                }
-            }
-        }
-        // this.roomService.updateRooms(this.rooms);
+        this.invoice.clients = this.roomCheckin.clients;
+        this.invoice.rentTime = rentTime;
+        this.invoice.totalRoomMoney = totalRoomMoney;
+        this.invoice.totalPayment = totalPayment;
+        this.invoice.totalServiceMoney = totalServiceMoney;
+        this.invoice.status = 'Unpaid';
+        this.invoice.checkinTime = this.roomCheckin.checkinTime;
+        this.invoice.checkoutTime = this.roomCheckin.checkoutTime;
     }
 
     addClientInfoOfPersonalBooking() {
-        // if ((this.roomCheckin.type === 'Single' && !this.roomCheckin.clients) || this.roomCheckin.type === 'Double') {
-        //     const clientTemp: ClientModel = Object.assign({}, this.client);
-        //     clientTemp.bookedClientListId = 1;
-        //     this.roomCheckin.clients = [];
-        //     this.roomCheckin.clients.push(clientTemp);
-        //     this.clientService.addClient(clientTemp).subscribe();
-        //     // this.resetClientInput();
-        //     // this.personalBookingDetail.clients.push(clientTemp);
-        // } else {
-        //     notify('Can not add more than one client for Single room!', 'warning');
-        // }
-    }
-
-    addClientInfoOfGroupBooking() {
-        const clientTemp: ClientModel = Object.assign({}, this.client);
-        this.groupBookingDetail.clients.push(clientTemp);
-        // this.resetClientInput();
+        if (!this.roomCheckin.clients) {
+            this.roomCheckin.clients = [];
+        }
+        if ((this.roomCheckin.type === 'Single' && this.roomCheckin.clients.length < 2) || this.roomCheckin.type === 'Double') {
+            const clientTemp: ClientModel = Object.assign({}, this.client);
+            this.roomCheckin.clients.push(clientTemp);
+            // this.resetClientInput();
+        } else {
+            notify('Can not add more than one client for Single room!', 'warning');
+        }
     }
 
     checkinForGroup() {
@@ -244,22 +182,25 @@ export class CheckInComponent implements OnInit {
 
     chooseServiceType(event: Event) {
         // @ts-ignore
-        this.serviceTypeName = event.addedItems[0].typeName;
+        this.serviceTypeName = event.addedItems[0].name;
         // @ts-ignore
-        this.serviceSource = this.service.getServicesByTypeId(event.addedItems[0].id);
+        this.serviceSource = this.serviceTypeSource.find(_ => _.id === event.addedItems[0].id).services;
         this.serviceName = null;
         this.typeBox.instance.close();
     }
 
     addService() {
         if (this.serviceQuantityValue != null && this.serviceValue != null) {
-            const service: ServiceModel = this.servicesCheckin.find(_ => _.id === this.serviceValue.id);
+            if (!this.invoice.services) {
+                this.invoice.services = [];
+            }
+            const service: ServiceModel = this.invoice.services.find(_ => _.id === this.serviceValue.id);
             if (service) {
                 service.quantity += this.serviceQuantityValue;
             } else {
                 this.serviceValue.quantity = this.serviceQuantityValue;
                 this.serviceValue.totalMoney = this.serviceValue.quantity * this.serviceValue.price;
-                this.servicesCheckin.push(this.serviceValue);
+                this.invoice.services.push(this.serviceValue);
             }
         } else {
             notify('Please select service and quantity of it', 'error');

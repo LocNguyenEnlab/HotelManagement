@@ -25,9 +25,8 @@
                             <div class="dx-field-label">Checkin Time</div>
                             <div class="dx-field-value">
                                 <dx-date-box
-                                    [value]="dateNow"
                                     type="datetime"
-                                    [(ngModel)]="roomBooking.checkinTime"
+                                    [(value)]="roomBooking.checkinTime"
                                     invalidDateMessage="The date must have the following format: MM/dd/yyyy">
                                     <dx-validator>
                                         <dxi-validation-rule type="required" message="Checkin time is required"></dxi-validation-rule>
@@ -39,9 +38,8 @@
                             <div class="dx-field-label">Checkout Time</div>
                             <div class="dx-field-value">
                                 <dx-date-box
-                                    [value]="dateNow"
-                                    type="datetime"
-                                    [(ngModel)]="roomBooking.checkoutTime">
+                                    [(value)]="roomBooking.checkoutTime"
+                                    type="datetime">
                                     <dx-validator>
                                         <dxi-validation-rule type="required" message="Checkout time is required"></dxi-validation-rule>
                                     </dx-validator>

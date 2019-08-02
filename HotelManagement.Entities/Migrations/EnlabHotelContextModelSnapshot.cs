@@ -100,9 +100,9 @@ namespace HotelManagement.Entities.Migrations
                     b.Property<string>("Name")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CheckinTime");
+                    b.Property<DateTime>("CheckinTime");
 
-                    b.Property<string>("CheckoutTime");
+                    b.Property<DateTime>("CheckoutTime");
 
                     b.Property<string>("Floor");
 
@@ -175,7 +175,7 @@ namespace HotelManagement.Entities.Migrations
                         .HasForeignKey("InvoiceId");
 
                     b.HasOne("HotelManagement.Entities.Model.ServiceType", "ServiceType")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("ServiceTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

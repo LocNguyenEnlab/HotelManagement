@@ -25,6 +25,7 @@ export class BookedClientsListComponent implements OnInit {
     searchText: string;
     focusBookedClientId: number;
     clientsList: ClientModel[];
+    clientCheckin: ClientModel;
 
     constructor(
         private roomService: RoomService,
@@ -45,19 +46,19 @@ export class BookedClientsListComponent implements OnInit {
     }
 
     checkin() {
-        // if (this.bookedClientCheckin && this.bookedClientCheckin.status === 'Booking') {
-        //     if (this.bookedClientCheckin.bookType === 'Personal Booking') {
-        //         this.checkinComponent.onInit(null, null, this.bookedClientCheckin);
-        //         this.checkinComponent.isVisiblePersonalCheckinPopup = true;
-        //     } else {
-        //         this.checkinComponent.onInit(null, null, this.bookedClientCheckin);
-        //         this.checkinComponent.isVisibleGroupCheckinPopup = true;
-        //     }
-        // } else if (this.bookedClientCheckin) {
-        //     notify('This client already check in!', 'error', 2000);
-        // } else {
-        //     notify('Please select a client to check in!', 'error', 2000);
-        // }
+        if (this.clientCheckin && this.clientCheckin.status === 'Booking') {
+            if (this.clientCheckin.bookType === 'Personal Booking') {
+                this.checkinComponent.onInit(this.clientCheckin);
+                this.checkinComponent.isVisiblePersonalCheckinPopup = true;
+            } else {
+                // this.checkinComponent.onInit(null, null, this.clientCheckin);
+                // this.checkinComponent.isVisibleGroupCheckinPopup = true;
+            }
+        } else if (this.clientCheckin) {
+            notify('This client already check in!', 'error', 2000);
+        } else {
+            notify('Please select a client to check in!', 'error', 2000);
+        }
     }
 
     changeSearchOption(e) {
@@ -81,7 +82,7 @@ export class BookedClientsListComponent implements OnInit {
 
     onFocusedRowChanged(e: event) {
         this.focusBookedClientId = e.component.option('focusedRowKey');
-        // this.bookedClientCheckin = this.bookedClientsListService.getBookedClientById(+this.focusBookedClientId);
+        this.clientCheckin = this.clientsList.find(_ => _.id === this.focusBookedClientId);
     }
 
     getRoomName(params) {

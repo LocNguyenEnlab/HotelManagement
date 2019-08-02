@@ -10,7 +10,7 @@ export class ClientModel {
     invoiceId: number;
     checkinTime: Date;
     checkoutTime: Date;
-    code: string;
+    code: number;
     bookType: string;
     prePay: number;
     status: string; // booking or checkin

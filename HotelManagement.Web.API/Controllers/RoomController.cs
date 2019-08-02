@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using HotelManagement.Entities.DataContext;
 using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
-using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagement.Web.API.Controllers
 {
@@ -13,25 +9,23 @@ namespace HotelManagement.Web.API.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private readonly IRoomService _roomService;
+        private readonly IGenericService<Room> _roomService;
 
-        public RoomController(IRoomService roomService)
+        public RoomController(IGenericService<Room> roomService)
         {
-            //if (_roomService == null)
-            //{
-            //    _roomService = roomService;
-            //}
             _roomService = roomService;
         }
 
         [HttpGet]
         public List<Room> Get()
         {
-            //return _roomService.GetRooms();
-            using (var context = new EnlabHotelContext())
-            {
-                return context.Room.Include("Clients").ToList();
-            }
+            return _roomService.GetAll();
+        }
+
+        [HttpGet("/api/room/{roomName}")]
+        public Room Get(string roomName)
+        {
+            return _roomService.Get(roomName);
         }
 
         [HttpPut]
@@ -42,7 +36,7 @@ namespace HotelManagement.Web.API.Controllers
                 client.Room = room;
                 client.RoomName = room.Name;
             }
-            _roomService.UpdateRoom(room);
+            _roomService.Update(room);
         }
     }
 }

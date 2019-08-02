@@ -22,7 +22,6 @@ export class BookingComponent implements OnInit {
     roomBooking: RoomModel = new RoomModel();
     roomsBooking: RoomModel[] = [];
     rooms: RoomModel[] = [];
-    dateNow: Date;
     bookingTitle: string;
 
     constructor(
@@ -33,7 +32,6 @@ export class BookingComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dateNow = new Date();
         this.rooms = [];
         this.roomService.getRooms().subscribe(data => {
             this.rooms = data;
@@ -43,6 +41,8 @@ export class BookingComponent implements OnInit {
     onInit(roomBooking: RoomModel) {
         if (roomBooking) {
             this.roomBooking = roomBooking;
+            this.roomBooking.checkinTime = new Date();
+            this.roomBooking.checkoutTime = new Date();
             this.roomBooking.clients = [];
             this.bookingTitle = 'Booking room ' + roomBooking.name + ' (' + roomBooking.type + ')';
         }
@@ -92,6 +92,10 @@ export class BookingComponent implements OnInit {
     }
 
     addClientInfoOfPersonalBooking() {
+        this.clientBooking.status = 'Booking';
+        this.clientBooking.bookType = 'Personal Booking';
+        this.clientBooking.checkinTime = this.roomBooking.checkinTime;
+        this.clientBooking.checkoutTime = this.roomBooking.checkoutTime;
         if ((this.roomBooking.type === 'Single' && this.roomBooking.clients.length < 2)) {
             const clientTemp: ClientModel = Object.assign({}, this.clientBooking);
             this.roomBooking.clients.push(clientTemp);
@@ -121,8 +125,11 @@ export class BookingComponent implements OnInit {
 
     async bookPersonalRoom() {
         if (this.roomBooking.clients) {
-            const code = Math.floor(Math.random() * 1000);
+            const code = Math.floor(Math.random() * 9999);
             notify('Code: ' + code, 'success');
+            for (const client of this.roomBooking.clients) {
+                client.code = code;
+            }
             // this.bookingService.saveClients(this.personalBookingDetail.clients);
             this.isVisiblePersonalBookingPopup = false;
             this.roomBooking.status = 'Booking';

@@ -8,7 +8,7 @@ import {ApiService} from './api.service';
     providedIn: 'root'
 })
 export class RoomService {
-    apiUrl: string = ApiService.apiUrl + 'room';
+    apiUrl: string = ApiService.apiUrl + 'room/';
 
     constructor(private http: HttpClient) {
     }
@@ -18,7 +18,7 @@ export class RoomService {
     }
 
     getRoom(roomName: string): Observable<RoomModel> {
-        return this.http.get<RoomModel>(this.apiUrl);
+        return this.http.get<RoomModel>(this.apiUrl + roomName);
     }
 
     updateRoom(room: RoomModel): Observable<RoomModel> {

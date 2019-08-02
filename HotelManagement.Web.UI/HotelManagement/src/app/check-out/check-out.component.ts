@@ -42,13 +42,17 @@ export class CheckOutComponent implements OnInit {
     ngOnInit() {
     }
 
-    onInit(roomCheckout: RoomModel) {
+    async onInit(roomCheckout: RoomModel) {
         this.roomCheckout = roomCheckout;
-        this.invoice = this.invoiceService.getInvoiceByRoomName(this.roomCheckout.name);
+        // this.invoice = this.invoiceService.getInvoiceByRoomName(this.roomCheckout.name);
         this.titlePersonalCheckout = 'Checkout for Room ' + this.roomCheckout.name;
-        this.serviceSource = this.service.getServices();
+        await this.service.getServices().toPromise().then(data => {
+            this.serviceSource = data;
+        });
         this.serviceQuantitySource = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10];
-        this.serviceTypeSource = this.service.getServicesType();
+        await this.service.getServicesType().toPromise().then(data => {
+            this.serviceTypeSource = data;
+        });
     }
 
     cancelCheckout() {

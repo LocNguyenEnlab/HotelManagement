@@ -8,7 +8,7 @@ import {ApiService} from './api.service';
     providedIn: 'root'
 })
 export class ClientService {
-    apiUrl = ApiService.apiUrl + 'client';
+    apiUrl = ApiService.apiUrl + 'client/';
 
     constructor(private http: HttpClient) {
     }
@@ -19,5 +19,9 @@ export class ClientService {
 
     getClients(): Observable<ClientModel[]> {
         return this.http.get<ClientModel[]>(this.apiUrl);
+    }
+
+    getClientsByRoomName(roomName: string): Observable<ClientModel[]> {
+        return this.http.get<ClientModel[]>(this.apiUrl + 'roomname/' + roomName);
     }
 }

@@ -15,8 +15,10 @@ export class InvoiceListComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
-        this.invoiceList = this.invoiceService.getInvoices();
+    async ngOnInit() {
+        await this.invoiceService.getInvoices().toPromise().then(data => {
+            this.invoiceList = data;
+        });
     }
 
     customClientName(params) {

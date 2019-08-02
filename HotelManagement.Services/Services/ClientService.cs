@@ -10,12 +10,12 @@ namespace HotelManagement.Services.Services
 {
     public class ClientService : IClientService
     {
-        private IGenericRepository<Client> _clientRepository;
+        private IClientRepository _clientRepository;
 
 
         public ClientService(EnlabHotelContext context)
         {
-            _clientRepository = new GenericRepository<Client>(context);
+            _clientRepository = new ClientRepository(context);
         }
 
         public List<Client> GetAll()
@@ -28,22 +28,9 @@ namespace HotelManagement.Services.Services
             return _clientRepository.Get(id);
         }
 
-        public void Add(Client client)
+        public List<Client> Get(string roomName)
         {
-            _clientRepository.Add(client);
-            _clientRepository.Save();
-        }
-
-        public void Update(Client client)
-        {
-            _clientRepository.Update(client);
-            _clientRepository.Save();
-        }
-
-        public void Delete(int clientId)
-        {
-            _clientRepository.Delete(clientId);
-            _clientRepository.Save();
+            return _clientRepository.Get(roomName);
         }
     }
 }
