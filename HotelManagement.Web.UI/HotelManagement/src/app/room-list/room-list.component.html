@@ -3,85 +3,86 @@
 <app-check-out></app-check-out>
 <div class="room-list">
     <div class="row">
-        <div class="col-sm-2">
-            <nav>
-                <div class="dx-field">
-                    <dx-button
-                        text="Group booking"
-                        type="default"
-                        (onClick)="openPopupGroupBooking()">
-                    </dx-button>
-                </div>
-                <dx-button
-                    text="Booked Clients List"
-                    type="default"
-                    routerLink="booked-clients-list">
-                </dx-button>
-                <dx-button
-                    (onClick)="groupCheckin()"
-                    text="Group checkin"
-                    type="default">
-                </dx-button>
-                <dx-button
-                    text="Group checkout"
-                    type="default">
-                </dx-button>
-                <dx-button
-                    text="Invoice list"
-                    type="default"
-                    routerLink="/invoice-list">
-                </dx-button>
-            </nav>
+        <nav>
+<!--            <div class="dx-field">-->
+<!--                <dx-button-->
+<!--                    text="Group booking"-->
+<!--                    type="default"-->
+<!--                    (onClick)="openPopupGroupBooking()">-->
+<!--                </dx-button>-->
+<!--            </div>-->
+<!--            <dx-button-->
+<!--                text="Booked Clients List"-->
+<!--                type="default"-->
+<!--                routerLink="booked-clients-list">-->
+<!--            </dx-button>-->
+<!--            <dx-button-->
+<!--                (onClick)="groupCheckin()"-->
+<!--                text="Group checkin"-->
+<!--                type="default">-->
+<!--            </dx-button>-->
+<!--            <dx-button-->
+<!--                text="Group checkout"-->
+<!--                type="default">-->
+<!--            </dx-button>-->
+            <dx-button
+                text="Booked Clients List"
+                type="default"
+                routerLink="booked-clients-list">
+            </dx-button>
+            <dx-button
+                text="Invoice list"
+                type="default"
+                routerLink="/invoice-list">
+            </dx-button>
+        </nav>
+        <div class="room-diagram">
+            <table>
+                <tbody>
+                <tr></tr>
+                <tr *ngFor="let floor of floors" style="height: 100px;">
+                    <td class="floor">Floor {{floor.name}}</td>
+                    <td *ngFor="let room of floor.rooms">
+                        <dx-button id="R{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
+                                   (dblclick)="openPopupPersonalBooking($event.currentTarget.id)" class="room"
+                                   [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange'
+                            : room.status === 'Selected' ? 'Violet' : '#337ab7' "
+                        >
+                            <div class="row above">
+                                <div class="col-sm-2 col-xs-2 room-type">
+                                    <span>{{room.type}}</span>
+                                </div>
+                                <div class="col-sm-10 col-xs-10 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Booking'">
+                                    <span>{{room.checkinTime | date: 'MM'}}/{{room.checkinTime | date: 'dd'}} </span>
+                                    <i class="dx-icon-arrowright"></i>
+                                    <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="room-name">{{room.name}}</p>
+                                <p *ngIf="room.status === 'Booked'" class="client-name">
+                                    <span>{{room.clients[0].name}}</span>
+                                </p>
+                            </div>
+                        </dx-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="col-sm-10">
-            <div class="room-diagram">
-                <table>
-                    <tbody>
-                    <tr></tr>
-                    <tr *ngFor="let floor of floors" style="height: 100px;">
-                        <td class="floor">Floor {{floor.name}}</td>
-                        <td *ngFor="let room of floor.rooms">
-                            <dx-button id="R{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
-                                       (dblclick)="openPopupPersonalBooking($event.currentTarget.id)" class="room"
-                                       [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange'
-                            : room.status === 'Selected' ? 'Violet' : 'Red' "
-                            >
-                                <div class="row above">
-                                    <div class="col-sm-2 col-xs-2 room-type">
-                                        <span>{{room.type}}</span>
-                                    </div>
-                                    <div class="col-sm-10 col-xs-10 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Booking'">
-                                        <span>{{room.checkinTime | date: 'MM'}}/{{room.checkinTime | date: 'dd'}} </span>
-                                        <i class="dx-icon-arrowright"></i>
-                                        <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p class="room-name">{{room.name}}</p>
-                                    <p *ngIf="room.status === 'Booked'" class="client-name">
-                                        <span *ngFor="let client of room.clients">{{client.name}}, </span>
-                                    </p>
-                                </div>
-                            </dx-button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="notes">
-                <div class="note-item">
-                    <div class="available-note">
-                        <p>Available</p>
-                    </div>
-                    <div class="booking-note">
-                        <p>Booking</p>
-                    </div>
-                    <div class="booked-note">
-                        <p>Booked</p>
-                    </div>
-                    <div class="selection-note">
-                        <p>Your selection</p>
-                    </div>
+        <div class="notes">
+            <div class="note-item">
+                <div class="available-note">
+                    <p>Available</p>
+                </div>
+                <div class="booking-note">
+                    <p>Booking</p>
+                </div>
+                <div class="booked-note">
+                    <p>Booked</p>
+                </div>
+                <div class="selection-note">
+                    <p>Your selection</p>
                 </div>
             </div>
         </div>

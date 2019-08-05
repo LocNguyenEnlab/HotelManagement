@@ -2,16 +2,18 @@
 
 namespace HotelManagement.Services.Interfaces
 {
-    public interface IGenericService<T> where T : class
+    public interface IGenericService<TEntity> where TEntity : class
     {
-        void Add(T obj);
+        void Add(TEntity obj);
 
-        List<T> GetAll();
+        IList<TEntity> GetAll();
 
-        T Get(object id);
+        TEntity Get(object id);
 
         void Delete(object id);
 
-        void Update(T obj);
+        void Update(TEntity obj);
+
+        int GetMaxId();
     }
 }

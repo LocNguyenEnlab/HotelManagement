@@ -12,6 +12,7 @@ import {ServiceTypeModel} from '../models/ServiceTypeModel';
 import {InvoiceService} from '../services/invoice.service';
 import {InvoiceModel} from '../models/InvoiceModel';
 import {ClientService} from '../services/client.service';
+import {ServiceOfInvoiceModel} from '../models/ServiceOfInvoiceModel';
 
 @Component({
     selector: 'app-check-in',
@@ -64,6 +65,8 @@ export class CheckInComponent implements OnInit {
                  this.roomCheckin.clients = data;
              });
              this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
+             this.invoice.discount = this.roomCheckin.clients[0].discount;
+             this.invoice.prepay = this.roomCheckin.clients[0].prepay;
         }
     }
     cancel() {
@@ -93,18 +96,20 @@ export class CheckInComponent implements OnInit {
         }
     }
 
-    checkinForPersonal() {
+    async checkinForPersonal() {
         if (this.roomCheckin.clients) {
             this.roomCheckin.status = 'Booked';
+            this.createInvoice();
+            await this.invoiceService.addInvoice(this.invoice).toPromise().then();
             for (const client of this.roomCheckin.clients) {
                 client.status = 'Check in';
+                await this.clientService.update(client).toPromise().then();
             }
-            this.roomService.updateRoom(this.roomCheckin).subscribe();
-            this.createInvoice();
-            this.invoiceService.addInvoice(this.invoice).subscribe();
+            await this.roomService.updateRoom(this.roomCheckin).toPromise().then();
             notify('Checkin successfully', 'success');
             this.router.navigate(['/booked-clients-list']);
             this.isVisiblePersonalCheckinPopup = false;
+            window.location.reload();
         } else {
             notify('Please add clients for this room!', 'error');
         }
@@ -114,15 +119,15 @@ export class CheckInComponent implements OnInit {
         let totalPayment: number;
         let totalRoomMoney: number;
         let totalServiceMoney = 0;
-        const rentTime =
-            Math.ceil((new Date(this.roomCheckin.checkoutTime).getTime() - new Date(this.roomCheckin.checkinTime).getTime()) / (24 * 60 * 60 * 1000));
-        for (const service of this.invoice.services) {
-            totalServiceMoney += service.price * service.quantity;
+        const rentTime = Math.ceil((new Date(this.roomCheckin.checkoutTime).getTime() -
+            new Date(this.roomCheckin.checkinTime).getTime()) / (24 * 60 * 60 * 1000));
+        for (const service of this.invoice.serviceOfInvoice) {
+            totalServiceMoney += service.totalMoney;
         }
         totalRoomMoney = this.roomCheckin.price * rentTime;
         totalPayment = totalRoomMoney + totalServiceMoney;
         if (this.invoice.discount) {
-            totalPayment *= (this.invoice.discount / 100);
+            totalPayment = totalPayment - totalPayment * (this.invoice.discount / 100);
         }
         this.invoice.clients = this.roomCheckin.clients;
         this.invoice.rentTime = rentTime;
@@ -145,26 +150,6 @@ export class CheckInComponent implements OnInit {
         } else {
             notify('Can not add more than one client for Single room!', 'warning');
         }
-    }
-
-    checkinForGroup() {
-        // if (this.bookedClientCheckin) {
-        //     this.addBookedClientsList(this.bookedClientCheckin.id, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
-        //         this.groupBookingDetail.checkoutTime, 'Group Booking', '-1', this.groupBookingDetail.prePay, this.roomsCheckin,
-        //         this.groupBookingDetail.discount);
-        // } else {
-        //     this.addBookedClientsList(null, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
-        //         this.groupBookingDetail.checkoutTime, 'Group Booking', '-1', this.groupBookingDetail.prePay,
-        //         this.roomsCheckin, this.groupBookingDetail.discount);
-        // }
-        // notify('Checkin successfully', 'success');
-        // this.updateRooms(this.groupBookingDetail.clients);
-        // this.router.navigate(['/booked-clients-list']);
-        // this.isVisibleGroupCheckinPopup = false;
-    }
-
-    cancelGroupCheckin() {
-        this.isVisibleGroupCheckinPopup = false;
     }
 
     chooseService(event: Event) {
@@ -191,16 +176,19 @@ export class CheckInComponent implements OnInit {
 
     addService() {
         if (this.serviceQuantityValue != null && this.serviceValue != null) {
-            if (!this.invoice.services) {
-                this.invoice.services = [];
+            if (!this.invoice.serviceOfInvoice) {
+                this.invoice.serviceOfInvoice = [];
             }
-            const service: ServiceModel = this.invoice.services.find(_ => _.id === this.serviceValue.id);
-            if (service) {
-                service.quantity += this.serviceQuantityValue;
+            const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.serviceOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
+            if (serviceOfInvoice) {
+                serviceOfInvoice.quantity += this.serviceQuantityValue;
+                serviceOfInvoice.totalMoney = this.serviceValue.price * serviceOfInvoice.quantity;
             } else {
-                this.serviceValue.quantity = this.serviceQuantityValue;
-                this.serviceValue.totalMoney = this.serviceValue.quantity * this.serviceValue.price;
-                this.invoice.services.push(this.serviceValue);
+                const serviceInvoice: ServiceOfInvoiceModel = new ServiceOfInvoiceModel();
+                serviceInvoice.quantity = this.serviceQuantityValue;
+                serviceInvoice.totalMoney = serviceInvoice.quantity * this.serviceValue.price;
+                serviceInvoice.serviceId = this.serviceValue.id;
+                this.invoice.serviceOfInvoice.push(serviceInvoice);
             }
         } else {
             notify('Please select service and quantity of it', 'error');

@@ -7,15 +7,15 @@ using System.Linq;
 
 namespace HotelManagement.Repository.Repository
 {
-    public class ServiceTypeRepository : GenericRepository<ServiceType>, IServiceTypeRepository
+    public class RoomRepository : GenericRepository<Room>, IRoomRepository
     {
-        public ServiceTypeRepository(EnlabHotelContext context) : base(context)
+        public RoomRepository(EnlabHotelContext context) : base(context)
         {
         }
 
-        public override IList<ServiceType> GetAll()
+        public override IList<Room> GetAll()
         {
-            return _context.ServiceType.Include(_ => _.Services).ToList();
+            return _context.Room.Include(_ => _.Clients).ToList();
         }
     }
 }

@@ -7,42 +7,43 @@ using System.Linq;
 
 namespace HotelManagement.Repository.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private EnlabHotelContext _context;
-        private DbSet<T> _table;
+        protected EnlabHotelContext _context;
+        private DbSet<TEntity> Entities;
+
 
         public GenericRepository(EnlabHotelContext context)
         {  
             _context = context;
-            _table = _context.Set<T>();
+            Entities = _context.Set<TEntity>();
         }
 
-        public IList<T> GetAll()
+        public virtual IList<TEntity> GetAll()
         {
-            return _table.ToList();
+            return Entities.ToList();
         }
 
-        public T Get(object id)
+        public TEntity Get(object id)
         {
-            return _table.Find(id);
+            return Entities.Find(id);
         }
 
-        public void Add(T obj)
+        public void Add(TEntity obj)
         {
-            _table.Add(obj);
+            Entities.Add(obj);
         }
 
-        public void Update(T obj)
+        public void Update(TEntity obj)
         {
-            _table.Attach(obj);
+            Entities.Attach(obj);
             _context.Entry(obj).State = EntityState.Modified;
         }
 
         public void Delete(object id)
         {
-            T existing = _table.Find(id);
-            _table.Remove(existing);
+            TEntity existing = Entities.Find(id);
+            Entities.Remove(existing);
         }
 
         public void Save()
@@ -50,9 +51,9 @@ namespace HotelManagement.Repository.Repository
             _context.SaveChanges();
         }
 
-        public int GetMaxId(Func<T, decimal> columnSelector)
+        public int GetMaxId(Func<TEntity, decimal> columnSelector)
         {
-            return (int)_table.Max(columnSelector);
+            return (int)Entities.Max(columnSelector);
         }
     }
 }

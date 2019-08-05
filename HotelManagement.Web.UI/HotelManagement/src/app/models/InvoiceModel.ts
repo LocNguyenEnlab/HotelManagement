@@ -1,5 +1,6 @@
 import {ClientModel} from './ClientModel';
 import {ServiceModel} from './ServiceModel';
+import {ServiceOfInvoiceModel} from './ServiceOfInvoiceModel';
 
 export class InvoiceModel {
     id: number;
@@ -14,7 +15,7 @@ export class InvoiceModel {
     prepay: number;
     checkinTime: Date;
     checkoutTime: Date;
-    services: ServiceModel[];
+    serviceOfInvoice: ServiceOfInvoiceModel[];
 
     constructor() {
         this.clients = [];
@@ -28,6 +29,6 @@ export class InvoiceModel {
         this.prepay = 0;
         this.checkinTime = new Date();
         this.checkoutTime = new Date();
-        this.services = [];
+        this.serviceOfInvoice = [];
     }
 }

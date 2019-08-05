@@ -15,15 +15,17 @@ namespace HotelManagement.Web.API.Controllers
     public class InvoiceController : ControllerBase
     {
         private readonly IGenericService<Invoice> _service;
-        
+        private readonly IClientService _clientService;
 
-        public InvoiceController(IGenericService<Invoice> service)
+
+        public InvoiceController(IGenericService<Invoice> service, IClientService clientService)
         {
             _service = service;
+            _clientService = clientService;
         }
 
         [HttpGet]
-        public List<Invoice> Get()
+        public IList<Invoice> Get()
         {
             return _service.GetAll();
         }
@@ -31,7 +33,15 @@ namespace HotelManagement.Web.API.Controllers
         [HttpPost]
         public void Post(Invoice invoice)
         {
+            var clients = invoice.Clients;            
+            invoice.Clients = null;
             _service.Add(invoice);
+            foreach (var client in clients)
+            {
+                //client.InvoiceId = maxId;
+                client.Invoice = invoice;
+                _clientService.Update(client);
+            }
         }
 
         [HttpPut]

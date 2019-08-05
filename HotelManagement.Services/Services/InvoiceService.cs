@@ -10,14 +10,15 @@ namespace HotelManagement.Services.Services
 {
     public class InvoiceService : IGenericService<Invoice>
     {
-        private IGenericRepository<Invoice> _invoiceRepository;
+        private IInvoiceRepository _invoiceRepository;
+
 
         public InvoiceService(EnlabHotelContext context)
         {
-            _invoiceRepository = new GenericRepository<Invoice>(context);
+            _invoiceRepository = new InvoiceRepository(context);
         }
 
-        public List<Invoice> GetAll()
+        public IList<Invoice> GetAll()
         {
             return _invoiceRepository.GetAll().ToList();
         }
@@ -43,6 +44,11 @@ namespace HotelManagement.Services.Services
         {
             _invoiceRepository.Delete(clientId);
             _invoiceRepository.Save();
+        }
+
+        public int GetMaxId()
+        {
+            return _invoiceRepository.GetMaxId(_ => _.Id);
         }
     }
 }

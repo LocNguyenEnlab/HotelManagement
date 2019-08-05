@@ -1,12 +1,13 @@
 ﻿using HotelManagement.Entities.Model;
+using HotelManagement.Repository.Repository;
 using System.Collections.Generic;
 
 namespace HotelManagement.Repository.Interfaces
 {
-    public interface IClientRepository
+    public interface IClientRepository : IGenericRepository<Client>
     {
-        List<Client> GetAll();
-        List<Client> Get(string roomName);
-        Client Get(int id);
+        IList<Client> GetAll();
+
+        IList<Client> Get(string roomName);
     }
 }

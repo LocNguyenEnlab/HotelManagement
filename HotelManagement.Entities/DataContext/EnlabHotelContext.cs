@@ -13,6 +13,7 @@ namespace HotelManagement.Entities.DataContext
         public DbSet<Room> Room { get; set; }
         public DbSet<Service> Service { get; set; }
         public DbSet<ServiceType> ServiceType { get; set; }
+        public DbSet<ServiceOfInvoice> ServiceOfInvoice { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

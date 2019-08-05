@@ -5,7 +5,6 @@ using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace HotelManagement.Web.API
 {

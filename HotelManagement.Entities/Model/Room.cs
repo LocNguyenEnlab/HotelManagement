@@ -10,12 +10,19 @@ namespace HotelManagement.Entities.Model
     {
         [Key]
         public string Name { get; set; }
+
         public string Status { get; set; }
+
         public double Price { get; set; }
+
         public DateTime CheckinTime{ get; set; }
+
         public DateTime CheckoutTime { get; set; }
+
         public string Type { get; set; }
+
         public ICollection<Client> Clients { get; set; }
+
         public string Floor { get; set; }
     }
 }

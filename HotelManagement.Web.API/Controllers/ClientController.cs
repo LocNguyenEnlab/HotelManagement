@@ -18,7 +18,7 @@ namespace HotelManagement.Web.API.Controllers
         }
 
         [HttpGet]
-        public List<Client> Get()
+        public IList<Client> Get()
         {
             return _service.GetAll();
         }
@@ -30,9 +30,15 @@ namespace HotelManagement.Web.API.Controllers
         }
 
         [HttpGet("/api/client/roomname/{roomName}")]
-        public List<Client> Get(string roomName)
+        public IList<Client> Get(string roomName)
         {
             return _service.Get(roomName);
+        }
+
+        [HttpPut]
+        public void Put(Client client)
+        {           
+            _service.Update(client);
         }
     }
 }

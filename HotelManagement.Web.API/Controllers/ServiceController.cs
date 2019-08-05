@@ -18,7 +18,7 @@ namespace HotelManagement.Web.API.Controllers
         }
 
         [HttpGet]
-        public List<Service> Get()
+        public IList<Service> Get()
         {
             return _service.GetAll();
         }

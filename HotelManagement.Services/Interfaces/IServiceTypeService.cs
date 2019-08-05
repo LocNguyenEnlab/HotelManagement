@@ -5,6 +5,6 @@ namespace HotelManagement.Services.Interfaces
 {
     public interface IServiceTypeService
     {
-        List<ServiceType> GetAll();
+        IList<ServiceType> GetAll();
     }
 }

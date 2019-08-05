@@ -18,7 +18,7 @@ namespace HotelManagement.Services.Services
             _clientRepository = new ClientRepository(context);
         }
 
-        public List<Client> GetAll()
+        public IList<Client> GetAll()
         {
             return _clientRepository.GetAll().ToList();
         }
@@ -28,9 +28,15 @@ namespace HotelManagement.Services.Services
             return _clientRepository.Get(id);
         }
 
-        public List<Client> Get(string roomName)
+        public IList<Client> Get(string roomName)
         {
-            return _clientRepository.Get(roomName);
+            return _clientRepository.Get(roomName).ToList();
+        }
+
+        public void Update(Client client)
+        {
+            _clientRepository.Update(client);
+            _clientRepository.Save();
         }
     }
 }

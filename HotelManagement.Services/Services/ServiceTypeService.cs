@@ -17,7 +17,7 @@ namespace HotelManagement.Services.Services
             _serviceTypeRepository = new ServiceTypeRepository(context);
         }
 
-        public List<ServiceType> GetAll()
+        public IList<ServiceType> GetAll()
         {
             return _serviceTypeRepository.GetAll();
         }

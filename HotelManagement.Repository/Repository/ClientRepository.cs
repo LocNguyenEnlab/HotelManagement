@@ -1,34 +1,26 @@
 ﻿using HotelManagement.Entities.DataContext;
 using HotelManagement.Entities.Model;
 using HotelManagement.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HotelManagement.Repository.Repository
 {
-    public class ClientRepository : IClientRepository
+    public class ClientRepository : GenericRepository<Client>, IClientRepository
     {
-        private EnlabHotelContext _context;
-
-
-        public ClientRepository(EnlabHotelContext context)
+        public ClientRepository(EnlabHotelContext context) : base(context)
         {
-            _context = context;
         }
 
-        public List<Client> GetAll()
+        public override IList<Client> GetAll()
         {
-            return _context.Client.ToList();
+            return _context.Client.Include(_ => _.Invoice).ToList();
         }
 
-        public List<Client> Get(string roomName)
+        public IList<Client> Get(string roomName)
         {
             return _context.Client.Where(_ => _.RoomName == roomName).ToList();
-        }
-
-        public Client Get(int id)
-        {
-            return _context.Client.Where(_ => _.Id == id).FirstOrDefault();
         }
     }
 }

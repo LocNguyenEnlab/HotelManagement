@@ -24,4 +24,8 @@ export class ClientService {
     getClientsByRoomName(roomName: string): Observable<ClientModel[]> {
         return this.http.get<ClientModel[]>(this.apiUrl + 'roomname/' + roomName);
     }
+
+    update(client: ClientModel): Observable<ClientModel> {
+        return this.http.put<ClientModel>(this.apiUrl, client);
+    }
 }

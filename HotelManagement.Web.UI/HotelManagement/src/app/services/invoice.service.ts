@@ -19,8 +19,8 @@ export class InvoiceService {
         return this.http.post<InvoiceModel>(this.apiUrl, invoice);
     }
 
-    updateInvoice(invoice: InvoiceModel) {
-
+    updateInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
+        return this.http.put<InvoiceModel>(this.apiUrl, invoice);
     }
 
     getInvoices(): Observable<InvoiceModel[]> {

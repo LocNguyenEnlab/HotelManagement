@@ -18,7 +18,7 @@ namespace HotelManagement.Services.Services
             _serviceRepository = new GenericRepository<Service>(context);
         }
 
-        public List<Service> GetAll()
+        public IList<Service> GetAll()
         {
             return _serviceRepository.GetAll().ToList();
         }
@@ -44,6 +44,11 @@ namespace HotelManagement.Services.Services
         {
             _serviceRepository.Delete(serviceId);
             _serviceRepository.Save();
+        }
+
+        public int GetMaxId()
+        {
+            return -1;
         }
     }
 }

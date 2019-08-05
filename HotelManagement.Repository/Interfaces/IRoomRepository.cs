@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace HotelManagement.Repository.Interfaces
 {
-    public interface IServiceTypeRepository : IGenericRepository<ServiceType>
+    public interface IRoomRepository : IGenericRepository<Room>
     {
-        IList<ServiceType> GetAll(); 
+        IList<Room> GetAll();
     }
 }

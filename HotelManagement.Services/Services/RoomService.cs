@@ -3,7 +3,6 @@ using HotelManagement.Entities.Model;
 using HotelManagement.Repository.Interfaces;
 using HotelManagement.Repository.Repository;
 using HotelManagement.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,14 +10,15 @@ namespace HotelManagement.Services.Services
 {
     public class RoomService : IGenericService<Room>
     {
-        private IGenericRepository<Room> _roomRepository;
+        private IRoomRepository _roomRepository;
+
 
         public RoomService(EnlabHotelContext context)
         {
-            _roomRepository = new GenericRepository<Room>(context);
+            _roomRepository = new RoomRepository(context);
         }
 
-        public List<Room> GetAll()
+        public IList<Room> GetAll()
         {
             return _roomRepository.GetAll().ToList();
         }
@@ -31,18 +31,23 @@ namespace HotelManagement.Services.Services
 
         public Room Get(object roomName)
         {
-            return _roomRepository.Get(roomName);
+            return _roomRepository.Get((string)roomName);
         }
 
         public void Delete(object roomName)
         {
-            _roomRepository.Delete(roomName);
+            _roomRepository.Delete((string)roomName);
             _roomRepository.Save();
         }
 
         public void Add(Room room)
         {
             _roomRepository.Add(room);
+        }
+
+        public int GetMaxId()
+        {
+            return -1;
         }
     }
 }

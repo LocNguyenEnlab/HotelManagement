@@ -3,6 +3,4 @@ export class ServiceModel {
     name: string;
     price: number;
     typeId: number;
-    quantity: number;
-    totalMoney: number;
 }

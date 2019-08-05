@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {RoomModel} from '../models/RoomModel';
 import {FloorModel} from '../models/FloorModel';
-import {ClientModel} from '../models/ClientModel';
 import {BookingService} from '../services/booking.service';
 import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';

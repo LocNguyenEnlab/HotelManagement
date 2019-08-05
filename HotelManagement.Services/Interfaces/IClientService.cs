@@ -5,8 +5,12 @@ namespace HotelManagement.Services.Interfaces
 {
     public interface IClientService
     {
-        List<Client> GetAll();
-        List<Client> Get(string roomName);
+        IList<Client> GetAll();
+
+        IList<Client> Get(string roomName);
+
         Client Get(int id);
+
+        void Update(Client client);
     }
 }

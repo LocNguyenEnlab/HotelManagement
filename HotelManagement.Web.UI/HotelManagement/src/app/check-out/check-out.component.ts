@@ -100,27 +100,27 @@ export class CheckOutComponent implements OnInit {
     }
 
     addService() {
-        if (this.serviceQuantityValue != null && this.serviceValue != null) {
-            const service: ServiceModel = this.invoice.services.find(_ => _.id === this.serviceValue.id);
-            if (service) {
-                service.quantity += this.serviceQuantityValue;
-                service.totalMoney = service.price * service.quantity;
-                if (service.quantity === 0) {
-                    const index = this.invoice.services.findIndex(_ => _.id === this.serviceValue.id);
-                    this.invoice.services.splice(index, 1);
-                }
-            } else {
-                this.serviceValue.quantity = this.serviceQuantityValue;
-                this.serviceValue.totalMoney = this.serviceValue.quantity * this.serviceValue.price;
-                this.invoice.services.push(this.serviceValue);
-            }
-            this.invoice.totalServiceMoney += (this.serviceValue.price * this.serviceQuantityValue);
-            this.invoice.totalPayment += (this.serviceValue.price * this.serviceQuantityValue);
-            this.roomService.updateRoom(this.roomCheckout);
-            this.invoiceService.updateInvoice(this.invoice);
-        } else {
-            notify('Please select service and quantity of it', 'error');
-        }
+        // if (this.serviceQuantityValue != null && this.serviceValue != null) {
+        //     const service: ServiceModel = this.invoice.services.find(_ => _.id === this.serviceValue.id);
+        //     if (service) {
+        //         service.quantity += this.serviceQuantityValue;
+        //         service.totalMoney = service.price * service.quantity;
+        //         if (service.quantity === 0) {
+        //             const index = this.invoice.services.findIndex(_ => _.id === this.serviceValue.id);
+        //             this.invoice.services.splice(index, 1);
+        //         }
+        //     } else {
+        //         this.serviceValue.quantity = this.serviceQuantityValue;
+        //         this.serviceValue.totalMoney = this.serviceValue.quantity * this.serviceValue.price;
+        //         this.invoice.services.push(this.serviceValue);
+        //     }
+        //     this.invoice.totalServiceMoney += (this.serviceValue.price * this.serviceQuantityValue);
+        //     this.invoice.totalPayment += (this.serviceValue.price * this.serviceQuantityValue);
+        //     this.roomService.updateRoom(this.roomCheckout);
+        //     this.invoiceService.updateInvoice(this.invoice);
+        // } else {
+        //     notify('Please select service and quantity of it', 'error');
+        // }
     }
 
 }

@@ -129,13 +129,10 @@ export class BookingComponent implements OnInit {
             notify('Code: ' + code, 'success');
             for (const client of this.roomBooking.clients) {
                 client.code = code;
+                client.invoiceId = -1;
             }
-            // this.bookingService.saveClients(this.personalBookingDetail.clients);
             this.isVisiblePersonalBookingPopup = false;
             this.roomBooking.status = 'Booking';
-            // for (const client of this.roomBooking.clients) {
-            //     await this.clientService.addClient(client).toPromise().then();
-            // }
             await this.roomService.updateRoom(this.roomBooking).toPromise().then();
             this.router.navigate(['/booked-clients-list']);
         } else {

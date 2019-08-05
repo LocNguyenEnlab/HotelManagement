@@ -12,7 +12,7 @@ export class ClientModel {
     checkoutTime: Date;
     code: number;
     bookType: string;
-    prePay: number;
+    prepay: number;
     status: string; // booking or checkin
     discount: number;
 

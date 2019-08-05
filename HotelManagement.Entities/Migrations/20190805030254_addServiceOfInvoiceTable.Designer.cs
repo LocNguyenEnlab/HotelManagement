@@ -4,14 +4,16 @@ using HotelManagement.Entities.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelManagement.Entities.Migrations
 {
     [DbContext(typeof(EnlabHotelContext))]
-    partial class EnlabHotelContextModelSnapshot : ModelSnapshot
+    [Migration("20190805030254_addServiceOfInvoiceTable")]
+    partial class addServiceOfInvoiceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace HotelManagement.Entities.Migrations
 
                     b.Property<string>("IdentityOrPassport");
 
-                    b.Property<int?>("InvoiceId");
+                    b.Property<int>("InvoiceId");
 
                     b.Property<string>("Name");
 
@@ -176,7 +178,8 @@ namespace HotelManagement.Entities.Migrations
                 {
                     b.HasOne("HotelManagement.Entities.Model.Invoice", "Invoice")
                         .WithMany("Clients")
-                        .HasForeignKey("InvoiceId");
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HotelManagement.Entities.Model.Room", "Room")
                         .WithMany("Clients")
