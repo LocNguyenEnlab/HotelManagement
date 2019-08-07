@@ -30,6 +30,8 @@ C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\sr
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\models\ServiceTypeModel.js.map
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\services\service.service.js
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\services\service.service.js.map
+C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\models\ServiceOfInvoiceModel.js
+C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\models\ServiceOfInvoiceModel.js.map
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\models\InvoiceModel.js
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\models\InvoiceModel.js.map
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\services\invoice.service.js
@@ -42,6 +44,8 @@ C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\sr
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\booking\booking.component.js.map
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\check-out\check-out.component.js
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\check-out\check-out.component.js.map
+C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\update-service\update-service.component.js
+C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\update-service\update-service.component.js.map
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\room-list\room-list.component.js
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\room-list\room-list.component.js.map
 C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\dist\out-tsc\src\app\booked-clients-list\booked-clients-list.component.js

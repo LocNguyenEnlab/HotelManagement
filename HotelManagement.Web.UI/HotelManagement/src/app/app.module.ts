@@ -25,6 +25,7 @@ import { CheckInComponent } from './check-in/check-in.component';
 import { BookingComponent } from './booking/booking.component';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
+import { UpdateServiceComponent } from './update-service/update-service.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
         CheckInComponent,
         BookingComponent,
         CheckOutComponent,
-        InvoiceListComponent
+        InvoiceListComponent,
+        UpdateServiceComponent
     ],
     imports: [
         BrowserModule,
@@ -48,6 +50,7 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
             {path: 'check-in', component: CheckInComponent},
             {path: 'check-out', component: CheckOutComponent},
             {path: 'invoice-list', component: InvoiceListComponent},
+            {path: 'update-service', component: UpdateServiceComponent},
         ]),
         DxPopupModule,
         DxTabPanelModule,

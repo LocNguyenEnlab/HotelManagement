@@ -8,46 +8,24 @@ using System.Linq;
 
 namespace HotelManagement.Services.Services
 {
-    public class RoomService : IGenericService<Room>
+    public class RoomService :  GenericService<Room>, IRoomService
     {
         private IRoomRepository _roomRepository;
 
 
-        public RoomService(EnlabHotelContext context)
+        public RoomService(EnlabHotelContext context) : base(context)
         {
             _roomRepository = new RoomRepository(context);
         }
 
-        public IList<Room> GetAll()
+        public Room Get(string roomName)
         {
-            return _roomRepository.GetAll().ToList();
+            return _roomRepository.Get(roomName);
         }
 
-        public void Update(Room room)
+        public override IList<Room> GetAll()
         {
-            _roomRepository.Update(room);
-            _roomRepository.Save();
-        }
-
-        public Room Get(object roomName)
-        {
-            return _roomRepository.Get((string)roomName);
-        }
-
-        public void Delete(object roomName)
-        {
-            _roomRepository.Delete((string)roomName);
-            _roomRepository.Save();
-        }
-
-        public void Add(Room room)
-        {
-            _roomRepository.Add(room);
-        }
-
-        public int GetMaxId()
-        {
-            return -1;
+            return _roomRepository.GetAll();
         }
     }
 }

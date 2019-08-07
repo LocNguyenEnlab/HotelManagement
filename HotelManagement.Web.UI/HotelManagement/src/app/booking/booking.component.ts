@@ -17,12 +17,12 @@ export class BookingComponent implements OnInit {
     isVisibleGroupBookingPopup = false;
     isVisiblePersonalBookingPopup = false;
     updateBooking = false;
-    clientBooking: ClientModel = new ClientModel();
     clientsListBooking: ClientModel[] = [];
     roomBooking: RoomModel = new RoomModel();
-    roomsBooking: RoomModel[] = [];
     rooms: RoomModel[] = [];
     bookingTitle: string;
+    discount: number;
+    prepay: number;
 
     constructor(
         private clientService: ClientService,
@@ -43,98 +43,49 @@ export class BookingComponent implements OnInit {
             this.roomBooking = roomBooking;
             this.roomBooking.checkinTime = new Date();
             this.roomBooking.checkoutTime = new Date();
+            this.roomBooking.checkoutTime.setDate(this.roomBooking.checkinTime.getDate() + 1);
+            this.roomBooking.checkoutTime.setHours(12, 0, 0, 0);
+            if (new Date().getHours() < 14) {
+                this.roomBooking.checkinTime.setHours(14, 0, 0, 0);
+            }
             this.roomBooking.clients = [];
             this.bookingTitle = 'Booking room ' + roomBooking.name + ' (' + roomBooking.type + ')';
         }
     }
 
-    addClientInfoOfGroupBooking() {
-        const clientTemp: ClientModel = Object.assign({}, this.clientBooking);
-        this.clientsListBooking.push(clientTemp);
-        // this.resetClientInput();
-    }
-
-    bookGroupRooms() {
-        // if (this.groupBookingDetail.clients.length > 0) {
-        //     const code = Math.floor(Math.random() * 1000);
-        //     notify('Code: ' + code, 'success');
-        //     for (const roomBooking of this.roomsBooking) {
-        //         roomBooking.status = 'Booking';
-        //         roomBooking.clients = this.groupBookingDetail.clients;
-        //         this.updateRoom(roomBooking);
-        //     }
-        //     this.isVisibleGroupBookingPopup = false;
-        //     this.groupBookingDetail.rooms = this.roomsBooking;
-        //     this.clientService.saveBookedClients(this.groupBookingDetail.clients);
-        //     this.addBookedClientsList(null, this.groupBookingDetail.clients, this.groupBookingDetail.checkinTime,
-        //         this.groupBookingDetail.checkoutTime, 'Group Booking', code.toString(), this.groupBookingDetail.prePay,
-        //         this.roomsBooking, this.groupBookingDetail.discount);
-        //     this.roomsBooking = [];
-        //     this.groupBookingDetail.clients = [];
-        //     this.router.navigate(['/booked-clients-list']);
-        // } else {
-        //     notify('Please add client for this rooms!', 'error');
-        // }
-    }
-
-    cancelGroupBooking() {
-        this.roomsBooking = [];
-        this.clientsListBooking = [];
-        this.clientBooking = new ClientModel();
-        this.isVisibleGroupBookingPopup = false;
-    }
-
     cancelBooking() {
         this.roomBooking = new RoomModel();
         this.clientsListBooking = [];
-        this.clientBooking = new ClientModel();
         this.isVisiblePersonalBookingPopup = false;
     }
 
-    addClientInfoOfPersonalBooking() {
-        this.clientBooking.status = 'Booking';
-        this.clientBooking.bookType = 'Personal Booking';
-        this.clientBooking.checkinTime = this.roomBooking.checkinTime;
-        this.clientBooking.checkoutTime = this.roomBooking.checkoutTime;
-        if ((this.roomBooking.type === 'Single' && this.roomBooking.clients.length < 2)) {
-            const clientTemp: ClientModel = Object.assign({}, this.clientBooking);
-            this.roomBooking.clients.push(clientTemp);
-            // this.resetClientInput();
-            // this.personalBookingDetail.clients.push(clientTemp);
-        } else if (this.roomBooking.type === 'Double') {
-            const clientTemp: ClientModel = Object.assign({}, this.clientBooking);
-            this.roomBooking.clients.push(clientTemp);
-        } else {
-            notify('Can not add more than one client for Single room!', 'warning');
-        }
-    }
-
-    resetClientInput() {
-        // this.clientBooking = {
-        //     id: null,
-        //     name: '',
-        //     address: '',
-        //     email: '',
-        //     nationality: '',
-        //     identityOrPassport: '',
-        //     notes: '',
-        //     roomName: '',
-        //     invoiceId: 0
-        // };
-    }
-
     async bookPersonalRoom() {
-        if (this.roomBooking.clients) {
-            const code = Math.floor(Math.random() * 9999);
-            notify('Code: ' + code, 'success');
-            for (const client of this.roomBooking.clients) {
-                client.code = code;
-                client.invoiceId = -1;
+        if (this.roomBooking.clients.length) {
+            if (this.roomBooking.type === 'Single' && this.roomBooking.clients.length < 2 || this.roomBooking.type === 'Double') {
+                const code = Math.floor(Math.random() * 9999);
+                notify('Code: ' + code, 'success');
+                if (!this.prepay) {
+                    this.prepay = 0;
+                }
+                if (!this.discount) {
+                    this.discount = 0;
+                }
+                for (const client of this.roomBooking.clients) {
+                    client.code = code;
+                    client.checkinTime = this.roomBooking.checkinTime;
+                    client.checkoutTime = this.roomBooking.checkoutTime;
+                    client.status = 'Booked';
+                    client.bookType = 'Personal Booking';
+                    client.prepay = this.prepay;
+                    client.discount = this.discount;
+                }
+                this.isVisiblePersonalBookingPopup = false;
+                this.roomBooking.status = 'Booking';
+                await this.roomService.updateRoom(this.roomBooking).toPromise().then();
+                // window.location.reload();
+            } else {
+                notify('Can not booking because there are more than 1 client for single room!', 'error');
             }
-            this.isVisiblePersonalBookingPopup = false;
-            this.roomBooking.status = 'Booking';
-            await this.roomService.updateRoom(this.roomBooking).toPromise().then();
-            this.router.navigate(['/booked-clients-list']);
         } else {
             notify('Please add client for this room!', 'error');
         }
@@ -146,10 +97,5 @@ export class BookingComponent implements OnInit {
         // rooms.push(this.roomBooking);
         // notify('Update personal booking successfully!', 'success');
         // this.isVisiblePersonalBookingPopup = false;
-    }
-
-    updateGroupBooking() {
-        notify('update group');
-        this.isVisibleGroupBookingPopup = false;
     }
 }

@@ -8,6 +8,7 @@ import {CheckInComponent} from '../check-in/check-in.component';
 import {BookingComponent} from '../booking/booking.component';
 import {CheckOutComponent} from '../check-out/check-out.component';
 import {ClientService} from '../services/client.service';
+import {UpdateServiceComponent} from '../update-service/update-service.component';
 
 @Component({
     selector: 'app-room-list',
@@ -18,6 +19,7 @@ export class RoomListComponent implements OnInit {
     @ViewChild(CheckInComponent, {static: false}) checkinComponent;
     @ViewChild(BookingComponent, {static: false}) bookingComponent;
     @ViewChild(CheckOutComponent, {static: false}) checkoutComponent;
+    @ViewChild(UpdateServiceComponent, {static: false}) updateServiceComponent;
     floors: FloorModel[] = [];
     rooms: RoomModel[] = [];
     checkInCheckOutText = [];
@@ -41,7 +43,8 @@ export class RoomListComponent implements OnInit {
         });
         this.checkInCheckOutText = [
             {text: 'Checkin'},
-            {text: 'Checkout/Update Service'},
+            {text: 'Update Service'},
+            {text: 'Checkout'},
         ];
         this.updateBookingText = [
             {text: 'Update booking'},
@@ -113,7 +116,10 @@ export class RoomListComponent implements OnInit {
         if (e.itemData.text === 'Checkin' && room.status === 'Available') {
             this.checkinComponent.isVisiblePersonalCheckinPopup = true;
             this.checkinComponent.onInit(Object.assign({}, room), null, null);
-        } else if (e.itemData.text === 'Checkout/Update Service' && room.status === 'Booked') {
+        } else if (e.itemData.text === 'Update Service' && room.status === 'Booked') {
+            this.updateServiceComponent.isVisibleUpdateServicePopup = true;
+            this.updateServiceComponent.onInit(room);
+        } else if (e.itemData.text === 'Checkout' && room.status === 'Booked') {
             this.checkoutComponent.onInit(room);
             this.checkoutComponent.isVisiblePersonalCheckoutPopup = true;
         }

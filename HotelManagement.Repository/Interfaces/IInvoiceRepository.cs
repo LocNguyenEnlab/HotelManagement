@@ -5,6 +5,6 @@ namespace HotelManagement.Repository.Interfaces
 {
     public interface IInvoiceRepository : IGenericRepository<Invoice>
     {
-        IList<Invoice> GetAll();
+        Invoice Get(string roomName);
     }
 }

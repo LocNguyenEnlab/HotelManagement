@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
-using HotelManagement.Services.Services;
+using HotelManagement.Web.API.Reports;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,20 +12,22 @@ namespace HotelManagement.Web.API.Controllers
     [ApiController]
     public class InvoiceController : ControllerBase
     {
-        private readonly IGenericService<Invoice> _service;
+        private readonly IInvoiceService _invoiceService;
         private readonly IClientService _clientService;
+        private readonly IGenericService<ServiceOfInvoice> _serviceInvoiceService;
 
 
-        public InvoiceController(IGenericService<Invoice> service, IClientService clientService)
+        public InvoiceController(IInvoiceService service, IClientService clientService, IGenericService<ServiceOfInvoice> genericService)
         {
-            _service = service;
+            _invoiceService = service;
             _clientService = clientService;
+            _serviceInvoiceService = genericService;
         }
 
         [HttpGet]
         public IList<Invoice> Get()
         {
-            return _service.GetAll();
+            return _invoiceService.GetAll();
         }
 
         [HttpPost]
@@ -35,25 +35,47 @@ namespace HotelManagement.Web.API.Controllers
         {
             var clients = invoice.Clients;            
             invoice.Clients = null;
-            _service.Add(invoice);
+            foreach (var service in invoice.ServicesOfInvoice)
+            {
+                service.Service = null;
+            }
+            _invoiceService.Add(invoice);
             foreach (var client in clients)
             {
-                //client.InvoiceId = maxId;
                 client.Invoice = invoice;
                 _clientService.Update(client);
             }
         }
 
-        [HttpPut]
-        public void Put(Invoice invocie)
+        [HttpGet("/api/invoice/roomname/{roomName}")]
+        public Invoice Get(string roomName)
         {
-            _service.Update(invocie);
+            return _invoiceService.Get(roomName);
+        }
+
+        [HttpPut]
+        public void Put(Invoice invoice)
+        {
+            _invoiceService.Update(invoice);
+            foreach (var serviceOfInvoice in invoice.ServicesOfInvoice)
+            {
+                _serviceInvoiceService.Update(serviceOfInvoice);
+            }
         }
 
         [HttpDelete] 
         public void Delete(int invoiceId)
         {
-            _service.Delete(invoiceId);
+            _invoiceService.Delete(invoiceId);
+        }
+
+        [HttpPut("/api/invoice/exportinvoice")]
+        public void ExportInvoice(Invoice invoice)
+        {
+            var invoicePDF = new InvoicePDF();
+            invoicePDF.CreateInvoice(invoice);
+            invoicePDF.ExportToPdf("./Reports/Invoice/"  + 
+                invoice.Id + invoice.Clients.First().Name + ".pdf");
         }
     }
 }

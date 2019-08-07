@@ -17,5 +17,10 @@ namespace HotelManagement.Repository.Repository
         {
             return _context.Room.Include(_ => _.Clients).ToList();
         }
+
+        public Room Get(string roomName)
+        {
+            return _context.Room.Where(_ => _.Name == roomName).FirstOrDefault();
+        }
     }
 }

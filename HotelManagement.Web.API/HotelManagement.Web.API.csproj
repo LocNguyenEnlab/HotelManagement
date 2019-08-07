@@ -5,11 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Reports\InvoicePDF.repx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\InvoicePDF.repx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Reports\Invoice\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="19.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.11" />
@@ -23,6 +33,15 @@
   <ItemGroup>
     <ProjectReference Include="..\HotelManagement.Entities\HotelManagement.Entities.csproj" />
     <ProjectReference Include="..\HotelManagement.Services\HotelManagement.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Reports\InvoicePDF.cs">
+      <DependentUpon>InvoicePDF.repx</DependentUpon>
+    </Compile>
+    <Compile Update="Reports\InvoicePDF.Designer.cs">
+      <DependentUpon>InvoicePDF.repx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -54,6 +54,8 @@ export class CheckInComponent implements OnInit {
         await this.service.getServicesType().toPromise().then(data => {
             this.serviceTypeSource = data;
         });
+        const allService: ServiceTypeModel = {id: -1, name: 'All Service', services: this.serviceSource};
+        this.serviceTypeSource.push(allService);
     }
 
     async onInit(clientCheckin: ClientModel) {
@@ -67,33 +69,12 @@ export class CheckInComponent implements OnInit {
              this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
              this.invoice.discount = this.roomCheckin.clients[0].discount;
              this.invoice.prepay = this.roomCheckin.clients[0].prepay;
+             this.roomCheckin.checkinTime = new Date();
         }
-    }
-    cancel() {
-        this.isVisiblePersonalCheckinPopup = false;
     }
 
-    addBookedClientsList(id: number = null, clients: ClientModel[], checkinTime: Date, checkoutTime: Date, bookType, code, prePay, rooms, discount) {
-        for (const client of clients) {
-            // const bookedClient: BookedClientsListModel = {
-            //     id,
-            //     client,
-            //     checkinTime,
-            //     checkoutTime,
-            //     code,
-            //     bookType,
-            //     prePay,
-            //     notes: client.notes,
-            //     createdTime: new Date(),
-            //     status: 'Checkin',
-            //     discount
-            // };
-            // if (id != null) {
-            //     this.bookedClientsListService.updateBookedClientList(bookedClient);
-            // } else {
-            //     this.bookedClientsListService.addBookedClientList(bookedClient);
-            // }
-        }
+    cancel() {
+        this.isVisiblePersonalCheckinPopup = false;
     }
 
     async checkinForPersonal() {
@@ -102,12 +83,11 @@ export class CheckInComponent implements OnInit {
             this.createInvoice();
             await this.invoiceService.addInvoice(this.invoice).toPromise().then();
             for (const client of this.roomCheckin.clients) {
-                client.status = 'Check in';
+                client.status = 'Checked in';
                 await this.clientService.update(client).toPromise().then();
             }
             await this.roomService.updateRoom(this.roomCheckin).toPromise().then();
             notify('Checkin successfully', 'success');
-            this.router.navigate(['/booked-clients-list']);
             this.isVisiblePersonalCheckinPopup = false;
             window.location.reload();
         } else {
@@ -121,11 +101,11 @@ export class CheckInComponent implements OnInit {
         let totalServiceMoney = 0;
         const rentTime = Math.ceil((new Date(this.roomCheckin.checkoutTime).getTime() -
             new Date(this.roomCheckin.checkinTime).getTime()) / (24 * 60 * 60 * 1000));
-        for (const service of this.invoice.serviceOfInvoice) {
+        for (const service of this.invoice.servicesOfInvoice) {
             totalServiceMoney += service.totalMoney;
         }
         totalRoomMoney = this.roomCheckin.price * rentTime;
-        totalPayment = totalRoomMoney + totalServiceMoney;
+        totalPayment = totalRoomMoney + totalServiceMoney - this.invoice.prepay;
         if (this.invoice.discount) {
             totalPayment = totalPayment - totalPayment * (this.invoice.discount / 100);
         }
@@ -176,10 +156,10 @@ export class CheckInComponent implements OnInit {
 
     addService() {
         if (this.serviceQuantityValue != null && this.serviceValue != null) {
-            if (!this.invoice.serviceOfInvoice) {
-                this.invoice.serviceOfInvoice = [];
+            if (!this.invoice.servicesOfInvoice) {
+                this.invoice.servicesOfInvoice = [];
             }
-            const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.serviceOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
+            const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.servicesOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
             if (serviceOfInvoice) {
                 serviceOfInvoice.quantity += this.serviceQuantityValue;
                 serviceOfInvoice.totalMoney = this.serviceValue.price * serviceOfInvoice.quantity;
@@ -188,7 +168,8 @@ export class CheckInComponent implements OnInit {
                 serviceInvoice.quantity = this.serviceQuantityValue;
                 serviceInvoice.totalMoney = serviceInvoice.quantity * this.serviceValue.price;
                 serviceInvoice.serviceId = this.serviceValue.id;
-                this.invoice.serviceOfInvoice.push(serviceInvoice);
+                serviceInvoice.service = this.serviceValue;
+                this.invoice.servicesOfInvoice.push(serviceInvoice);
             }
         } else {
             notify('Please select service and quantity of it', 'error');

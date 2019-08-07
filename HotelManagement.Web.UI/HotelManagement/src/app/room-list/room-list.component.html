@@ -1,41 +1,9 @@
 <app-check-in></app-check-in>
 <app-booking></app-booking>
 <app-check-out></app-check-out>
+<app-update-service></app-update-service>
 <div class="room-list">
     <div class="row">
-        <nav>
-<!--            <div class="dx-field">-->
-<!--                <dx-button-->
-<!--                    text="Group booking"-->
-<!--                    type="default"-->
-<!--                    (onClick)="openPopupGroupBooking()">-->
-<!--                </dx-button>-->
-<!--            </div>-->
-<!--            <dx-button-->
-<!--                text="Booked Clients List"-->
-<!--                type="default"-->
-<!--                routerLink="booked-clients-list">-->
-<!--            </dx-button>-->
-<!--            <dx-button-->
-<!--                (onClick)="groupCheckin()"-->
-<!--                text="Group checkin"-->
-<!--                type="default">-->
-<!--            </dx-button>-->
-<!--            <dx-button-->
-<!--                text="Group checkout"-->
-<!--                type="default">-->
-<!--            </dx-button>-->
-            <dx-button
-                text="Booked Clients List"
-                type="default"
-                routerLink="booked-clients-list">
-            </dx-button>
-            <dx-button
-                text="Invoice list"
-                type="default"
-                routerLink="/invoice-list">
-            </dx-button>
-        </nav>
         <div class="room-diagram">
             <table>
                 <tbody>
@@ -76,10 +44,10 @@
                     <p>Available</p>
                 </div>
                 <div class="booking-note">
-                    <p>Booking</p>
+                    <p>Booked</p>
                 </div>
                 <div class="booked-note">
-                    <p>Booked</p>
+                    <p>Checked in</p>
                 </div>
                 <div class="selection-note">
                     <p>Your selection</p>

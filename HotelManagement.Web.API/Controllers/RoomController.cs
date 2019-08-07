@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
+using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Web.API.Controllers
@@ -9,9 +10,9 @@ namespace HotelManagement.Web.API.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private readonly IGenericService<Room> _roomService;
+        private readonly IRoomService _roomService;
 
-        public RoomController(IGenericService<Room> roomService)
+        public RoomController(IRoomService roomService)
         {
             _roomService = roomService;
         }

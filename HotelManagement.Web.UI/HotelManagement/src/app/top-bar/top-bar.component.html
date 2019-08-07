@@ -1,5 +1,40 @@
 <div class="top-bar">
     <div class="container">
-        <a routerLink="/"><h1 class="hotel-name">Enlab Hotel</h1></a>
+        <div class="row">
+            <div class="col-sm-5 col-xs-5">
+                <a routerLink="/"><h1 class="hotel-name">Enlab Hotel</h1></a>
+            </div>
+            <div class="col-sm-7 col-xs-7">
+                <nav class="nav navbar-light container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle nav-btn" data-toggle="collapse" aria-expanded="false" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse group-custom" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li data-toggle="tab">
+                                <dx-button
+
+                                    text="Booked Clients List"
+                                    type="none"
+                                    routerLink="booked-clients-list">
+                                </dx-button>
+                            </li>
+                            <li data-toggle="tab">
+                                <dx-button
+
+                                    text="Invoice list"
+                                    type="none"
+                                    routerLink="/invoice-list">
+                                </dx-button>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
     </div>
 </div>

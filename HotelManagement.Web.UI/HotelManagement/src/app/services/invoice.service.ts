@@ -27,7 +27,11 @@ export class InvoiceService {
         return this.http.get<InvoiceModel[]>(this.apiUrl);
     }
 
-    getInvoiceByRoomName(roomName: string) {
+    getInvoiceByRoomName(roomName: string): Observable<InvoiceModel> {
+        return this.http.get<InvoiceModel>(this.apiUrl + 'roomname/' + roomName);
+    }
 
+    exportInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
+        return this.http.put<InvoiceModel>(this.apiUrl + 'exportinvoice/', invoice);
     }
 }

@@ -20,13 +20,4 @@ export class InvoiceListComponent implements OnInit {
             this.invoiceList = data;
         });
     }
-
-    customClientName(params) {
-        let clientsName = '';
-        for (const client of params.value) {
-            clientsName += client.name + ', ';
-        }
-        return clientsName;
-    }
-
 }

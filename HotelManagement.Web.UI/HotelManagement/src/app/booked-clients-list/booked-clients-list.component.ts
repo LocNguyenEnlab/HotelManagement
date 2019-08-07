@@ -46,7 +46,7 @@ export class BookedClientsListComponent implements OnInit {
     }
 
     checkin() {
-        if (this.clientCheckin && this.clientCheckin.status === 'Booking') {
+        if (this.clientCheckin && this.clientCheckin.status === 'Booked') {
             if (this.clientCheckin.bookType === 'Personal Booking') {
                 this.checkinComponent.onInit(this.clientCheckin);
                 this.checkinComponent.isVisiblePersonalCheckinPopup = true;

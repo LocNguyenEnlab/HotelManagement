@@ -8,35 +8,24 @@ using System.Linq;
 
 namespace HotelManagement.Services.Services
 {
-    public class ClientService : IClientService
-    {
+    public class ClientService : GenericService<Client>, IClientService
+    { 
         private IClientRepository _clientRepository;
 
 
-        public ClientService(EnlabHotelContext context)
+        public ClientService(EnlabHotelContext context) : base(context)
         {
             _clientRepository = new ClientRepository(context);
         }
 
-        public IList<Client> GetAll()
+        public override IList<Client> GetAll()
         {
             return _clientRepository.GetAll().ToList();
         }
 
-        public Client Get(int id)
-        {
-            return _clientRepository.Get(id);
-        }
-
         public IList<Client> Get(string roomName)
         {
-            return _clientRepository.Get(roomName).ToList();
-        }
-
-        public void Update(Client client)
-        {
-            _clientRepository.Update(client);
-            _clientRepository.Save();
+            return _clientRepository.Get(roomName);
         }
     }
 }

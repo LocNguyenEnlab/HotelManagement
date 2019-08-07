@@ -146,7 +146,7 @@ namespace HotelManagement.Entities.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<int?>("ServiceId");
+                    b.Property<int>("ServiceId");
 
                     b.Property<double>("TotalMoney");
 
@@ -194,13 +194,14 @@ namespace HotelManagement.Entities.Migrations
             modelBuilder.Entity("HotelManagement.Entities.Model.ServiceOfInvoice", b =>
                 {
                     b.HasOne("HotelManagement.Entities.Model.Invoice", "Invocie")
-                        .WithMany("InvoiceServices")
+                        .WithMany("ServicesOfInvoice")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HotelManagement.Entities.Model.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("ServiceId");
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

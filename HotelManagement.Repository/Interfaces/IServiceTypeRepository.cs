@@ -5,6 +5,5 @@ namespace HotelManagement.Repository.Interfaces
 {
     public interface IServiceTypeRepository : IGenericRepository<ServiceType>
     {
-        IList<ServiceType> GetAll(); 
     }
 }

@@ -6,8 +6,6 @@ namespace HotelManagement.Repository.Interfaces
 {
     public interface IClientRepository : IGenericRepository<Client>
     {
-        IList<Client> GetAll();
-
         IList<Client> Get(string roomName);
     }
 }

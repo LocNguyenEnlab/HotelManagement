@@ -8,12 +8,10 @@ namespace HotelManagement.Services.Interfaces
 
         IList<TEntity> GetAll();
 
-        TEntity Get(object id);
+        TEntity Get(int id);
 
-        void Delete(object id);
+        void Delete(int id);
 
         void Update(TEntity obj);
-
-        int GetMaxId();
     }
 }

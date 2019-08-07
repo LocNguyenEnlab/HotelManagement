@@ -7,16 +7,16 @@ namespace HotelManagement.Repository.Interfaces
     {
         IList<T> GetAll();
 
-        T Get(object id);
+        T Get(int id);
 
         void Add(T obj);
 
         void Update(T obj);
 
-        void Delete(object id);
+        void Delete(int id);
 
         void Save();
 
-        int GetMaxId(Func<T, decimal> columnSelector);
+        //int GetMaxId(Func<T, decimal> columnSelector);
     }
 }

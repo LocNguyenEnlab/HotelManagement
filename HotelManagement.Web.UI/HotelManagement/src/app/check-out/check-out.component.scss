@@ -4,12 +4,24 @@
         width: 60% !important;
     }
 }
+.hotel-name {
+    margin-top: 0;
+    font-weight: bold;
+    font-style: italic;
+}
+.logo-img {
+    width: 200px;
+    float: right;
+}
 hr {
     border-color: #ddd;
 }
+.title {
+    font-weight: 500;
+}
 dx-text-area {
     float: right;
-    margin-bottom: 15px;
+    margin: 0 0 15px 0;
 }
 .group-btn {
     float: right;

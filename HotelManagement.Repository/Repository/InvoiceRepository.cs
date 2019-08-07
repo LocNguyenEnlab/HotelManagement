@@ -15,7 +15,30 @@ namespace HotelManagement.Repository.Repository
 
         public override IList<Invoice> GetAll()
         {
-            return _context.Invoice.Include(_ => _.Clients).Include(_ => _.ServicesOfInvoice).ToList();
+            return _context.Invoice.Include(_ => _.Clients)
+                .Include(_ => _.ServicesOfInvoice)
+                .ThenInclude(_ => _.Service)
+                .ToList();
+        }
+
+        public Invoice Get(string roomName)
+        {
+            var invoices = _context.Invoice.Include(_ => _.Clients)
+                .ThenInclude(_ => _.Room)
+                .Include(_ => _.ServicesOfInvoice)
+                .ThenInclude(_ => _.Service)
+                .ToList();
+            foreach (var invoice in invoices)
+            {
+                foreach (var client in invoice.Clients)
+                {
+                    if (client.RoomName == roomName)
+                    {
+                        return invoice;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

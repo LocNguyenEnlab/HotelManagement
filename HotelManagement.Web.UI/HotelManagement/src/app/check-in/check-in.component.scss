@@ -38,6 +38,12 @@
     p {
         font-size: 25px;
     }
+    .room-service {
+        margin: 15px 0 15px 0;
+        dx-button {
+            width: 100%;
+        }
+    }
 }
 .group-btn {
     float: right;

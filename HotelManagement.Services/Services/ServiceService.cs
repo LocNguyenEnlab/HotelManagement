@@ -8,47 +8,13 @@ using System.Linq;
 
 namespace HotelManagement.Services.Services
 {
-    public class ServiceService : IGenericService<Service>
+    public class ServiceService : GenericService<Service>
     {
         private IGenericRepository<Service> _serviceRepository;
 
 
-        public ServiceService(EnlabHotelContext context)
+        public ServiceService(EnlabHotelContext context) : base(context)
         {
-            _serviceRepository = new GenericRepository<Service>(context);
-        }
-
-        public IList<Service> GetAll()
-        {
-            return _serviceRepository.GetAll().ToList();
-        }
-
-        public Service Get(object id)
-        {
-            return _serviceRepository.Get(id);
-        }
-
-        public void Add(Service service)
-        {
-            _serviceRepository.Add(service);
-            _serviceRepository.Save();
-        }
-
-        public void Update(Service service)
-        {
-            _serviceRepository.Update(service);
-            _serviceRepository.Save();
-        }
-
-        public void Delete(object serviceId)
-        {
-            _serviceRepository.Delete(serviceId);
-            _serviceRepository.Save();
-        }
-
-        public int GetMaxId()
-        {
-            return -1;
         }
     }
 }

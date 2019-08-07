@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.1.5.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.1, Version=19.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Invoice" Margins="100, 100, 49, 53" PageWidth="850" PageHeight="1100" Version="19.1" Font="Arial, 9.75pt">
+  <Bands>
+    <Item1 Ref="1" ControlType="TopMarginBand" Name="TopMargin" HeightF="49" />
+    <Item2 Ref="2" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="53" />
+    <Item3 Ref="3" ControlType="DetailBand" Name="Detail" HeightF="761.4583" StyleName="Style1">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRLabel" Name="label17" Multiline="true" Text="Client" SizeF="66.60976,24.041687" LocationFloat="104.806007, 650.5418" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="5" UseFont="false" />
+        </Item1>
+        <Item2 Ref="6" ControlType="XRLabel" Name="label16" Multiline="true" Text="Cashier" SizeF="73.95834,24.041687" LocationFloat="470.61087, 650.5418" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="7" UseFont="false" />
+        </Item2>
+        <Item3 Ref="8" ControlType="XRLine" Name="line5" SizeF="598.3903,23" LocationFloat="21.818161, 609.8334" ForeColor="Gray" BorderColor="Gray">
+          <StylePriority Ref="9" UseForeColor="false" UseBorderColor="false" />
+        </Item3>
+        <Item4 Ref="10" ControlType="XRLabel" Name="label15" Multiline="true" Text="Notes" SizeF="57.2916641,24.041626" LocationFloat="22.91673, 549.416748" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="11" UseFont="false" />
+        </Item4>
+        <Item5 Ref="12" ControlType="XRPanel" Name="panel5" SizeF="597.2918,110.416718" LocationFloat="22.91673, 499.416779">
+          <Controls>
+            <Item1 Ref="13" ControlType="XRLabel" Name="notes" Multiline="true" Text="notes" SizeF="518.5416,50.083313" LocationFloat="68.75, 49.99997" Padding="2,2,0,0,96" />
+            <Item2 Ref="14" ControlType="XRLabel" Name="totalPayment" Multiline="true" Text="label8" SizeF="123.750153,22.99997" LocationFloat="463.5416, 4.499878" Padding="2,2,0,0,100" />
+            <Item3 Ref="15" ControlType="XRLabel" Name="label14" Multiline="true" Text="Total payment" SizeF="122.916687,24.041687" LocationFloat="340.624939, 3.4581604" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="16" UseFont="false" />
+            </Item3>
+            <Item4 Ref="17" ControlType="XRLabel" Name="discount" Multiline="true" Text="label8" SizeF="77.08334,23" LocationFloat="263.541626, 5.54171753" Padding="2,2,0,0,100" />
+            <Item5 Ref="18" ControlType="XRLabel" Name="label13" Multiline="true" Text="Discount" SizeF="83.33334,24.0416565" LocationFloat="180.208267, 3.45813" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="19" UseFont="false" />
+            </Item5>
+            <Item6 Ref="20" ControlType="XRLabel" Name="prepay" Multiline="true" Text="label8" SizeF="111.458267,21.9581" LocationFloat="68.75, 5.54171753" Padding="2,2,0,0,100" />
+            <Item7 Ref="21" ControlType="XRLabel" Name="label8" Multiline="true" Text="Prepay&#xD;&#xA;" SizeF="68.75,24.0416565" LocationFloat="0, 2.41641235" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="22" UseFont="false" />
+            </Item7>
+          </Controls>
+        </Item5>
+        <Item6 Ref="23" ControlType="XRLine" Name="line4" SizeF="598.3903,23" LocationFloat="21.818224, 466.000153" ForeColor="Gray" BorderColor="Gray">
+          <StylePriority Ref="24" UseForeColor="false" UseBorderColor="false" />
+        </Item6>
+        <Item7 Ref="25" ControlType="XRPanel" Name="panel4" SizeF="598.3903,33.3333435" LocationFloat="21.818161, 431.958435">
+          <Controls>
+            <Item1 Ref="26" ControlType="XRLabel" Name="serviceMoney" Multiline="true" Text="serviceMoney" SizeF="431.098541,23" LocationFloat="157.291672, 11.0416565" Padding="2,2,0,0,100" />
+            <Item2 Ref="27" ControlType="XRLabel" Name="label12" Multiline="true" Text="Service money" SizeF="136.458328,24.041687" LocationFloat="0, 10" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="28" UseFont="false" />
+            </Item2>
+          </Controls>
+        </Item7>
+        <Item8 Ref="29" ControlType="XRTable" Name="tableService" SizeF="598.3903,25" LocationFloat="21.818161, 393.916748" Padding="2,2,0,0,96">
+          <Rows>
+            <Item1 Ref="30" ControlType="XRTableRow" Name="tableRow1" Weight="1" TextAlignment="MiddleCenter" Borders="All">
+              <Cells>
+                <Item1 Ref="31" ControlType="XRTableCell" Name="serviceName" Weight="1" Multiline="true" Text="Service name" TextAlignment="MiddleCenter" Font="Arial Black, 9.75pt, style=Bold, Italic, charSet=0">
+                  <StylePriority Ref="32" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="33" ControlType="XRTableCell" Name="servicePrice" Weight="1" Multiline="true" Text="Service price" TextAlignment="MiddleCenter" Font="Arial Black, 9.75pt, style=Bold, Italic, charSet=0">
+                  <StylePriority Ref="34" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+                <Item3 Ref="35" ControlType="XRTableCell" Name="quantity" Weight="1" Multiline="true" Text="Quantity" TextAlignment="MiddleCenter" Font="Arial Black, 9.75pt, style=Bold, Italic, charSet=0">
+                  <StylePriority Ref="36" UseFont="false" UseTextAlignment="false" />
+                </Item3>
+                <Item4 Ref="37" ControlType="XRTableCell" Name="totalMoney" Weight="1" Multiline="true" Text="Total Money" TextAlignment="MiddleCenter" Font="Arial Black, 9.75pt, style=Bold, Italic, charSet=0">
+                  <StylePriority Ref="38" UseFont="false" UseTextAlignment="false" />
+                </Item4>
+              </Cells>
+              <StylePriority Ref="39" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+          </Rows>
+        </Item8>
+        <Item9 Ref="40" ControlType="XRLine" Name="line3" SizeF="598.3903,23" LocationFloat="21.818224, 359.4584" ForeColor="Gray" BorderColor="Gray">
+          <StylePriority Ref="41" UseForeColor="false" UseBorderColor="false" />
+        </Item9>
+        <Item10 Ref="42" ControlType="XRPanel" Name="panel3" SizeF="598.3903,33.3333435" LocationFloat="21.818161, 326.125061">
+          <Controls>
+            <Item1 Ref="43" ControlType="XRLabel" Name="roomMoney" Multiline="true" Text="label8" SizeF="431.098541,23" LocationFloat="157.291672, 11.0416565" Padding="2,2,0,0,100" />
+            <Item2 Ref="44" ControlType="XRLabel" Name="label18" Multiline="true" Text="Room money" SizeF="136.458328,24.041687" LocationFloat="0, 10" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="45" UseFont="false" />
+            </Item2>
+          </Controls>
+        </Item10>
+        <Item11 Ref="46" ControlType="XRLine" Name="line2" SizeF="598.3903,23" LocationFloat="21.818161, 303.125031" ForeColor="Gray" BorderColor="Gray">
+          <StylePriority Ref="47" UseForeColor="false" UseBorderColor="false" />
+        </Item11>
+        <Item12 Ref="48" ControlType="XRPanel" Name="panel2" SizeF="598.3903,129.1667" LocationFloat="21.818161, 173.958328">
+          <Controls>
+            <Item1 Ref="49" ControlType="XRLabel" Name="roomType" Multiline="true" Text="label8" SizeF="126.041656,23" LocationFloat="462.348572, 68.91678" Padding="2,2,0,0,100" />
+            <Item2 Ref="50" ControlType="XRLabel" Name="roomPrice" Multiline="true" Text="label8" SizeF="126.041656,23" LocationFloat="462.348572, 32.37503" Padding="2,2,0,0,100" />
+            <Item3 Ref="51" ControlType="XRLabel" Name="roomName" Multiline="true" Text="label8" SizeF="126.041656,23" LocationFloat="462.348572, 0" Padding="2,2,0,0,100" />
+            <Item4 Ref="52" ControlType="XRLabel" Name="rentTime" Multiline="true" Text="label8" SizeF="186.875031,23" LocationFloat="157.291672, 102.875046" Padding="2,2,0,0,100" />
+            <Item5 Ref="53" ControlType="XRLabel" Name="checkoutTime" Multiline="true" Text="label8" SizeF="186.875031,23" LocationFloat="157.291672, 67.8750458" Padding="2,2,0,0,100" />
+            <Item6 Ref="54" ControlType="XRLabel" Name="checkinTime" Multiline="true" Text="label8" SizeF="186.875031,23" LocationFloat="157.291672, 32.37503" Padding="2,2,0,0,100" />
+            <Item7 Ref="55" ControlType="XRLabel" Name="clientName" Multiline="true" Text="clientName" SizeF="186.875031,23" LocationFloat="157.291672, 0" Padding="2,2,0,0,100" />
+            <Item8 Ref="56" ControlType="XRLabel" Name="label9" Multiline="true" Text="Room" SizeF="82.29166,19.8750153" LocationFloat="380.0569, 0" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="57" UseFont="false" />
+            </Item8>
+            <Item9 Ref="58" ControlType="XRLabel" Name="label10" Multiline="true" Text="Type" SizeF="82.29166,24.041687" LocationFloat="380.0569, 67.8750458" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="59" UseFont="false" />
+            </Item9>
+            <Item10 Ref="60" ControlType="XRLabel" Name="label11" Multiline="true" Text="Price" SizeF="82.29166,24.041687" LocationFloat="380.0569, 32.37503" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="61" UseFont="false" />
+            </Item10>
+            <Item11 Ref="62" ControlType="XRLabel" Name="label7" Multiline="true" Text="Rent time" SizeF="136.458328,24.041687" LocationFloat="0, 102.875046" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="63" UseFont="false" />
+            </Item11>
+            <Item12 Ref="64" ControlType="XRLabel" Name="label4" Multiline="true" Text="Client" SizeF="136.458328,19.8750153" LocationFloat="0, 0" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="65" UseFont="false" />
+            </Item12>
+            <Item13 Ref="66" ControlType="XRLabel" Name="label6" Multiline="true" Text="Check out Time" SizeF="136.458328,24.041687" LocationFloat="0, 67.8750458" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="67" UseFont="false" />
+            </Item13>
+            <Item14 Ref="68" ControlType="XRLabel" Name="label5" Multiline="true" Text="Check in Time" SizeF="136.458328,24.041687" LocationFloat="0, 32.37503" Font="Arial, 12pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="69" UseFont="false" />
+            </Item14>
+          </Controls>
+        </Item12>
+        <Item13 Ref="70" ControlType="XRLine" Name="line1" SizeF="598.3903,23" LocationFloat="21.818161, 138.541672" ForeColor="Gray" BorderColor="Gray">
+          <StylePriority Ref="71" UseForeColor="false" UseBorderColor="false" />
+        </Item13>
+        <Item14 Ref="72" ControlType="XRPanel" Name="panel1" SizeF="354.166656,110.416672" LocationFloat="11.8181868, 28.125">
+          <Controls>
+            <Item1 Ref="73" ControlType="XRLabel" Name="label1" Multiline="true" Text="Enlab Hotel" SizeF="180.208328,40.70835" LocationFloat="9.999977, 10" Font="Arial, 21.75pt, style=Bold, Italic, charSet=0" Padding="2,2,0,0,100">
+              <StylePriority Ref="74" UseFont="false" />
+            </Item1>
+            <Item2 Ref="75" ControlType="XRLabel" Name="label2" Multiline="true" Text="22 Tan An 4 Street, Hai Chau District, Da Nang City" SizeF="324.318176,23" LocationFloat="9.999977, 50.70836" Padding="2,2,0,0,100" />
+            <Item3 Ref="76" ControlType="XRLabel" Name="label3" Multiline="true" Text="(+84) 12345678" SizeF="100,23" LocationFloat="9.999977, 73.70836" Padding="2,2,0,0,100" />
+          </Controls>
+        </Item14>
+        <Item15 Ref="77" ControlType="XRPictureBox" Name="pictureBox1" ImageUrl="C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\src\assets\logo.png" Sizing="ZoomImage" SizeF="254.2236,111.916626" LocationFloat="365.984863, 16.6250553" />
+      </Controls>
+    </Item3>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="78" Name="Style1" BorderStyle="Inset" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Ref="79" Name="Style2" BorderStyle="Inset" StringFormat="Near;Near;0;None;Character;Default" />
+  </StyleSheet>
+</XtraReportsLayoutSerializer>

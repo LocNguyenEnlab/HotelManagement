@@ -8,47 +8,24 @@ using System.Linq;
 
 namespace HotelManagement.Services.Services
 {
-    public class InvoiceService : IGenericService<Invoice>
+    public class InvoiceService : GenericService<Invoice>, IInvoiceService
     {
         private IInvoiceRepository _invoiceRepository;
 
 
-        public InvoiceService(EnlabHotelContext context)
+        public InvoiceService(EnlabHotelContext context) : base(context)
         {
             _invoiceRepository = new InvoiceRepository(context);
         }
 
-        public IList<Invoice> GetAll()
+        public override IList<Invoice> GetAll()
         {
             return _invoiceRepository.GetAll().ToList();
         }
 
-        public Invoice Get(object id)
+        public Invoice Get(string roomName)
         {
-            return _invoiceRepository.Get(id);
-        }
-
-        public void Add(Invoice client)
-        {
-            _invoiceRepository.Add(client);
-            _invoiceRepository.Save();
-        }
-
-        public void Update(Invoice client)
-        {
-            _invoiceRepository.Update(client);
-            _invoiceRepository.Save();
-        }
-
-        public void Delete(object clientId)
-        {
-            _invoiceRepository.Delete(clientId);
-            _invoiceRepository.Save();
-        }
-
-        public int GetMaxId()
-        {
-            return _invoiceRepository.GetMaxId(_ => _.Id);
+            return _invoiceRepository.Get(roomName);
         }
     }
 }

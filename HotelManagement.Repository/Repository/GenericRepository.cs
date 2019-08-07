@@ -24,36 +24,36 @@ namespace HotelManagement.Repository.Repository
             return Entities.ToList();
         }
 
-        public TEntity Get(object id)
+        public virtual TEntity Get(int id)
         {
             return Entities.Find(id);
         }
 
-        public void Add(TEntity obj)
+        public virtual void Add(TEntity obj)
         {
             Entities.Add(obj);
         }
 
-        public void Update(TEntity obj)
+        public virtual void Update(TEntity obj)
         {
             Entities.Attach(obj);
             _context.Entry(obj).State = EntityState.Modified;
         }
 
-        public void Delete(object id)
+        public virtual void Delete(int id)
         {
             TEntity existing = Entities.Find(id);
             Entities.Remove(existing);
         }
 
-        public void Save()
+        public virtual void Save()
         {
             _context.SaveChanges();
         }
 
-        public int GetMaxId(Func<TEntity, decimal> columnSelector)
-        {
-            return (int)Entities.Max(columnSelector);
-        }
+        //public virtual int GetMaxId(Func<TEntity, decimal> columnSelector)
+        //{
+        //    return (int)Entities.Max(columnSelector);
+        //}
     }
 }
