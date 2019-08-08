@@ -1,11 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {RoomModel} from '../models/RoomModel';
-import {PersonalBookingDetailModel} from '../models/PersonalBookingDetailModel';
 import {ClientModel} from '../models/ClientModel';
 import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';
 import {Router} from '@angular/router';
-import {GroupBookingDetailModel} from '../models/GroupBookingDetailModel';
 import {ServiceModel} from '../models/ServiceModel';
 import {ServiceService} from '../services/service.service';
 import {ServiceTypeModel} from '../models/ServiceTypeModel';
@@ -24,18 +22,16 @@ export class CheckInComponent implements OnInit {
     @ViewChild('quantityBox', {static: false}) quantityBox;
     @ViewChild('typeBox', {static: false}) typeBox;
     isVisiblePersonalCheckinPopup = false;
-    isVisibleGroupCheckinPopup = false;
     titlePersonalCheckin: string;
     serviceValue: ServiceModel;
     serviceSource: ServiceModel[] = [];
-    serviceName: string = null;
     serviceQuantitySource: number[] = [];
     serviceQuantityValue: number = null;
     serviceTypeSource: ServiceTypeModel[] = [];
-    serviceTypeName: string = null;
     roomCheckin: RoomModel = new RoomModel();
     invoice: InvoiceModel = new InvoiceModel();
     client: ClientModel = new ClientModel();
+    currentPrice: number;
 
     constructor(
         private roomService: RoomService,
@@ -44,6 +40,8 @@ export class CheckInComponent implements OnInit {
         private invoiceService: InvoiceService,
         private clientService: ClientService,
     ) {
+        this.setPrice = this.setPrice.bind(this);
+        this.setTotalAmount = this.setTotalAmount.bind(this);
     }
 
     async ngOnInit() {
@@ -79,7 +77,7 @@ export class CheckInComponent implements OnInit {
 
     async checkinForPersonal() {
         if (this.roomCheckin.clients) {
-            this.roomCheckin.status = 'Booked';
+            this.roomCheckin.status = 'Checked in';
             this.createInvoice();
             await this.invoiceService.addInvoice(this.invoice).toPromise().then();
             for (const client of this.roomCheckin.clients) {
@@ -102,18 +100,15 @@ export class CheckInComponent implements OnInit {
         const rentTime = Math.ceil((new Date(this.roomCheckin.checkoutTime).getTime() -
             new Date(this.roomCheckin.checkinTime).getTime()) / (24 * 60 * 60 * 1000));
         for (const service of this.invoice.servicesOfInvoice) {
-            totalServiceMoney += service.totalMoney;
+            totalServiceMoney += service.totalAmount;
         }
         totalRoomMoney = this.roomCheckin.price * rentTime;
-        totalPayment = totalRoomMoney + totalServiceMoney - this.invoice.prepay;
-        if (this.invoice.discount) {
-            totalPayment = totalPayment - totalPayment * (this.invoice.discount / 100);
-        }
+        totalPayment = totalRoomMoney + totalServiceMoney - this.invoice.prepay - this.invoice.discount;
         this.invoice.clients = this.roomCheckin.clients;
         this.invoice.rentTime = rentTime;
-        this.invoice.totalRoomMoney = totalRoomMoney;
-        this.invoice.totalPayment = totalPayment;
-        this.invoice.totalServiceMoney = totalServiceMoney;
+        this.invoice.totalRoomAmount = totalRoomMoney;
+        this.invoice.totalAmount = totalPayment;
+        this.invoice.totalServiceAmount = totalServiceMoney;
         this.invoice.status = 'Unpaid';
         this.invoice.checkinTime = this.roomCheckin.checkinTime;
         this.invoice.checkoutTime = this.roomCheckin.checkoutTime;
@@ -132,28 +127,6 @@ export class CheckInComponent implements OnInit {
         }
     }
 
-    chooseService(event: Event) {
-        // @ts-ignore
-        this.serviceValue = event.addedItems[0];
-        this.serviceName = this.serviceValue.name;
-        this.serviceBox.instance.close();
-    }
-
-    chooseQuantity(event: Event) {
-        // @ts-ignore
-        this.serviceQuantityValue = event.addedItems[0];
-        this.quantityBox.instance.close();
-    }
-
-    chooseServiceType(event: Event) {
-        // @ts-ignore
-        this.serviceTypeName = event.addedItems[0].name;
-        // @ts-ignore
-        this.serviceSource = this.serviceTypeSource.find(_ => _.id === event.addedItems[0].id).services;
-        this.serviceName = null;
-        this.typeBox.instance.close();
-    }
-
     addService() {
         if (this.serviceQuantityValue != null && this.serviceValue != null) {
             if (!this.invoice.servicesOfInvoice) {
@@ -162,11 +135,11 @@ export class CheckInComponent implements OnInit {
             const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.servicesOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
             if (serviceOfInvoice) {
                 serviceOfInvoice.quantity += this.serviceQuantityValue;
-                serviceOfInvoice.totalMoney = this.serviceValue.price * serviceOfInvoice.quantity;
+                serviceOfInvoice.totalAmount = this.serviceValue.price * serviceOfInvoice.quantity;
             } else {
                 const serviceInvoice: ServiceOfInvoiceModel = new ServiceOfInvoiceModel();
                 serviceInvoice.quantity = this.serviceQuantityValue;
-                serviceInvoice.totalMoney = serviceInvoice.quantity * this.serviceValue.price;
+                serviceInvoice.totalAmount = serviceInvoice.quantity * this.serviceValue.price;
                 serviceInvoice.serviceId = this.serviceValue.id;
                 serviceInvoice.service = this.serviceValue;
                 this.invoice.servicesOfInvoice.push(serviceInvoice);
@@ -174,5 +147,21 @@ export class CheckInComponent implements OnInit {
         } else {
             notify('Please select service and quantity of it', 'error');
         }
+    }
+
+    setPrice(rowData: ServiceOfInvoiceModel, value) {
+        rowData.service = rowData.service || new ServiceModel();
+        rowData.serviceId = value;
+        const service = this.serviceSource.find(_ => _.id === value);
+        rowData.service = service;
+        if (service) {
+            rowData.service.price = service.price;
+            this.currentPrice = service.price;
+        }
+    }
+
+    setTotalAmount(rowData: ServiceOfInvoiceModel, value) {
+        rowData.totalAmount = this.currentPrice * value;
+        rowData.quantity = value;
     }
 }

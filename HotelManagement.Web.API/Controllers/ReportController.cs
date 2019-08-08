@@ -10,14 +10,12 @@ namespace HotelManagement.Web.API.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        //[HttpPost("/api/report/invoice")]
-        //public FileStream Post(Invoice invoice)
-        //{
-        //    var invoicePDF = new InvoicePDF();
-        //    invoicePDF.CreateInvoice(invoice);
-        //    invoicePDF.ExportToPdf("./Reports/Invoice/" +
-        //        invoice.Id + invoice.Clients.First().Name + ".pdf");
-        //    return File.Open("./Reports/Invoice/" + invoice.Id + invoice.Clients.First().Name + ".pdf", FileMode.Open, FileAccess.Read);
-        //}
+        [HttpPost("/api/report/invoice")]
+        public void Post(Invoice invoice)
+        {
+            var invoicePDF = new InvoicePDF();
+            invoicePDF.CreateInvoice(invoice);
+            invoicePDF.ExportToPdf("./Reports/Invoice/" + invoice.Id + invoice.Clients.First().Name + ".pdf");
+        }
     }
 }

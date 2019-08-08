@@ -1,70 +1,40 @@
 <dx-popup
     [(visible)]="isVisibleUpdateServicePopup"
-    width="40%"
+    width="60%"
     height="auto"
     maxHeight="90%"
     [showTitle]="true"
     [title]="titleUpdateService"
     [dragEnabled]="false"
     [closeOnOutsideClick]="false">
-
-    <div class="row" style="margin: 15px 0 15px 0">
-        <div class="col-sm-3">
-            <dx-drop-down-box
-                #typeBox
-                placeholder="Service Type"
-                [(value)]="serviceTypeName">
-                <dx-list
-                    [dataSource]="serviceTypeSource"
-                    (onSelectionChanged)="chooseServiceType($event)"
-                    displayExpr="name"
-                    selectionMode="single">
-                </dx-list>
-            </dx-drop-down-box>
-        </div>
-        <div class="col-sm-4">
-            <dx-drop-down-box
-                #serviceBox
-                [(value)]="serviceName"
-                placeholder="Select a service...">
-                <dx-list
-                    [dataSource]="serviceSource"
-                    displayExpr="name"
-                    selectionMode="single"
-                    (onSelectionChanged)="chooseService($event)">
-                </dx-list>
-            </dx-drop-down-box>
-        </div>
-        <div class="col-sm-3">
-            <dx-drop-down-box
-                #quantityBox
-                placeholder="Quantity"
-                [(value)]="serviceQuantityValue">
-                <dx-list
-                    [dataSource]="serviceQuantitySource"
-                    selectionMode="single"
-                    (onSelectionChanged)="chooseQuantity($event)">
-                </dx-list>
-            </dx-drop-down-box>
-        </div>
-        <div class="col-sm-2">
-            <dx-button
-                type="success"
-                icon="arrowdown"
-                text="Add"
-                (onClick)="addService()"></dx-button>
-        </div>
-    </div>
     <dx-data-grid
         height="250"
         [showRowLines]="true"
         [dataSource]="invoice.servicesOfInvoice"
         [showBorders]="true">
-        <dx-scroll-view></dx-scroll-view>
-        <dxi-column dataField="service.name"></dxi-column>
-        <dxi-column dataField="service.price"></dxi-column>
-        <dxi-column dataField="quantity"></dxi-column>
-        <dxi-column dataField="totalMoney"></dxi-column>
+        <dxo-editing
+            mode="row"
+            [allowAdding]="true">
+        </dxo-editing>
+        <dxi-column dataField="orderTime" dataType="datetime"></dxi-column>
+        <dxi-column
+            dataField="service.id"
+            caption="Service name"
+            [setCellValue]="setPrice">
+            <dxo-lookup
+                [dataSource]="serviceSource"
+                valueExpr="id"
+                displayExpr="name"></dxo-lookup>
+        </dxi-column>
+        <dxi-column
+            dataField="service.price"></dxi-column>
+        <dxi-column
+            dataField="quantity"
+            [setCellValue]="setTotalAmount">
+            <dxo-lookup
+                [dataSource]="serviceQuantitySource"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="totalAmount"></dxi-column>
     </dx-data-grid>
     <div class="group-btn">
         <dx-button (onClick)="cancel()" type="danger" icon="close" text="Cancel"></dx-button>

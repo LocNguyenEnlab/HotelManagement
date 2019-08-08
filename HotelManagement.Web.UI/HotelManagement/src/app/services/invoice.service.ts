@@ -32,6 +32,6 @@ export class InvoiceService {
     }
 
     exportInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
-        return this.http.put<InvoiceModel>(this.apiUrl + 'exportinvoice/', invoice);
+        return this.http.post<InvoiceModel>(ApiService.apiUrl + 'report/invoice/', invoice);
     }
 }

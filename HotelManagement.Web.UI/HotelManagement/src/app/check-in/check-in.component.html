@@ -83,73 +83,38 @@
         </div>
         <div class="panel">
             <div class="title">Room Service</div>
-            <div class="row room-service">
-                <div class="col-sm-3">
-                    <dx-drop-down-box
-                        #typeBox
-                        placeholder="Service Type"
-                        [(value)]="serviceTypeName">
-                        <dx-list
-                            [dataSource]="serviceTypeSource"
-                            (onSelectionChanged)="chooseServiceType($event)"
-                            displayExpr="name"
-                            selectionMode="single">
-                        </dx-list>
-                    </dx-drop-down-box>
-                </div>
-                <div class="col-sm-4">
-                    <dx-drop-down-box
-                        #serviceBox
-                        [(value)]="serviceName"
-                        placeholder="Select a service...">
-                        <dx-list
-                            [dataSource]="serviceSource"
-                            displayExpr="name"
-                            selectionMode="single"
-                            (onSelectionChanged)="chooseService($event)">
-                        </dx-list>
-                    </dx-drop-down-box>
-                </div>
-                <div class="col-sm-3">
-                    <dx-drop-down-box
-                        #quantityBox
-                        placeholder="Quantity"
-                        [(value)]="serviceQuantityValue">
-                        <dx-list
-                            [dataSource]="serviceQuantitySource"
-                            selectionMode="single"
-                            (onSelectionChanged)="chooseQuantity($event)">
-                        </dx-list>
-                    </dx-drop-down-box>
-                </div>
-                <div class="col-sm-2">
-                    <dx-button
-                        type="success"
-                        icon="arrowdown"
-                        text="Add"
-                        (onClick)="addService()"></dx-button>
-                </div>
-            </div>
             <dx-data-grid
-                height="150px"
+                height="250"
                 [showRowLines]="true"
                 [dataSource]="invoice.servicesOfInvoice"
                 [showBorders]="true">
-                <dxo-scrolling mode="virtual"></dxo-scrolling>
-                <dxi-column dataField="service.name"></dxi-column>
-                <dxi-column dataField="service.price" format="currency"></dxi-column>
-                <dxi-column dataField="quantity"></dxi-column>
-                <dxi-column dataField="totalMoney" format="currency"></dxi-column>
                 <dxo-editing
                     mode="row"
-                    [allowDeleting]="true"
-                    [useIcons]="true">
+                    [allowAdding]="true">
                 </dxo-editing>
+                <dxi-column dataField="orderTime" dataType="datetime"></dxi-column>
+                <dxi-column
+                    dataField="serviceId"
+                    caption="Service name"
+                    [setCellValue]="setPrice">
+                    <dxo-lookup
+                        [dataSource]="serviceSource"
+                        valueExpr="id"
+                        displayExpr="name"></dxo-lookup>
+                </dxi-column>
+                <dxi-column
+                    dataField="service.price"></dxi-column>
+                <dxi-column
+                    dataField="quantity"
+                    [setCellValue]="setTotalAmount">
+                    <dxo-lookup
+                        [dataSource]="serviceQuantitySource"></dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="totalAmount"></dxi-column>
             </dx-data-grid>
         </div>
         <div class="panel">
-            <div class="title">Client Information</div>
-            <p class="text-center">Clients list</p>
+            <div class="title">Clients</div>
             <dx-data-grid
                 height="150px"
                 [dataSource]="roomCheckin.clients"

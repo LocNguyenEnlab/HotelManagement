@@ -9,6 +9,8 @@ import {BookingComponent} from '../booking/booking.component';
 import {CheckOutComponent} from '../check-out/check-out.component';
 import {ClientService} from '../services/client.service';
 import {UpdateServiceComponent} from '../update-service/update-service.component';
+import {InvoiceService} from '../services/invoice.service';
+import {InvoiceModel} from '../models/InvoiceModel';
 
 @Component({
     selector: 'app-room-list',
@@ -23,24 +25,33 @@ export class RoomListComponent implements OnInit {
     floors: FloorModel[] = [];
     rooms: RoomModel[] = [];
     checkInCheckOutText = [];
-    availableAndBookedRoomsName: string[] = [];
-    bookingRoomsName: string[] = [];
+    availableAndCheckedinRoomsName: string[] = [];
+    bookedRoomsName: string[] = [];
     updateBookingText = [];
 
     constructor(
         private bookingService: BookingService,
         private roomService: RoomService,
         private clientService: ClientService,
+        private invoiceService: InvoiceService,
     ) {}
 
-    ngOnInit() {
+    async ngOnInit() {
         this.rooms = [];
         this.floors = [];
-        this.roomService.getRooms().subscribe(data => {
+        await this.roomService.getRooms().toPromise().then(data => {
             this.rooms = data;
             this.floors = this.getFloors();
             this.getRoomsName();
+            for (const room of this.rooms) {
+                if (room.status === 'Checked in') {
+                    this.invoiceService.getInvoiceByRoomName(room.name).toPromise().then(data => {
+                        room.clients[0].invoice = data;
+                    });
+                }
+            }
         });
+
         this.checkInCheckOutText = [
             {text: 'Checkin'},
             {text: 'Update Service'},
@@ -67,47 +78,23 @@ export class RoomListComponent implements OnInit {
     }
 
     getRoomsName() {
-        this.availableAndBookedRoomsName = [];
+        this.availableAndCheckedinRoomsName = [];
         for (const room of this.rooms) {
-            if (room.status === 'Available' || room.status === 'Booked') {
-                this.availableAndBookedRoomsName.push(room.name);
+            if (room.status === 'Available' || room.status === 'Checked in') {
+                this.availableAndCheckedinRoomsName.push(room.name);
             }
-            if (room.status === 'Booking') {
-                this.bookingRoomsName.push(room.name);
+            if (room.status === 'Booked') {
+                this.bookedRoomsName.push(room.name);
             }
-        }
-    }
-
-    chooseRoom(id) {
-        const name = id.toString().replace('R', '');
-        if (this.rooms.find(s => s.name === name).status === 'Available') {
-            this.rooms.find(s => s.name === name).status = 'Selected';
-        } else if (this.rooms.find(s => s.name === name).status === 'Selected') {
-            this.rooms.find(s => s.name === name).status = 'Available';
         }
     }
 
     openPopupPersonalBooking(id) {
         const name = id.toString().replace('R', '');
         const roomBooking = this.rooms.find(s => s.name === name);
-        if (roomBooking.status !== 'Booking' && roomBooking.status !== 'Booked') {
+        if (roomBooking.status !== 'Checked in' && roomBooking.status !== 'Booked') {
             this.bookingComponent.isVisiblePersonalBookingPopup = true;
             this.bookingComponent.onInit(roomBooking, null, null, null);
-        }
-    }
-
-    openPopupGroupBooking() {
-        const roomsBooking: RoomModel[] = [];
-        for (const room of this.rooms) {
-            if (room.status === 'Selected') {
-                roomsBooking.push(room);
-            }
-        }
-        if (roomsBooking.length < 2) {
-            notify('Please select at least 2 rooms for group booking!', 'error', 2000);
-        } else {
-            this.bookingComponent.isVisibleGroupBookingPopup = true;
-            this.bookingComponent.onInit(null, roomsBooking, null, null);
         }
     }
 
@@ -116,27 +103,12 @@ export class RoomListComponent implements OnInit {
         if (e.itemData.text === 'Checkin' && room.status === 'Available') {
             this.checkinComponent.isVisiblePersonalCheckinPopup = true;
             this.checkinComponent.onInit(Object.assign({}, room), null, null);
-        } else if (e.itemData.text === 'Update Service' && room.status === 'Booked') {
+        } else if (e.itemData.text === 'Update Service' && room.status === 'Checked in') {
             this.updateServiceComponent.isVisibleUpdateServicePopup = true;
             this.updateServiceComponent.onInit(room);
-        } else if (e.itemData.text === 'Checkout' && room.status === 'Booked') {
+        } else if (e.itemData.text === 'Checkout' && room.status === 'Checked in') {
             this.checkoutComponent.onInit(room);
             this.checkoutComponent.isVisiblePersonalCheckoutPopup = true;
-        }
-    }
-
-    groupCheckin() {
-        const roomsCheckin: RoomModel[] = [];
-        for (const room of this.rooms) {
-            if (room.status === 'Selected') {
-                roomsCheckin.push(room);
-            }
-        }
-        if (roomsCheckin.length < 2) {
-            notify('Please select at least 2 rooms for group checkin!', 'error', 2000);
-        } else {
-            this.checkinComponent.isVisibleGroupCheckinPopup = true;
-            this.checkinComponent.onInit(null, roomsCheckin, null);
         }
     }
 
@@ -155,5 +127,13 @@ export class RoomListComponent implements OnInit {
         //     // this.bookingComponent.onInit(null, roomsUpdate, null, bookedClient);
         //     // this.bookingComponent.isVisibleGroupBookingPopup = true;
         // }
+    }
+
+    getTotalAmount(roomName) {
+        // let invoice: InvoiceModel;
+        // this.invoiceService.getInvoiceByRoomName(roomName).toPromise().then(data => {
+        //     invoice = data;
+        // });
+        // return invoice.totalAmount;
     }
 }

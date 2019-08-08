@@ -4,14 +4,16 @@ using HotelManagement.Entities.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelManagement.Entities.Migrations
 {
     [DbContext(typeof(EnlabHotelContext))]
-    partial class EnlabHotelContextModelSnapshot : ModelSnapshot
+    [Migration("20190808010733_changeFieldName")]
+    partial class changeFieldName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,8 +145,6 @@ namespace HotelManagement.Entities.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("InvoiceId");
-
-                    b.Property<DateTime>("OrderTime");
 
                     b.Property<int>("Quantity");
 

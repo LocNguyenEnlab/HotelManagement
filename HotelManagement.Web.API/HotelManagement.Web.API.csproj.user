@@ -11,7 +11,7 @@
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Reports\InvoicePDF.cs">
+    <Compile Update="Reports\Invoice\InvoicePDF.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

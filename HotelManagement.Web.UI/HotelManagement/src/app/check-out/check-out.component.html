@@ -1,6 +1,6 @@
 <dx-popup
     [(visible)]="isVisiblePersonalCheckoutPopup"
-    width="40%"
+    width="50%"
     height="auto"
     maxHeight="90%"
     [showTitle]="true"
@@ -26,49 +26,52 @@
                         <p>Client Name </p>
                         <p>Checkin Date </p>
                         <p>Checkout Date </p>
-                        <p>Rent time </p>
                     </div>
                     <div class="col-sm-7">
                         <p *ngIf="invoice.clients.length">{{invoice.clients[0].name}}</p>
                         <p>{{roomCheckout.checkinTime.toLocaleDateString()}} {{roomCheckout.checkinTime.toLocaleTimeString()}}</p>
                         <p>{{roomCheckout.checkoutTime.toLocaleDateString()}} {{roomCheckout.checkoutTime.toLocaleTimeString()}}</p>
-                        <p>{{invoice.rentTime}} day</p>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="row">
-                    <div class="col-sm-3 title">
+                    <div class="col-sm-4 title">
                         <p>Room </p>
                         <p>Price </p>
-                        <p>Type </p>
+                        <p>Rent day </p>
+                        <p>Room amount</p>
                     </div>
-                    <div class="col-sm-9">
-                        <p>{{roomCheckout.name}}</p>
+                    <div class="col-sm-8">
+                        <p>{{roomCheckout.name}} ({{roomCheckout.type}})</p>
                         <p>{{roomCheckout.price | currency: 'USD'}}</p>
-                        <p>{{roomCheckout.type}}</p>
+                        <p>{{invoice.rentTime}} (day)</p>
+                        <p>{{invoice.totalRoomAmount | currency}}</p>
                     </div>
                 </div>
             </div>
         </div>
         <hr>
-        <span class="title">Room money &nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span>{{roomCheckout.price | currency}} x {{invoice.rentTime}} = {{invoice.totalRoomMoney | currency}}</span>
-        <hr>
         <dx-data-grid
+            #serviceGrid
             [showRowLines]="true"
             [dataSource]="invoice.servicesOfInvoice"
             [showBorders]="true">
             <dx-scroll-view></dx-scroll-view>
+            <dxi-column dataField="orderTime" dataType="datetime"></dxi-column>
             <dxi-column dataField="service.name"></dxi-column>
             <dxi-column dataField="service.price" format="currency"></dxi-column>
             <dxi-column dataField="quantity"></dxi-column>
-            <dxi-column dataField="totalMoney" format="currency"></dxi-column>
+            <dxi-column dataField="totalAmount" format="currency"></dxi-column>
+
+            <dxo-summary>
+                <dxi-total-item
+                    column="totalAmount"
+                    summaryType="sum"
+                    valueFormat="currency">
+                </dxi-total-item>
+            </dxo-summary>
         </dx-data-grid>
-        <div style="margin-top: 20px">
-            <span class="title">Service money &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span>{{invoice.totalServiceMoney | currency}}</span>
-        </div>
         <hr>
         <div class="row">
             <div class="col-sm-4">
@@ -77,11 +80,11 @@
             </div>
             <div class="col-sm-4">
                 <span class="title">Discount &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span>{{invoice.discount}}%</span>
+                <span>{{invoice.discount | currency}}</span>
             </div>
             <div class="col-sm-4">
-                <span class="title">Total Payment &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span>{{invoice.totalPayment | currency}}</span>
+                <span class="title">Total Amount &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>{{invoice.totalAmount | currency}}</span>
             </div>
         </div>
         <div style="margin-top: 15px">

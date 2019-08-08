@@ -21,11 +21,11 @@ namespace HotelManagement.Entities.Model
 
         public double Discount { get; set; }
 
-        public double TotalServiceMoney { get; set; }
+        public double TotalServiceAmount { get; set; }
 
-        public double TotalRoomMoney { get; set; }
+        public double TotalRoomAmount { get; set; }
 
-        public double TotalPayment { get; set; }
+        public double TotalAmount { get; set; }
 
         public string Status { get; set; }
 

@@ -1,3 +1,5 @@
+import {InvoiceModel} from './InvoiceModel';
+
 export class ClientModel {
     id: number;
     name: string;
@@ -15,6 +17,7 @@ export class ClientModel {
     prepay: number;
     status: string; // booking or checkin
     discount: number;
+    invoice: InvoiceModel;
 
     constructor(init?: Partial<ClientModel>) {
         if (init) {

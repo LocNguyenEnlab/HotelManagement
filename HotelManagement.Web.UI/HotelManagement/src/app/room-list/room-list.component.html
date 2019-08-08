@@ -11,16 +11,15 @@
                 <tr *ngFor="let floor of floors" style="height: 100px;">
                     <td class="floor">Floor {{floor.name}}</td>
                     <td *ngFor="let room of floor.rooms">
-                        <dx-button id="R{{room.name}}" (click)="chooseRoom($event.currentTarget.id)"
-                                   (dblclick)="openPopupPersonalBooking($event.currentTarget.id)" class="room"
-                                   [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booking' ? 'orange'
-                            : room.status === 'Selected' ? 'Violet' : '#337ab7' "
-                        >
+                        <dx-button
+                            id="R{{room.name}}"
+                            (dblclick)="openPopupPersonalBooking($event.currentTarget.id)" class="room"
+                            [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booked' ? 'orange' : '#337ab7'">
                             <div class="row above">
                                 <div class="col-sm-2 col-xs-2 room-type">
                                     <span>{{room.type}}</span>
                                 </div>
-                                <div class="col-sm-10 col-xs-10 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Booking'">
+                                <div class="col-sm-10 col-xs-10 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Checked in'">
                                     <span>{{room.checkinTime | date: 'MM'}}/{{room.checkinTime | date: 'dd'}} </span>
                                     <i class="dx-icon-arrowright"></i>
                                     <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
@@ -28,8 +27,15 @@
                             </div>
                             <div>
                                 <p class="room-name">{{room.name}}</p>
-                                <p *ngIf="room.status === 'Booked'" class="client-name">
-                                    <span>{{room.clients[0].name}}</span>
+                                <p class="status">
+                                    <span *ngIf="room.status === 'Checked in'">{{room.clients[0].name}}</span>
+                                    <span *ngIf="room.status === 'Available'">(Available)</span>
+                                    <span *ngIf="room.status === 'Booked'">(Booked)</span>
+                                </p>
+                                <p>
+                                    <span *ngIf="room.status === 'Checked in' && room.clients[0].invoice != null" class="total-amount">
+                                        ({{room.clients[0].invoice.totalAmount | currency}})
+                                    </span>
                                 </p>
                             </div>
                         </dx-button>
@@ -38,28 +44,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="notes">
-            <div class="note-item">
-                <div class="available-note">
-                    <p>Available</p>
-                </div>
-                <div class="booking-note">
-                    <p>Booked</p>
-                </div>
-                <div class="booked-note">
-                    <p>Checked in</p>
-                </div>
-                <div class="selection-note">
-                    <p>Your selection</p>
-                </div>
-            </div>
-        </div>
     </div>
-
 </div>
 
 <!--Popup when right click-->
-<div *ngFor="let name of availableAndBookedRoomsName">
+<div *ngFor="let name of availableAndCheckedinRoomsName">
     <dx-context-menu
         [dataSource]="checkInCheckOutText"
         [width]="200"
@@ -67,7 +56,7 @@
         (onItemClick)="checkInCheckOut($event, name)">
     </dx-context-menu>
 </div>
-<div *ngFor="let name of bookingRoomsName">
+<div *ngFor="let name of bookedRoomsName">
     <dx-context-menu
         [dataSource]="updateBookingText"
         [width]="200"

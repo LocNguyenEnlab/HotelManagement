@@ -9,6 +9,7 @@ import notify from 'devextreme/ui/notify';
 import {ServiceService} from '../services/service.service';
 import {confirm} from 'devextreme/ui/dialog';
 import {ClientService} from '../services/client.service';
+import {ServiceOfInvoiceModel} from '../models/ServiceOfInvoiceModel';
 
 @Component({
     selector: 'app-check-out',
@@ -16,9 +17,7 @@ import {ClientService} from '../services/client.service';
     styleUrls: ['./check-out.component.scss']
 })
 export class CheckOutComponent implements OnInit {
-    @ViewChild('serviceBox', {static: false}) serviceBox;
-    @ViewChild('quantityBox', {static: false}) quantityBox;
-    @ViewChild('typeBox', {static: false}) typeBox;
+    @ViewChild('serviceGrid', {static: false}) serviceGrid;
     isVisiblePersonalCheckoutPopup = false;
     titlePersonalCheckout: string;
     roomCheckout: RoomModel = new RoomModel();
@@ -50,6 +49,7 @@ export class CheckOutComponent implements OnInit {
         roomCheckout.checkinTime = new Date(roomCheckout.checkinTime);
         roomCheckout.checkoutTime = new Date();
         this.roomCheckout = roomCheckout;
+
         await this.invoiceService.getInvoiceByRoomName(this.roomCheckout.name).toPromise().then(data => {
             this.invoice = data;
         });

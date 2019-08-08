@@ -5,9 +5,9 @@ export class InvoiceModel {
     id: number;
     clients: ClientModel[];
     rentTime: number;
-    totalRoomMoney: number;
-    totalServiceMoney: number;
-    totalPayment: number;
+    totalRoomAmount: number;
+    totalServiceAmount: number;
+    totalAmount: number;
     discount: number;
     status: string;
     notes: string;
@@ -19,9 +19,9 @@ export class InvoiceModel {
     constructor() {
         this.clients = [];
         this.rentTime = 0;
-        this.totalServiceMoney = 0;
-        this.totalRoomMoney = 0;
-        this.totalPayment = 0;
+        this.totalServiceAmount = 0;
+        this.totalRoomAmount = 0;
+        this.totalAmount = 0;
         this.discount = 0;
         this.status = '';
         this.notes = '';

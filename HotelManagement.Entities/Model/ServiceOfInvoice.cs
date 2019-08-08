@@ -14,7 +14,7 @@ namespace HotelManagement.Entities.Model
 
         public int Quantity { get; set; }
 
-        public double TotalMoney { get; set; }
+        public double TotalAmount { get; set; }
 
         public int ServiceId { get; set; }
 
@@ -23,5 +23,7 @@ namespace HotelManagement.Entities.Model
         public int InvoiceId { get; set; }
 
         public Invoice Invocie { get; set; }
+
+        public DateTime OrderTime { get; set; }
     }
 }

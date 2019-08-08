@@ -27,11 +27,15 @@ export class UpdateServiceComponent implements OnInit {
     serviceQuantityValue: number = null;
     serviceTypeSource: ServiceTypeModel[] = [];
     serviceTypeName: string = null;
+    currentPrice: number;
 
     constructor(
         private invoiceService: InvoiceService,
         private service: ServiceService,
-    ) {}
+    ) {
+        this.setPrice = this.setPrice.bind(this);
+        this.setTotalAmount = this.setTotalAmount.bind(this);
+    }
 
     async ngOnInit() {
         await this.service.getServices().toPromise().then(data => {
@@ -53,10 +57,13 @@ export class UpdateServiceComponent implements OnInit {
     }
 
     chooseService(event: Event) {
-        // @ts-ignore
-        this.serviceValue = event.addedItems[0];
-        this.serviceName = this.serviceValue.name;
-        this.serviceBox.instance.close();
+        // // @ts-ignore
+        // this.serviceValue = event.addedItems[0];
+        // this.serviceName = this.serviceValue.name;
+        // this.serviceBox.instance.close();
+
+        console.log(event);
+        return null;
     }
 
     chooseQuantity(event: Event) {
@@ -82,11 +89,11 @@ export class UpdateServiceComponent implements OnInit {
             const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.servicesOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
             if (serviceOfInvoice) {
                 serviceOfInvoice.quantity += this.serviceQuantityValue;
-                serviceOfInvoice.totalMoney = this.serviceValue.price * serviceOfInvoice.quantity;
+                serviceOfInvoice.totalAmount = this.serviceValue.price * serviceOfInvoice.quantity;
             } else {
                 const serviceInvoice: ServiceOfInvoiceModel = new ServiceOfInvoiceModel();
                 serviceInvoice.quantity = this.serviceQuantityValue;
-                serviceInvoice.totalMoney = serviceInvoice.quantity * this.serviceValue.price;
+                serviceInvoice.totalAmount = serviceInvoice.quantity * this.serviceValue.price;
                 serviceInvoice.serviceId = this.serviceValue.id;
                 serviceInvoice.service = this.serviceValue;
                 this.invoice.servicesOfInvoice.push(serviceInvoice);
@@ -103,11 +110,26 @@ export class UpdateServiceComponent implements OnInit {
     async updateService() {
         let serviceMoney = 0;
         for (const service of this.invoice.servicesOfInvoice) {
-            serviceMoney += service.totalMoney;
+            serviceMoney += service.totalAmount;
         }
-        this.invoice.totalPayment = this.invoice.totalPayment - this.invoice.totalServiceMoney + serviceMoney;
-        this.invoice.totalServiceMoney = serviceMoney;
+        this.invoice.totalAmount = this.invoice.totalAmount - this.invoice.totalServiceAmount + serviceMoney;
+        this.invoice.totalServiceAmount = serviceMoney;
         await this.invoiceService.updateInvoice(this.invoice).toPromise().then();
         this.isVisibleUpdateServicePopup = false;
+    }
+
+    setPrice(rowData: ServiceOfInvoiceModel, value) {
+        rowData.service = rowData.service || new ServiceModel();
+        rowData.service.id = value;
+        const service = this.serviceSource.find(_ => _.id === value);
+        if (service) {
+            rowData.service.price = service.price;
+            this.currentPrice = service.price;
+        }
+    }
+
+    setTotalAmount(rowData: ServiceOfInvoiceModel, value) {
+        rowData.totalAmount = this.currentPrice * value;
+        rowData.quantity = value;
     }
 }

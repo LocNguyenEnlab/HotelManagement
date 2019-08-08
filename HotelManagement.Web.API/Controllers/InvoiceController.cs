@@ -69,13 +69,12 @@ namespace HotelManagement.Web.API.Controllers
             _invoiceService.Delete(invoiceId);
         }
 
-        [HttpPut("/api/invoice/exportinvoice")]
-        public void ExportInvoice(Invoice invoice)
-        {
-            var invoicePDF = new InvoicePDF();
-            invoicePDF.CreateInvoice(invoice);
-            invoicePDF.ExportToPdf("./Reports/Invoice/"  + 
-                invoice.Id + invoice.Clients.First().Name + ".pdf");
-        }
+        //[HttpPut("/api/invoice/exportinvoice")]
+        //public void ExportInvoice(Invoice invoice)
+        //{
+        //    var invoicePDF = new InvoicePDF();
+        //    invoicePDF.CreateInvoice(invoice);
+        //    invoicePDF.ExportToPdf("./Reports/Invoice/"  + invoice.Id + invoice.Clients.First().Name + ".pdf");
+        //}
     }
 }

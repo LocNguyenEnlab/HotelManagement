@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {PersonalBookingDetailModel} from '../models/PersonalBookingDetailModel';
-import {GroupBookingDetailModel} from '../models/GroupBookingDetailModel';
 import {ClientModel} from '../models/ClientModel';
 import {RoomModel} from '../models/RoomModel';
 import notify from 'devextreme/ui/notify';
@@ -80,7 +78,7 @@ export class BookingComponent implements OnInit {
                     client.discount = this.discount;
                 }
                 this.isVisiblePersonalBookingPopup = false;
-                this.roomBooking.status = 'Booking';
+                this.roomBooking.status = 'Booked';
                 await this.roomService.updateRoom(this.roomBooking).toPromise().then();
                 // window.location.reload();
             } else {

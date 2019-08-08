@@ -25,15 +25,10 @@
                 min-width: 200px;
                 .room {
                     width: 100%;
-                    height: 100px;
+                    height: 120px;
                     font-size: $font-size-normal;
                     position: relative;
                     color: #fff;
-                    .room-name {
-                        //position: absolute;
-                        //right: -20%;
-                        //top: -10px;
-                    }
                     p {
                         margin: 10px 0 25px 0;
                     }
@@ -62,16 +57,19 @@
                     .room-name {
                         font-size: $font-size-large;
                     }
-                    .client-name {
+                    .status {
                         font-size: $font-size-small;
                         padding-top: 5px;
+                    }
+                    .total-amount {
+                        font-size: $font-size-small;
                     }
                 }
             }
             .floor {
                 background-color: #80ba6c;
                 font-size: $font-size-normal;
-                height: 100px;
+                height: 120px;
                 min-width: 100px;
                 max-width: 100px;
                 width: 100px;
@@ -85,65 +83,6 @@
                 .room {
                     font-size: $font-size-small;
                 }
-            }
-        }
-    }
-    //.room-diagram::-webkit-scrollbar-track
-    //{
-    //    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-    //    background-color: #F5F5F5;
-    //    border-radius: 10px;
-    //}
-    //
-    //.room-diagram::-webkit-scrollbar
-    //{
-    //    //height: 10px;
-    //    //background-color: #F5F5F5;
-    //    margin-left: 20px;
-    //}
-    //
-    //.room-diagram::-webkit-scrollbar-thumb
-    //{
-    //    border-radius: 10px;
-    //    background-color: #FFF;
-    //    background-image: -webkit-gradient(linear,
-    //        40% 0%,
-    //        75% 84%,
-    //        from(#4D9C41),
-    //        to(#19911D),
-    //        color-stop(.6,#54DE5D))
-    //}
-    .notes {
-        .note-item {
-            height: 30px;
-            p {
-                font-size: $font-size-normal;
-                margin-left: 30px;
-                width: 200px;
-            }
-            .available-note {
-                width: 25px;
-                height: 25px;
-                background-color: green;
-                margin: 10px;
-            }
-            .booking-note {
-                width: 25px;
-                height: 25px;
-                background-color: orange;
-                margin: 10px;
-            }
-            .booked-note {
-                width: 25px;
-                height: 25px;
-                background-color: #337ab7;
-                margin: 10px;
-            }
-            .selection-note {
-                width: 25px;
-                height: 25px;
-                background-color: violet;
-                margin: 10px;
             }
         }
     }
