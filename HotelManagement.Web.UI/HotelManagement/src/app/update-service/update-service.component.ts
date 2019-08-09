@@ -20,13 +20,9 @@ export class UpdateServiceComponent implements OnInit {
     isVisibleUpdateServicePopup = false;
     titleUpdateService: string;
     invoice: InvoiceModel = new InvoiceModel();
-    serviceValue: ServiceModel;
     serviceSource: ServiceModel[] = [];
-    serviceName: string = null;
     serviceQuantitySource: number[] = [];
-    serviceQuantityValue: number = null;
     serviceTypeSource: ServiceTypeModel[] = [];
-    serviceTypeName: string = null;
     currentPrice: number;
 
     constructor(
@@ -35,6 +31,8 @@ export class UpdateServiceComponent implements OnInit {
     ) {
         this.setPrice = this.setPrice.bind(this);
         this.setTotalAmount = this.setTotalAmount.bind(this);
+        this.setServiceType = this.setServiceType.bind(this);
+        this.getFilteredServices = this.getFilteredServices.bind(this);
     }
 
     async ngOnInit() {
@@ -47,6 +45,7 @@ export class UpdateServiceComponent implements OnInit {
         });
         const allService: ServiceTypeModel = {id: -1, name: 'All Service', services: this.serviceSource};
         this.serviceTypeSource.push(allService);
+
     }
 
     async onInit(roomUpdate: RoomModel) {
@@ -54,53 +53,6 @@ export class UpdateServiceComponent implements OnInit {
         await this.invoiceService.getInvoiceByRoomName(roomUpdate.name).toPromise().then(data => {
             this.invoice = data;
         });
-    }
-
-    chooseService(event: Event) {
-        // // @ts-ignore
-        // this.serviceValue = event.addedItems[0];
-        // this.serviceName = this.serviceValue.name;
-        // this.serviceBox.instance.close();
-
-        console.log(event);
-        return null;
-    }
-
-    chooseQuantity(event: Event) {
-        // @ts-ignore
-        this.serviceQuantityValue = event.addedItems[0];
-        this.quantityBox.instance.close();
-    }
-
-    chooseServiceType(event: Event) {
-        // @ts-ignore
-        this.serviceTypeName = event.addedItems[0].name;
-        // @ts-ignore
-        this.serviceSource = this.serviceTypeSource.find(_ => _.id === event.addedItems[0].id).services;
-        this.serviceName = null;
-        this.typeBox.instance.close();
-    }
-
-    addService() {
-        if (this.serviceQuantityValue != null && this.serviceValue != null) {
-            if (!this.invoice.servicesOfInvoice) {
-                this.invoice.servicesOfInvoice = [];
-            }
-            const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.servicesOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
-            if (serviceOfInvoice) {
-                serviceOfInvoice.quantity += this.serviceQuantityValue;
-                serviceOfInvoice.totalAmount = this.serviceValue.price * serviceOfInvoice.quantity;
-            } else {
-                const serviceInvoice: ServiceOfInvoiceModel = new ServiceOfInvoiceModel();
-                serviceInvoice.quantity = this.serviceQuantityValue;
-                serviceInvoice.totalAmount = serviceInvoice.quantity * this.serviceValue.price;
-                serviceInvoice.serviceId = this.serviceValue.id;
-                serviceInvoice.service = this.serviceValue;
-                this.invoice.servicesOfInvoice.push(serviceInvoice);
-            }
-        } else {
-            notify('Please select service and quantity of it', 'error');
-        }
     }
 
     cancel() {
@@ -120,16 +72,42 @@ export class UpdateServiceComponent implements OnInit {
 
     setPrice(rowData: ServiceOfInvoiceModel, value) {
         rowData.service = rowData.service || new ServiceModel();
-        rowData.service.id = value;
+        rowData.serviceId = value;
         const service = this.serviceSource.find(_ => _.id === value);
+        rowData.service = service;
         if (service) {
             rowData.service.price = service.price;
             this.currentPrice = service.price;
+            rowData.totalAmount = this.currentPrice;
         }
     }
 
     setTotalAmount(rowData: ServiceOfInvoiceModel, value) {
         rowData.totalAmount = this.currentPrice * value;
         rowData.quantity = value;
+    }
+
+    setServiceType(rowData: any, value) {
+        rowData.service = rowData.service || new ServiceModel();
+        rowData.service.serviceTypeId = value;
+    }
+
+    setDefaultValue(e) {
+        e.data.orderTime = new Date();
+        e.data.quantity = 1;
+    }
+
+    getFilteredServices(options) {
+        if (options.data) {
+            if (options.data.service.serviceTypeId === -1) {
+                return this.serviceSource;
+            } else {
+                return {
+                    store: this.serviceSource,
+                    filter: options.data ? ['serviceTypeId', '=', options.data.service.serviceTypeId] : null
+                };
+            }
+        }
+        return this.serviceSource;
     }
 }

@@ -23,10 +23,8 @@ export class CheckInComponent implements OnInit {
     @ViewChild('typeBox', {static: false}) typeBox;
     isVisiblePersonalCheckinPopup = false;
     titlePersonalCheckin: string;
-    serviceValue: ServiceModel;
     serviceSource: ServiceModel[] = [];
     serviceQuantitySource: number[] = [];
-    serviceQuantityValue: number = null;
     serviceTypeSource: ServiceTypeModel[] = [];
     roomCheckin: RoomModel = new RoomModel();
     invoice: InvoiceModel = new InvoiceModel();
@@ -42,6 +40,8 @@ export class CheckInComponent implements OnInit {
     ) {
         this.setPrice = this.setPrice.bind(this);
         this.setTotalAmount = this.setTotalAmount.bind(this);
+        this.getFilteredServices = this.getFilteredServices.bind(this);
+        this.setServiceType = this.setServiceType.bind(this);
     }
 
     async ngOnInit() {
@@ -60,11 +60,11 @@ export class CheckInComponent implements OnInit {
         if (clientCheckin != null) {
              await this.roomService.getRoom(clientCheckin.roomName).toPromise().then(data => {
                  this.roomCheckin = data;
+                 this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
              });
              await this.clientService.getClientsByRoomName(this.roomCheckin.name).toPromise().then(data => {
                  this.roomCheckin.clients = data;
              });
-             this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
              this.invoice.discount = this.roomCheckin.clients[0].discount;
              this.invoice.prepay = this.roomCheckin.clients[0].prepay;
              this.roomCheckin.checkinTime = new Date();
@@ -127,28 +127,6 @@ export class CheckInComponent implements OnInit {
         }
     }
 
-    addService() {
-        if (this.serviceQuantityValue != null && this.serviceValue != null) {
-            if (!this.invoice.servicesOfInvoice) {
-                this.invoice.servicesOfInvoice = [];
-            }
-            const serviceOfInvoice: ServiceOfInvoiceModel = this.invoice.servicesOfInvoice.find(_ => _.serviceId === this.serviceValue.id);
-            if (serviceOfInvoice) {
-                serviceOfInvoice.quantity += this.serviceQuantityValue;
-                serviceOfInvoice.totalAmount = this.serviceValue.price * serviceOfInvoice.quantity;
-            } else {
-                const serviceInvoice: ServiceOfInvoiceModel = new ServiceOfInvoiceModel();
-                serviceInvoice.quantity = this.serviceQuantityValue;
-                serviceInvoice.totalAmount = serviceInvoice.quantity * this.serviceValue.price;
-                serviceInvoice.serviceId = this.serviceValue.id;
-                serviceInvoice.service = this.serviceValue;
-                this.invoice.servicesOfInvoice.push(serviceInvoice);
-            }
-        } else {
-            notify('Please select service and quantity of it', 'error');
-        }
-    }
-
     setPrice(rowData: ServiceOfInvoiceModel, value) {
         rowData.service = rowData.service || new ServiceModel();
         rowData.serviceId = value;
@@ -157,11 +135,36 @@ export class CheckInComponent implements OnInit {
         if (service) {
             rowData.service.price = service.price;
             this.currentPrice = service.price;
+            rowData.totalAmount = this.currentPrice;
         }
     }
 
     setTotalAmount(rowData: ServiceOfInvoiceModel, value) {
         rowData.totalAmount = this.currentPrice * value;
         rowData.quantity = value;
+    }
+
+    setServiceType(rowData: any, value) {
+        rowData.service = rowData.service || new ServiceModel();
+        rowData.service.serviceTypeId = value;
+    }
+
+    setDefaultValue(e) {
+        e.data.orderTime = new Date();
+        e.data.quantity = 1;
+    }
+
+    getFilteredServices(options) {
+        if (options.data) {
+            if (options.data.service.serviceTypeId === -1) {
+                return this.serviceSource;
+            } else {
+                return {
+                    store: this.serviceSource,
+                    filter: options.data ? ['serviceTypeId', '=', options.data.service.serviceTypeId] : null
+                };
+            }
+        }
+        return this.serviceSource;
     }
 }

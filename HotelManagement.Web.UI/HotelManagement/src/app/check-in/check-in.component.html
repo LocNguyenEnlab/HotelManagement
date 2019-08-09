@@ -1,5 +1,5 @@
 <dx-popup
-    width="60%"
+    width="70%"
     height="auto"
     maxHeight="90%"
     [showTitle]="true"
@@ -87,30 +87,46 @@
                 height="250"
                 [showRowLines]="true"
                 [dataSource]="invoice.servicesOfInvoice"
+                (onInitNewRow)="setDefaultValue($event)"
                 [showBorders]="true">
                 <dxo-editing
                     mode="row"
                     [allowAdding]="true">
                 </dxo-editing>
-                <dxi-column dataField="orderTime" dataType="datetime"></dxi-column>
+                <dxi-column
+                    dataField="orderTime" dataType="datetime">
+                </dxi-column>
+                <dxi-column
+                    dataField="service.serviceTypeId"
+                    caption="Service type"
+                    [setCellValue]="setServiceType">
+                    <dxo-lookup
+                        [dataSource]="serviceTypeSource"
+                        valueExpr="id"
+                        displayExpr="name"></dxo-lookup>
+                </dxi-column>
                 <dxi-column
                     dataField="serviceId"
                     caption="Service name"
                     [setCellValue]="setPrice">
                     <dxo-lookup
-                        [dataSource]="serviceSource"
+                        [dataSource]="getFilteredServices"
                         valueExpr="id"
                         displayExpr="name"></dxo-lookup>
                 </dxi-column>
                 <dxi-column
-                    dataField="service.price"></dxi-column>
+                    dataField="service.price"
+                    format="currency"></dxi-column>
                 <dxi-column
                     dataField="quantity"
                     [setCellValue]="setTotalAmount">
                     <dxo-lookup
                         [dataSource]="serviceQuantitySource"></dxo-lookup>
                 </dxi-column>
-                <dxi-column dataField="totalAmount"></dxi-column>
+                <dxi-column
+                    dataField="totalAmount"
+                    format="currency">
+                </dxi-column>
             </dx-data-grid>
         </div>
         <div class="panel">

@@ -2,5 +2,5 @@ export class ServiceModel {
     id: number;
     name: string;
     price: number;
-    typeId: number;
+    serviceTypeId: number;
 }
