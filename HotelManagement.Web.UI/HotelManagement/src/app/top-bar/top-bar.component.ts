@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ServiceComponent} from '../room-service/service.component';
 
 @Component({
     selector: 'app-top-bar',
@@ -6,6 +7,7 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./top-bar.component.scss']
 })
 export class TopBarComponent implements OnInit {
+    @ViewChild(ServiceComponent, {static: false}) addService;
 
     constructor() {
     }
@@ -13,4 +15,7 @@ export class TopBarComponent implements OnInit {
     ngOnInit() {
     }
 
+    openAddServicePopup() {
+        this.addService.isVisibleAddServicePopup = true;
+    }
 }

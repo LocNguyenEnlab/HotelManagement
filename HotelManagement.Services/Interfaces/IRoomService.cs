@@ -8,5 +8,7 @@ namespace HotelManagement.Services.Interfaces
     public interface IRoomService : IGenericService<Room>
     {
         Room Get(string roomName);
+
+        IList<Room> GetRoomsBySearchKey(string searchKey);
     }
 }

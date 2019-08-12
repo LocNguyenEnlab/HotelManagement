@@ -24,4 +24,8 @@ export class RoomService {
     updateRoom(room: RoomModel): Observable<RoomModel> {
         return this.http.put<RoomModel>(this.apiUrl, room);
     }
+
+    getRoomsBySearchKey(searchKey: string): Observable<RoomModel[]> {
+        return this.http.get<RoomModel[]>(this.apiUrl + 'search/' + searchKey);
+    }
 }

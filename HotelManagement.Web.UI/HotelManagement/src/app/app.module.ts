@@ -11,8 +11,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
     DxButtonModule, DxContextMenuModule, DxDataGridModule,
     DxDateBoxModule, DxDropDownBoxModule,
-    DxFormModule, DxListModule, DxNumberBoxModule,
-    DxPopupModule, DxRadioGroupModule, DxScrollViewModule,
+    DxFormModule, DxListModule, DxLookupModule, DxNumberBoxModule, DxPopoverModule,
+    DxPopupModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule,
     DxTabPanelModule,
     DxTextAreaModule,
     DxTextBoxModule, DxValidatorModule
@@ -26,6 +26,7 @@ import { BookingComponent } from './booking/booking.component';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { UpdateServiceComponent } from './update-service/update-service.component';
+import { ServiceComponent } from './room-service/service.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { UpdateServiceComponent } from './update-service/update-service.componen
         BookingComponent,
         CheckOutComponent,
         InvoiceListComponent,
-        UpdateServiceComponent
+        UpdateServiceComponent,
+        ServiceComponent
     ],
     imports: [
         BrowserModule,
@@ -50,7 +52,8 @@ import { UpdateServiceComponent } from './update-service/update-service.componen
             {path: 'check-in', component: CheckInComponent},
             {path: 'check-out', component: CheckOutComponent},
             {path: 'invoice-list', component: InvoiceListComponent},
-            {path: 'update-service', component: UpdateServiceComponent},
+            {path: 'update-room-service', component: UpdateServiceComponent},
+            {path: 'service', component: ServiceComponent},
         ]),
         DxPopupModule,
         DxTabPanelModule,
@@ -70,6 +73,9 @@ import { UpdateServiceComponent } from './update-service/update-service.componen
         DxRadioGroupModule,
         DxDropDownBoxModule,
         DxListModule,
+        DxPopoverModule,
+        DxLookupModule,
+        DxSelectBoxModule,
     ],
     bootstrap: [AppComponent]
 })

@@ -24,14 +24,4 @@ export class ServiceService {
     getServicesType(): Observable<ServiceTypeModel[]> {
         return this.http.get<ServiceTypeModel[]>(this.apiServiceTypeUrl);
     }
-
-    getServicesByTypeId(typeId: number) {
-        // const services: ServiceModel[] = [];
-        // for (const service of this.services) {
-        //     if (service.typeId === typeId) {
-        //         services.push(service);
-        //     }
-        // }
-        // return services;
-    }
 }

@@ -56,18 +56,16 @@ export class CheckInComponent implements OnInit {
         this.serviceTypeSource.push(allService);
     }
 
-    async onInit(clientCheckin: ClientModel) {
-        if (clientCheckin != null) {
-             await this.roomService.getRoom(clientCheckin.roomName).toPromise().then(data => {
-                 this.roomCheckin = data;
-                 this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
-             });
-             await this.clientService.getClientsByRoomName(this.roomCheckin.name).toPromise().then(data => {
-                 this.roomCheckin.clients = data;
-             });
-             this.invoice.discount = this.roomCheckin.clients[0].discount;
-             this.invoice.prepay = this.roomCheckin.clients[0].prepay;
-             this.roomCheckin.checkinTime = new Date();
+    onInit(room: RoomModel) {
+        if (room != null) {
+            this.roomCheckin = room;
+            this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
+            // await this.clientService.getClientsByRoomName(this.roomCheckin.name).toPromise().then(data => {
+            //     this.roomCheckin.clients = data;
+            // });
+            this.invoice.discount = this.roomCheckin.clients[0].discount;
+            this.invoice.prepay = this.roomCheckin.clients[0].prepay;
+            this.roomCheckin.checkinTime = new Date();
         }
     }
 

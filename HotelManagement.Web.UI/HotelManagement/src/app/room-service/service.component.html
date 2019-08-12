@@ -1,0 +1,35 @@
+<dx-popup
+    [(visible)]="isVisibleAddServicePopup"
+    width="50%"
+    height="auto"
+    maxHeight="90%"
+    [showTitle]="true"
+    title="Add new service"
+    [dragEnabled]="false"
+    [closeOnOutsideClick]="false">
+    <div class="row">
+        <div class="col-sm-4">
+            <dx-select-box
+                valueExpr="id"
+                displayExpr="name"
+                [dataSource]="serviceTypeSource"
+                searchEnabled="true"
+                placeholder="Service type">
+            </dx-select-box>
+        </div>
+        <div class="col-sm-4">
+            <dx-text-box
+                placeholder="Service name"></dx-text-box>
+        </div>
+        <div class="col-sm-4">
+            <dx-text-box
+                placeholder="Service price"></dx-text-box>
+        </div>
+        <div class="button">
+            <dx-button
+                (onClick)="addNewService()"
+                text="Ok"
+                type="success"></dx-button>
+        </div>
+    </div>
+</dx-popup>

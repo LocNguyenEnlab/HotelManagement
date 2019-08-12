@@ -28,6 +28,10 @@ export class RoomListComponent implements OnInit {
     availableAndCheckedinRoomsName: string[] = [];
     bookedRoomsName: string[] = [];
     updateBookingText = [];
+    searchKey = '';
+    isVisibleSearchPopover = false;
+    roomsResult: RoomModel[] = [];
+    popoverTitle = '';
 
     constructor(
         private bookingService: BookingService,
@@ -100,9 +104,13 @@ export class RoomListComponent implements OnInit {
 
     checkInCheckOut(e, roomName) {
         const room = this.rooms.find(s => s.name === roomName.replace('R', ''));
-        if (e.itemData.text === 'Checkin' && room.status === 'Available') {
-            this.checkinComponent.isVisiblePersonalCheckinPopup = true;
-            this.checkinComponent.onInit(Object.assign({}, room), null, null);
+        if (e.itemData.text === 'Checkin' && room.status !== 'Available') {
+            if (room.status === 'Booked') {
+                this.checkinComponent.onInit(room);
+                this.checkinComponent.isVisiblePersonalCheckinPopup = true;
+            } else if (room.status === 'Available') {
+
+            }
         } else if (e.itemData.text === 'Update Service' && room.status === 'Checked in') {
             this.updateServiceComponent.isVisibleUpdateServicePopup = true;
             this.updateServiceComponent.onInit(room);
@@ -112,28 +120,42 @@ export class RoomListComponent implements OnInit {
         }
     }
 
-    updateBooking(event, roomName) {
-        // const bookedClient: BookedClientsListModel[] = this.bookedClientListService.getBookedClientsByRoomName(roomName);
-        // if (bookedClient[0].client.roomName === ) {
-        //     // personal update
-        //     const roomUpdate: RoomModel = bookedClient[0].rooms[0];
-        //     this.bookingComponent.onInit(roomUpdate, null, null, bookedClient);
-        //     this.bookingComponent.isVisiblePersonalBookingPopup = true;
-        // } else {
-        //     // group update
-        //     // const roomsUpdate: RoomModel[] = this.roomService.getRoom(bookedClient[0].client.roomName).subscribe(data => {
-        //     //
-        //     // })
-        //     // this.bookingComponent.onInit(null, roomsUpdate, null, bookedClient);
-        //     // this.bookingComponent.isVisibleGroupBookingPopup = true;
-        // }
+    onSearchKeyChanged() {
+        const self = this;
+        setTimeout(() => { self.search(); }, 500);
     }
 
-    getTotalAmount(roomName) {
-        // let invoice: InvoiceModel;
-        // this.invoiceService.getInvoiceByRoomName(roomName).toPromise().then(data => {
-        //     invoice = data;
-        // });
-        // return invoice.totalAmount;
+    async search() {
+        this.isVisibleSearchPopover = true;
+        this.popoverTitle = 'Searching...';
+        await this.roomService.getRoomsBySearchKey(this.searchKey).toPromise().then(data => {
+            this.roomsResult = data;
+            if (data != null) {
+                if (data.length === 0) {
+                    this.popoverTitle = 'No result';
+                }
+            }
+            if (data.length === 1) {
+                this.popoverTitle = data.length + ' room found';
+            } else if (data.length > 1) {
+                this.popoverTitle = data.length + ' rooms found';
+            }
+        });
+    }
+
+    onFocusInTextBoxSearch() {
+        if (this.searchKey.length) {
+            this.isVisibleSearchPopover = true;
+        }
+    }
+
+    clickResultRoom(room: RoomModel) {
+        if (room.status === 'Booked') {
+            this.checkinComponent.onInit(room);
+            this.checkinComponent.isVisiblePersonalCheckinPopup = true;
+        } else if (room.status === 'Checked in') {
+            this.checkoutComponent.onInit(room);
+            this.checkoutComponent.isVisiblePersonalCheckoutPopup = true;
+        }
     }
 }

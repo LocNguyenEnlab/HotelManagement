@@ -49,7 +49,7 @@ export class UpdateServiceComponent implements OnInit {
     }
 
     async onInit(roomUpdate: RoomModel) {
-        this.titleUpdateService = 'Update service for room ' + roomUpdate.name;
+        this.titleUpdateService = 'Update room-service for room ' + roomUpdate.name;
         await this.invoiceService.getInvoiceByRoomName(roomUpdate.name).toPromise().then(data => {
             this.invoice = data;
         });
@@ -68,6 +68,7 @@ export class UpdateServiceComponent implements OnInit {
         this.invoice.totalServiceAmount = serviceMoney;
         await this.invoiceService.updateInvoice(this.invoice).toPromise().then();
         this.isVisibleUpdateServicePopup = false;
+        window.location.reload();
     }
 
     setPrice(rowData: ServiceOfInvoiceModel, value) {

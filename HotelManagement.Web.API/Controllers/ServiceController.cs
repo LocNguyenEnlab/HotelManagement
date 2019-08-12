@@ -22,5 +22,11 @@ namespace HotelManagement.Web.API.Controllers
         {
             return _service.GetAll();
         }
+
+        [HttpPost]
+        public void Post(Service service)
+        {
+            _service.Add(service);
+        }
     }
 }
