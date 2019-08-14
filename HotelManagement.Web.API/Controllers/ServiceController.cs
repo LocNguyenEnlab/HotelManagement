@@ -26,11 +26,6 @@ namespace HotelManagement.Web.API.Controllers
         [HttpPost]
         public void Post(Service service)
         {
-            if (service.ServiceType.Id != 0)
-            {
-                service.ServiceTypeId = service.ServiceType.Id;
-                service.ServiceType = null;
-            }
             _service.Add(service);
         }
 

@@ -41,24 +41,23 @@ export class ServiceComponent implements OnInit {
         this.serviceTypeSource.push(allService);
     }
 
-    async addNewService() {
-        for (const service of this.serviceSource) {
-            if (service.serviceTypeId) {
-                await this.serviceService.update(service).toPromise();
-            } else {
-                await this.serviceService.add(service).toPromise();
-            }
-        }
+    ok() {
         this.isVisibleAddServicePopup = false;
+        window.location.reload();
     }
 
-    createService(e) {
+    async createService(e) {
         if (!e.data.serviceTypeId) {
             e.data.serviceType = this.currentServiceType;
         }
+        await this.serviceService.add(e.data).toPromise();
     }
 
     async deleteService(e) {
         await this.serviceService.delete(e.data.id).toPromise();
+    }
+
+    async updateService(e) {
+        await this.serviceService.update(e.data).toPromise();
     }
 }

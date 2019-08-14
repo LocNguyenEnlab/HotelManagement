@@ -44,6 +44,7 @@
         [dataSource]="serviceSource"
         (onRowInserting)="createService($event)"
         (onRowRemoving)="deleteService($event)"
+        (onRowUpdated)="updateService($event)"
         [showBorders]="true">
         <dxo-editing
             mode="row"
@@ -71,7 +72,7 @@
     </dx-data-grid>
     <div class="button">
         <dx-button
-            (onClick)="addNewService()"
+            (onClick)="ok()"
             text="Ok"
             type="success"></dx-button>
     </div>
