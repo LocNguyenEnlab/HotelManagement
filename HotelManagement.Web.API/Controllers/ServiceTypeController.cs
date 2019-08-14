@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using HotelManagement.Entities.DataContext;
 using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagement.Web.API.Controllers
 {

@@ -1,7 +1,6 @@
 @import "~src/styles";
-.top-bar {
-    width: 100%;
-    height: $top-bar-height;
+header {
+    height: $header-height;
     background-color: $background-color;
     overflow: visible;
     .logo {

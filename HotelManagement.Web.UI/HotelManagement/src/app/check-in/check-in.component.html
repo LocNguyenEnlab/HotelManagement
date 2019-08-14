@@ -8,76 +8,74 @@
     [closeOnOutsideClick]="false"
     [(visible)]="isVisiblePersonalCheckinPopup">
     <dx-scroll-view>
-        <div style="padding-top: 14px">
-            <div class="panel">
-                <div class="title">
-                    Booking information
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="dx-field">
-                            <div class="dx-field-label">Price</div>
-                            <div class="dx-field-value">
-                                <dx-text-box [value]="roomCheckin.price.toString() | currency:'USD':true:'.0'"></dx-text-box>
-                            </div>
-                        </div>
-                        <div class="dx-field">
-                            <div class="dx-field-label">Checkin Time</div>
-                            <div class="dx-field-value">
-                                <dx-date-box
-                                    type="datetime"
-                                    [(ngModel)]="roomCheckin.checkinTime"
-                                    invalidDateMessage="The date must have the following format: MM/dd/yyyy">
-                                    <dx-validator>
-                                        <dxi-validation-rule type="required" message="Checkin time is required"></dxi-validation-rule>
-                                    </dx-validator>
-                                </dx-date-box>
-                            </div>
-                        </div>
-                        <div class="dx-field">
-                            <div class="dx-field-label">Checkout Time Estimate</div>
-                            <div class="dx-field-value">
-                                <dx-date-box
-                                    type="datetime"
-                                    [(ngModel)]="roomCheckin.checkoutTime">
-                                    <dx-validator>
-                                        <dxi-validation-rule type="required" message="Checkout time is required"></dxi-validation-rule>
-                                    </dx-validator>
-                                </dx-date-box>
-                            </div>
+        <div class="panel" style="margin-top: 14px">
+            <div class="title">
+                Booking information
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="dx-field">
+                        <div class="dx-field-label">Price</div>
+                        <div class="dx-field-value">
+                            <dx-text-box [value]="roomCheckin.price.toString() | currency:'USD':true:'.0'"></dx-text-box>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="dx-field">
-                            <div class="dx-field-label">Prepay</div>
-                            <div class="dx-field-value">
-                                <dx-number-box
-                                    [(ngModel)]="invoice.prepay">
-                                    <dx-validator>
-                                        <dxi-validation-rule type="required" message="Prepay time is required"></dxi-validation-rule>
-                                    </dx-validator>
-                                </dx-number-box>
-                            </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">Checkin Time</div>
+                        <div class="dx-field-value">
+                            <dx-date-box
+                                type="datetime"
+                                [(ngModel)]="roomCheckin.checkinTime"
+                                invalidDateMessage="The date must have the following format: MM/dd/yyyy">
+                                <dx-validator>
+                                    <dxi-validation-rule type="required" message="Checkin time is required"></dxi-validation-rule>
+                                </dx-validator>
+                            </dx-date-box>
                         </div>
-                        <div class="dx-field">
-                            <div class="dx-field-label">Discount</div>
-                            <div class="dx-field-value">
-                                <dx-number-box
-                                    [(ngModel)]="invoice.discount" placeholder="$">
-                                    <dx-validator>
-                                        <dxi-validation-rule type="required" message="Discount is required"></dxi-validation-rule>
-                                    </dx-validator>
-                                </dx-number-box>
-                            </div>
+                    </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">Checkout Time Estimate</div>
+                        <div class="dx-field-value">
+                            <dx-date-box
+                                type="datetime"
+                                [(ngModel)]="roomCheckin.checkoutTime">
+                                <dx-validator>
+                                    <dxi-validation-rule type="required" message="Checkout time is required"></dxi-validation-rule>
+                                </dx-validator>
+                            </dx-date-box>
                         </div>
-                        <div class="dx-field">
-                            <div class="dx-field-label">Notes</div>
-                            <div class="dx-field-value">
-                                <dx-text-area
-                                    height="90"
-                                    [(ngModel)]="invoice.notes">
-                                </dx-text-area>
-                            </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="dx-field">
+                        <div class="dx-field-label">Prepay</div>
+                        <div class="dx-field-value">
+                            <dx-number-box
+                                [(ngModel)]="invoice.prepay">
+                                <dx-validator>
+                                    <dxi-validation-rule type="required" message="Prepay time is required"></dxi-validation-rule>
+                                </dx-validator>
+                            </dx-number-box>
+                        </div>
+                    </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">Discount</div>
+                        <div class="dx-field-value">
+                            <dx-number-box
+                                [(ngModel)]="invoice.discount" placeholder="$">
+                                <dx-validator>
+                                    <dxi-validation-rule type="required" message="Discount is required"></dxi-validation-rule>
+                                </dx-validator>
+                            </dx-number-box>
+                        </div>
+                    </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">Notes</div>
+                        <div class="dx-field-value">
+                            <dx-text-area
+                                height="90"
+                                [(ngModel)]="invoice.notes">
+                            </dx-text-area>
                         </div>
                     </div>
                 </div>

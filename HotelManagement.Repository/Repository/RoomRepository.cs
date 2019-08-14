@@ -29,11 +29,12 @@ namespace HotelManagement.Repository.Repository
             var rooms = _context.Room.Include(_ => _.Clients).ToList();
             var roomsSearch = new List<Room>();
             roomsSearch.AddRange(_context.Room.Include(_ => _.Clients)
-                .Where(_ => (_.Name.ToLower().Contains(searchTerm) || _.Status.ToLower().Contains(searchTerm)) && _.Clients.Count != 0).ToList());
+                .Where(_ => (_.Name.ToLower().Contains(searchTerm) || _.Status.ToLower().Contains(searchTerm)) 
+                && _.Clients.Count != 0).ToList());
             foreach (var room in rooms)
             {
-                var r = roomsSearch.Where(_ => _.Name == room.Name).SingleOrDefault();
-                if (room.Clients.Count == 0 || r != null)
+                var roomTemp = roomsSearch.Where(_ => _.Name == room.Name).SingleOrDefault();
+                if (room.Clients.Count == 0 || roomTemp != null)
                 {
                     continue;
                 }
@@ -46,8 +47,7 @@ namespace HotelManagement.Repository.Repository
                 {
                     roomsSearch.Add(room);
                 }
-            }
-            
+            }            
             return roomsSearch;
         }
     }

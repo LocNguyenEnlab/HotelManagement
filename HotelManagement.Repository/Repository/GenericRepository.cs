@@ -10,40 +10,40 @@ namespace HotelManagement.Repository.Repository
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         protected EnlabHotelContext _context;
-        private DbSet<TEntity> Entities;
+        private DbSet<TEntity> _entities;
 
 
         public GenericRepository(EnlabHotelContext context)
         {  
             _context = context;
-            Entities = _context.Set<TEntity>();
+            _entities = _context.Set<TEntity>();
         }
 
         public virtual IList<TEntity> GetAll()
         {
-            return Entities.ToList();
+            return _entities.ToList();
         }
 
         public virtual TEntity Get(int id)
         {
-            return Entities.Find(id);
+            return _entities.Find(id);
         }
 
         public virtual void Add(TEntity obj)
         {
-            Entities.Add(obj);
+            _entities.Add(obj);
         }
 
         public virtual void Update(TEntity obj)
         {
-            Entities.Attach(obj);
+            _entities.Attach(obj);
             _context.Entry(obj).State = EntityState.Modified;
         }
 
         public virtual void Delete(int id)
         {
-            TEntity existing = Entities.Find(id);
-            Entities.Remove(existing);
+            TEntity existing = _entities.Find(id);
+            _entities.Remove(existing);
         }
 
         public virtual void Save()
@@ -53,7 +53,7 @@ namespace HotelManagement.Repository.Repository
 
         public virtual int GetMaxId(Func<TEntity, int> columnSelector)
         {
-            return Entities.Max(columnSelector);
+            return _entities.Max(columnSelector);
         }
     }
 }

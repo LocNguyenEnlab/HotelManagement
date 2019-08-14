@@ -5,7 +5,6 @@
 <div class="room-diagram">
     <table>
         <tbody>
-        <tr></tr>
         <tr *ngFor="let floor of floors" style="height: 100px;">
             <td class="floor">Floor {{floor.name}}</td>
             <td *ngFor="let room of floor.rooms">

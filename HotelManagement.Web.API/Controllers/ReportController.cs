@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using HotelManagement.Entities.Model;
 using HotelManagement.Web.API.Reports;
 using Microsoft.AspNetCore.Mvc;

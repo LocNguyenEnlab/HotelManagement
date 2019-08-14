@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace HotelManagement.Repository.Repository
 {
-    public class ServiceTypeRepository : GenericRepository<ServiceType>, IServiceTypeRepository
+    public class ServiceTypeRepository : GenericRepository<ServiceType>
     {
         public ServiceTypeRepository(EnlabHotelContext context) : base(context)
         {

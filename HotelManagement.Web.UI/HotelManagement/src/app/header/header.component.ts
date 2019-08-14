@@ -7,11 +7,11 @@ import {RoomInfoComponent} from '../room-info/room-info.component';
 import {UpdateServiceComponent} from '../update-service/update-service.component';
 
 @Component({
-    selector: 'app-top-bar',
-    templateUrl: './top-bar.component.html',
-    styleUrls: ['./top-bar.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss']
 })
-export class TopBarComponent implements OnInit {
+export class HeaderComponent implements OnInit {
     @ViewChild(CheckInComponent, {static: false}) checkinComponent;
     @ViewChild(RoomInfoComponent, {static: false}) roomInfoComponent;
     @ViewChild(UpdateServiceComponent, {static: false}) updateServiceComponent;

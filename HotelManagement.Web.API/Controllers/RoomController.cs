@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
-using HotelManagement.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Web.API.Controllers
@@ -11,6 +10,7 @@ namespace HotelManagement.Web.API.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _roomService;
+
 
         public RoomController(IRoomService roomService)
         {

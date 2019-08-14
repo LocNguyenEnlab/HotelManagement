@@ -4,7 +4,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
-import { TopBarComponent } from './top-bar/top-bar.component';
+import { HeaderComponent } from './header/header.component';
 import { RoomListComponent } from './room-list/room-list.component';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -30,7 +30,7 @@ import { ServiceComponent } from './room-service/service.component';
 @NgModule({
     declarations: [
         AppComponent,
-        TopBarComponent,
+        HeaderComponent,
         RoomListComponent,
         CheckInComponent,
         BookingComponent,

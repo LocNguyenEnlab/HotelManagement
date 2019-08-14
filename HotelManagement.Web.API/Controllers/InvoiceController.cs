@@ -28,25 +28,12 @@ namespace HotelManagement.Web.API.Controllers
         [HttpPost]
         public void Post(Invoice invoice)
         {
-            var clients = invoice.Clients;            
             invoice.Clients = null;
             foreach (var service in invoice.ServicesOfInvoice)
             {
                 service.Service = null;
             }
             _invoiceService.Add(invoice);
-            //foreach (var client in clients)
-            //{
-            //    client.Invoice = invoice;
-            //    if (client.Id != 0)
-            //    {
-            //        _clientService.Update(client);
-            //    } 
-            //    else
-            //    {
-            //        _clientService.Add(client);
-            //    }
-            //}
         }
 
         [HttpGet("/api/invoice/roomname/{roomName}")]
@@ -76,13 +63,5 @@ namespace HotelManagement.Web.API.Controllers
         {
             _invoiceService.Delete(invoiceId);
         }
-
-        //[HttpPut("/api/invoice/exportinvoice")]
-        //public void ExportInvoice(Invoice invoice)
-        //{
-        //    var invoicePDF = new InvoicePDF();
-        //    invoicePDF.CreateInvoice(invoice);
-        //    invoicePDF.ExportToPdf("./Reports/Invoice/"  + invoice.Id + invoice.Clients.First().Name + ".pdf");
-        //}
     }
 }
