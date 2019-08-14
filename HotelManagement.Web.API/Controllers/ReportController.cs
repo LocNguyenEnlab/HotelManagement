@@ -30,7 +30,6 @@ namespace HotelManagement.Web.API.Controllers
                     return File(stream.ToArray(), "application/octet-stream");
                 }
             }
-            // return new { data = "./Reports/Invoice/" + invoice.Id + invoice.Clients.First().Name + ".pdf" };
         }
     }
 }

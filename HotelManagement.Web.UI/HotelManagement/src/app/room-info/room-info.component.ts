@@ -73,7 +73,7 @@ export class RoomInfoComponent implements OnInit {
         this.room.clients = [];
         this.room.status = 'Available';
         await this.roomService.updateRoom(this.room).toPromise();
-
+        this.invoiceService.delete(this.invoice.id).subscribe();
         this.isVisiblePersonalCheckoutPopup = false;
     }
 }

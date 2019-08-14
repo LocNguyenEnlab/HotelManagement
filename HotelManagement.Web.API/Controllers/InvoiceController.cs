@@ -58,8 +58,8 @@ namespace HotelManagement.Web.API.Controllers
             }
         }
 
-        [HttpDelete] 
-        public void Delete(int invoiceId)
+        [HttpDelete("/api/invoice/{invoiceId}")] 
+        public void Delete([FromRoute]int invoiceId)
         {
             _invoiceService.Delete(invoiceId);
         }

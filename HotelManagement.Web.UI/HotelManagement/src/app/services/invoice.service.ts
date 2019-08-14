@@ -40,4 +40,8 @@ export class InvoiceService {
     getMaxId(): Observable<number> {
         return this.http.get<number>(this.apiUrl + 'getmaxid');
     }
+
+    delete(invoiceId: number): Observable<InvoiceModel> {
+        return this.http.delete<InvoiceModel>(this.apiUrl + invoiceId);
+    }
 }
