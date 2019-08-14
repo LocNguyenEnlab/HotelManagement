@@ -7,6 +7,6 @@ namespace HotelManagement.Repository.Interfaces
     {
         Room Get(string roomName);
 
-        IList<Room> GetRoomsBySearchKey(string searchKey);
+        IList<Room> Search(string searchTerm);
     }
 }

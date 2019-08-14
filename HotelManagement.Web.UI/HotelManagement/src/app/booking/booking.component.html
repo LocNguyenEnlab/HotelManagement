@@ -18,7 +18,7 @@
                         <div class="dx-field">
                             <div class="dx-field-label">Price</div>
                             <div class="dx-field-value">
-                                <dx-text-box [value]="roomBooking.price.toString() | currency: 'USD'"></dx-text-box>
+                                <dx-text-box [value]="roomBooking.price.toString() | currency: 'USD':'symbol':'.0'"></dx-text-box>
                             </div>
                         </div>
                         <div class="dx-field">

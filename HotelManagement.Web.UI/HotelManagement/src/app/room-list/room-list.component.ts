@@ -6,7 +6,7 @@ import notify from 'devextreme/ui/notify';
 import {RoomService} from '../services/room.service';
 import {CheckInComponent} from '../check-in/check-in.component';
 import {BookingComponent} from '../booking/booking.component';
-import {CheckOutComponent} from '../check-out/check-out.component';
+import {RoomInfoComponent} from '../room-info/room-info.component';
 import {ClientService} from '../services/client.service';
 import {UpdateServiceComponent} from '../update-service/update-service.component';
 import {InvoiceService} from '../services/invoice.service';
@@ -20,11 +20,11 @@ import {InvoiceModel} from '../models/InvoiceModel';
 export class RoomListComponent implements OnInit {
     @ViewChild(CheckInComponent, {static: false}) checkinComponent;
     @ViewChild(BookingComponent, {static: false}) bookingComponent;
-    @ViewChild(CheckOutComponent, {static: false}) checkoutComponent;
+    @ViewChild(RoomInfoComponent, {static: false}) roomInfoComponent;
     @ViewChild(UpdateServiceComponent, {static: false}) updateServiceComponent;
     floors: FloorModel[] = [];
     rooms: RoomModel[] = [];
-    checkInCheckOutText = [];
+    rightClickText = [];
     availableAndCheckedinRoomsName: string[] = [];
     bookedRoomsName: string[] = [];
     updateBookingText = [];
@@ -56,7 +56,7 @@ export class RoomListComponent implements OnInit {
             }
         });
 
-        this.checkInCheckOutText = [
+        this.rightClickText = [
             {text: 'Checkin'},
             {text: 'Update Service'},
             {text: 'Checkout'},
@@ -93,69 +93,35 @@ export class RoomListComponent implements OnInit {
         }
     }
 
-    openPopupPersonalBooking(id) {
-        const name = id.toString().replace('R', '');
-        const roomBooking = this.rooms.find(s => s.name === name);
-        if (roomBooking.status !== 'Checked in' && roomBooking.status !== 'Booked') {
-            this.bookingComponent.isVisiblePersonalBookingPopup = true;
-            this.bookingComponent.onInit(roomBooking, null, null, null);
-        }
-    }
-
-    checkInCheckOut(e, roomName) {
+    rightClick(e, roomName) {
         const room = this.rooms.find(s => s.name === roomName.replace('R', ''));
-        if (e.itemData.text === 'Checkin' && room.status !== 'Available') {
+        if (e.itemData.text === 'Checkin') {
             if (room.status === 'Booked') {
                 this.checkinComponent.onInit(room);
                 this.checkinComponent.isVisiblePersonalCheckinPopup = true;
             } else if (room.status === 'Available') {
-
+                this.checkinComponent.onInit(room);
+                this.checkinComponent.isVisiblePersonalCheckinPopup = true;
             }
         } else if (e.itemData.text === 'Update Service' && room.status === 'Checked in') {
             this.updateServiceComponent.isVisibleUpdateServicePopup = true;
             this.updateServiceComponent.onInit(room);
         } else if (e.itemData.text === 'Checkout' && room.status === 'Checked in') {
-            this.checkoutComponent.onInit(room);
-            this.checkoutComponent.isVisiblePersonalCheckoutPopup = true;
+            this.roomInfoComponent.onInit(room);
+            this.roomInfoComponent.isVisiblePersonalCheckoutPopup = true;
         }
     }
 
-    onSearchKeyChanged() {
-        const self = this;
-        setTimeout(() => { self.search(); }, 500);
-    }
-
-    async search() {
-        this.isVisibleSearchPopover = true;
-        this.popoverTitle = 'Searching...';
-        await this.roomService.getRoomsBySearchKey(this.searchKey).toPromise().then(data => {
-            this.roomsResult = data;
-            if (data != null) {
-                if (data.length === 0) {
-                    this.popoverTitle = 'No result';
-                }
-            }
-            if (data.length === 1) {
-                this.popoverTitle = data.length + ' room found';
-            } else if (data.length > 1) {
-                this.popoverTitle = data.length + ' rooms found';
-            }
-        });
-    }
-
-    onFocusInTextBoxSearch() {
-        if (this.searchKey.length) {
-            this.isVisibleSearchPopover = true;
-        }
-    }
-
-    clickResultRoom(room: RoomModel) {
-        if (room.status === 'Booked') {
+    openRoomInfo(room: RoomModel) {
+        if (room.status === 'Checked in') {
+            this.roomInfoComponent.onInit(room);
+            this.roomInfoComponent.isVisiblePersonalCheckoutPopup = true;
+        } else if (room.status === 'Booked') {
             this.checkinComponent.onInit(room);
             this.checkinComponent.isVisiblePersonalCheckinPopup = true;
-        } else if (room.status === 'Checked in') {
-            this.checkoutComponent.onInit(room);
-            this.checkoutComponent.isVisiblePersonalCheckoutPopup = true;
+        } else {
+            this.bookingComponent.isVisiblePersonalBookingPopup = true;
+            this.bookingComponent.onInit(room, null, null, null);
         }
     }
 }

@@ -4,25 +4,55 @@
     height: $top-bar-height;
     background-color: $background-color;
     overflow: visible;
-    .hotel-name {
+    .logo {
         float: left;
-        color: #fff;
-        margin-top: 27px;
-        font-size: 36px;
+        height: 60px;
+        width: 150px;
+        margin-top: 5px;
     }
     a {
         text-decoration: none;
     }
     nav {
-        margin-top: 32px;
+        margin-top: 18px;
         float: right;
         z-index: 1;
         dx-button {
             float: right;
-            margin: 0 15px 15px 0;
+            margin-right: 15px;
         }
         .icon-bar {
             background-color: #fff;
         }
+        .search {
+            margin-right: 15px;
+            border-color: $background-color;
+            width: 150px;
+            float: left;
+        }
     }
+}
+
+.result-item {
+    height: 85px;
+    padding: 5px;
+    p {
+        margin: 0;
+    }
+    .room-name {
+        //float: left;
+    }
+    .client-name {
+        //float: right;
+    }
+}
+
+.result-item:hover {
+    background-color: $background-color;
+    color: #fff;
+}
+
+hr {
+    border: 1px solid #ddd;
+    margin: 0;
 }

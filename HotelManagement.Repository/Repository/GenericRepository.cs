@@ -51,9 +51,9 @@ namespace HotelManagement.Repository.Repository
             _context.SaveChanges();
         }
 
-        //public virtual int GetMaxId(Func<TEntity, decimal> columnSelector)
-        //{
-        //    return (int)Entities.Max(columnSelector);
-        //}
+        public virtual int GetMaxId(Func<TEntity, int> columnSelector)
+        {
+            return Entities.Max(columnSelector);
+        }
     }
 }

@@ -17,7 +17,9 @@ export class RoomModel {
         this.type = '';
         this.checkinTime = new Date();
         this.checkoutTime = new Date();
-        this.clients = null;
+        this.checkoutTime.setHours(12, 0, 0);
+        this.checkoutTime.setDate(new Date().getDate() + 1);
+        this.clients = [];
         this.floor = '';
     }
 }

@@ -20,10 +20,9 @@ import {
 import {FormsModule} from '@angular/forms';
 import {DxoTitleModule} from 'devextreme-angular/ui/nested/title';
 import {DxoScrollBarModule} from 'devextreme-angular/ui/nested/scroll-bar';
-import { BookedClientsListComponent } from './booked-clients-list/booked-clients-list.component';
 import { CheckInComponent } from './check-in/check-in.component';
 import { BookingComponent } from './booking/booking.component';
-import { CheckOutComponent } from './check-out/check-out.component';
+import { RoomInfoComponent } from './room-info/room-info.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { UpdateServiceComponent } from './update-service/update-service.component';
 import { ServiceComponent } from './room-service/service.component';
@@ -33,10 +32,9 @@ import { ServiceComponent } from './room-service/service.component';
         AppComponent,
         TopBarComponent,
         RoomListComponent,
-        BookedClientsListComponent,
         CheckInComponent,
         BookingComponent,
-        CheckOutComponent,
+        RoomInfoComponent,
         InvoiceListComponent,
         UpdateServiceComponent,
         ServiceComponent
@@ -48,9 +46,8 @@ import { ServiceComponent } from './room-service/service.component';
         HttpClientModule,
         RouterModule.forRoot([
             {path: '', component: RoomListComponent},
-            {path: 'booked-clients-list', component: BookedClientsListComponent},
             {path: 'check-in', component: CheckInComponent},
-            {path: 'check-out', component: CheckOutComponent},
+            {path: 'room-info', component: RoomInfoComponent},
             {path: 'invoice-list', component: InvoiceListComponent},
             {path: 'update-room-service', component: UpdateServiceComponent},
             {path: 'service', component: ServiceComponent},

@@ -2,8 +2,8 @@
 using HotelManagement.Repository.Interfaces;
 using HotelManagement.Repository.Repository;
 using HotelManagement.Services.Interfaces;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HotelManagement.Services.Services
 {

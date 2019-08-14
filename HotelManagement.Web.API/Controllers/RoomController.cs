@@ -29,10 +29,10 @@ namespace HotelManagement.Web.API.Controllers
             return _roomService.Get(roomName);
         }
 
-        [HttpGet("/api/room/search/{searchKey}")]
-        public IList<Room> GetBySearchKey(string searchKey)
+        [HttpGet("/api/room/search/{searchTerm}")]
+        public IList<Room> Search([FromRoute]string searchTerm)
         {
-            return _roomService.GetRoomsBySearchKey(searchKey);
+            return _roomService.Search(searchTerm);
         }
 
         [HttpPut]

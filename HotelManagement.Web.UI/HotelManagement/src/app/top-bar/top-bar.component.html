@@ -1,12 +1,16 @@
 <app-service></app-service>
+<app-check-in></app-check-in>
+<app-check-out></app-check-out>
+<app-update-service></app-update-service>
 <div class="top-bar">
     <div class="container">
         <div class="row">
-            <div class="col-sm-5 col-xs-5">
-                <a routerLink="/"><h1 class="hotel-name">Enlab Hotel</h1></a>
+            <div class="col-sm-4 col-xs-4">
+                <a routerLink="/"><img class="logo" src="../../assets/logo-white.svg" alt="logo-white"></a>
             </div>
-            <div class="col-sm-7 col-xs-7">
+            <div class="col-sm-8 col-xs-8">
                 <nav class="nav navbar-light container-fluid">
+
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle nav-btn" data-toggle="collapse" aria-expanded="false" data-target="#myNavbar">
                             <span class="icon-bar"></span>
@@ -17,22 +21,66 @@
                     <div class="collapse navbar-collapse group-custom" id="myNavbar">
                         <ul class="nav navbar-nav">
                             <li data-toggle="tab">
+                                <dx-text-box
+                                    class="search"
+                                    id="search"
+                                    placeholder="Search..."
+                                    [(value)]="searchKey"
+                                    (onFocusIn)="onFocusInTextBoxSearch()"
+                                    [valueChangeEvent]="'keyup'"
+                                    (onValueChanged)="onSearchKeyChanged()">
+                                </dx-text-box>
+                                <dx-popover
+                                    target="#search"
+                                    [(title)]="popoverTitle"
+                                    [showTitle]="true"
+                                    [(visible)]="isVisibleSearchPopover"
+                                    position="bottom"
+                                    width="400px"
+                                    maxHeight="800px">
+                                    <div *dxTemplate="let data = model of 'content'">
+                                        <dx-scroll-view>
+                                            <div *ngFor="let room of roomsResult" (click)="clickResultRoom(room)">
+                                                <hr>
+                                                <div class="result-item row" id="Result{{room.name}}">
+                                                    <div class="col-sm-4 col-xs-4">
+                                                        <p class="room-name">Room: {{room.name}}</p>
+                                                        <p [style.color]="room.status === 'Booked' ? 'orange' : 'red'">{{room.status}}</p>
+                                                        <p>Code: {{room.clients[0].code}}</p>
+                                                    </div>
+                                                    <div class="col-sm-8 col-xs-8">
+                                                        <p class="client-name">Client: {{room.clients[0].name}}</p>
+                                                        <p>Email: {{room.clients[0].email}}</p>
+                                                        <p>Id/Passport: {{room.clients[0].identityOrPassport}}</p>
+                                                        <p>
+                                                            <span>{{room.checkinTime | date: 'MM'}}-{{room.checkinTime | date: 'dd'}} </span>
+                                                            <i class="dx-icon-arrowright"></i>
+                                                            <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <dx-context-menu
+                                                    [dataSource]="rightClickText"
+                                                    [width]="200"
+                                                    target="#Result{{room.name}}"
+                                                    (onItemClick)="rightClick($event, room)">
+                                                </dx-context-menu>
+                                            </div>
+                                            <hr>
+                                        </dx-scroll-view>
+                                    </div>
+                                </dx-popover>
+                            </li>
+                            <li data-toggle="tab">
                                 <dx-button
-                                    text="Add new service"
+                                    text="Services"
                                     type="none"
                                     (onClick)="openAddServicePopup()">
                                 </dx-button>
                             </li>
                             <li data-toggle="tab">
                                 <dx-button
-                                    text="Booked Clients List"
-                                    type="none"
-                                    routerLink="booked-clients-list">
-                                </dx-button>
-                            </li>
-                            <li data-toggle="tab">
-                                <dx-button
-                                    text="Invoice list"
+                                    text="Invoices"
                                     type="none"
                                     routerLink="/invoice-list">
                                 </dx-button>

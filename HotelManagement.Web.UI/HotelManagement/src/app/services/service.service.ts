@@ -24,4 +24,16 @@ export class ServiceService {
     getServicesType(): Observable<ServiceTypeModel[]> {
         return this.http.get<ServiceTypeModel[]>(this.apiServiceTypeUrl);
     }
+
+    add(service: ServiceModel): Observable<ServiceModel> {
+        return this.http.post<ServiceModel>(this.apiServiceUrl, service);
+    }
+
+    update(service: ServiceModel): Observable<ServiceModel> {
+        return this.http.put<ServiceModel>(this.apiServiceUrl, service);
+    }
+
+    delete(serviceId: number): Observable<number> {
+        return this.http.delete<number>(this.apiServiceUrl + serviceId);
+    }
 }

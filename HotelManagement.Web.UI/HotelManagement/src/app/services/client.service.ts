@@ -17,15 +17,11 @@ export class ClientService {
         return this.http.post<ClientModel>(this.apiUrl, client);
     }
 
-    getClients(): Observable<ClientModel[]> {
-        return this.http.get<ClientModel[]>(this.apiUrl);
-    }
-
-    getClientsByRoomName(roomName: string): Observable<ClientModel[]> {
-        return this.http.get<ClientModel[]>(this.apiUrl + 'roomname/' + roomName);
-    }
-
     update(client: ClientModel): Observable<ClientModel> {
         return this.http.put<ClientModel>(this.apiUrl, client);
+    }
+
+    delete(clientId: number): Observable<number> {
+        return this.http.delete<number>(this.apiUrl + clientId);
     }
 }

@@ -28,9 +28,9 @@ namespace HotelManagement.Services.Services
             return _roomRepository.GetAll();
         }
 
-        public IList<Room> GetRoomsBySearchKey(string searchKey)
+        public IList<Room> Search(string searchTerm)
         {
-            return _roomRepository.GetRoomsBySearchKey(searchKey);
+            return _roomRepository.Search(searchTerm);
         }
     }
 }

@@ -2,121 +2,55 @@
 <app-booking></app-booking>
 <app-check-out></app-check-out>
 <app-update-service></app-update-service>
-<div class="room-list">
-    <div class="container">
-        <dx-text-box
-            class="search"
-            id="search"
-            placeholder="Search..."
-            [(value)]="searchKey"
-            (onFocusIn)="onFocusInTextBoxSearch()"
-            [valueChangeEvent]="'keyup'"
-            (onValueChanged)="onSearchKeyChanged()">
-        </dx-text-box>
-        <dx-popover
-            target="#search"
-            [(title)]="popoverTitle"
-            [showTitle]="true"
-            [(visible)]="isVisibleSearchPopover"
-            position="bottom"
-            width="400px"
-            maxHeight="800px">
-            <div *dxTemplate="let data = model of 'content'">
-                <dx-scroll-view>
-                    <div *ngFor="let room of roomsResult" (click)="clickResultRoom(room)">
-                        <hr>
-                        <div class="result-item row" id="Result{{room.name}}">
-                            <div class="col-sm-4 col-xs-4">
-                                <p class="room-name">Room: {{room.name}}</p>
-                                <p [style.color]="room.status === 'Booked' ? 'orange' : 'red'">{{room.status}}</p>
-                                <p>Code: {{room.clients[0].code}}</p>
-                            </div>
-                            <div class="col-sm-8 col-xs-8">
-                                <p class="client-name">Client: {{room.clients[0].name}}</p>
-                                <p>Email: {{room.clients[0].email}}</p>
-                                <p>Id/Passport: {{room.clients[0].identityOrPassport}}</p>
-                                <p>
-                                    <span>{{room.checkinTime | date: 'MM'}}-{{room.checkinTime | date: 'dd'}} </span>
-                                    <i class="dx-icon-arrowright"></i>
-                                    <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
-                                </p>
-                            </div>
+<div class="room-diagram">
+    <table>
+        <tbody>
+        <tr></tr>
+        <tr *ngFor="let floor of floors" style="height: 100px;">
+            <td class="floor">Floor {{floor.name}}</td>
+            <td *ngFor="let room of floor.rooms">
+                <dx-button
+                    id="R{{room.name}}"
+                    (onClick)="openRoomInfo(room)"
+                    class="room"
+                    [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booked' ? 'orange' : '#337ab7'">
+                    <div class="row above">
+                        <div class="col-sm-2 col-xs-2 room-type">
+                            <span>{{room.type}}</span>
                         </div>
-                        <dx-context-menu
-                            [dataSource]="checkInCheckOutText"
-                            [width]="200"
-                            target="#Result{{room.name}}"
-                            (onItemClick)="checkInCheckOut($event, room.name)">
-                        </dx-context-menu>
+                        <div class="col-sm-10 col-xs-10 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Checked in'">
+                            <span>{{room.checkinTime | date: 'MM'}}-{{room.checkinTime | date: 'dd'}} </span>
+                            <i class="dx-icon-arrowright"></i>
+                            <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
+                        </div>
                     </div>
-                </dx-scroll-view>
-            </div>
-        </dx-popover>
-    </div>
-    <div class="row">
-        <div class="room-diagram">
-            <table>
-                <tbody>
-                <tr></tr>
-                <tr *ngFor="let floor of floors" style="height: 100px;">
-                    <td class="floor">Floor {{floor.name}}</td>
-                    <td *ngFor="let room of floor.rooms">
-                        <dx-button
-                            id="R{{room.name}}"
-                            (dblclick)="openPopupPersonalBooking($event.currentTarget.id)" class="room"
-                            [style.background-color]="room.status === 'Available' ? 'green' : room.status === 'Booked' ? 'orange' : '#337ab7'">
-                            <div class="row above">
-                                <div class="col-sm-2 col-xs-2 room-type">
-                                    <span>{{room.type}}</span>
-                                </div>
-                                <div class="col-sm-10 col-xs-10 custom-time" *ngIf="room.status === 'Booked' || room.status === 'Checked in'">
-                                    <span>{{room.checkinTime | date: 'MM'}}-{{room.checkinTime | date: 'dd'}} </span>
-                                    <i class="dx-icon-arrowright"></i>
-                                    <span> {{room.checkoutTime | date: 'MM-dd-yyyy'}}</span>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="room-name">{{room.name}}</p>
-                                <p class="status">
-                                    <span *ngIf="room.status === 'Checked in'">{{room.clients[0].name}}</span>
-                                    <span *ngIf="room.status === 'Available'">(Available)</span>
-                                    <span *ngIf="room.status === 'Booked'">(Booked)</span>
-                                </p>
-                                <p>
-                                    <span *ngIf="room.status === 'Checked in' && room.clients[0].invoice != null" class="total-amount">
-                                        ({{room.clients[0].invoice.totalAmount | currency}})
-                                    </span>
-                                </p>
-                            </div>
-                        </dx-button>
-                        <dx-context-menu
-                            [dataSource]="checkInCheckOutText"
-                            [width]="200"
-                            target="#R{{room.name}}"
-                            (onItemClick)="checkInCheckOut($event, room.name)">
-                        </dx-context-menu>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    <div>
+                        <p class="room-name">{{room.name}}</p>
+                        <p class="status">
+                            <span *ngIf="room.status === 'Checked in'">{{room.clients[0].name}}</span>
+                            <span *ngIf="room.status === 'Available'">(Available)</span>
+                            <span *ngIf="room.status === 'Booked'">(Booked)</span>
+                        </p>
+                        <p>
+                            <span *ngIf="room.status === 'Checked in' && room.clients[0].invoice != null" class="total-amount">
+                                ({{room.clients[0].invoice.totalAmount | currency}})
+                            </span>
+                        </p>
+                        <p>
+                            <span *ngIf="room.status === 'Booked'" class="total-amount">
+                                (Code: {{room.clients[0].code}})
+                            </span>
+                        </p>
+                    </div>
+                </dx-button>
+                <dx-context-menu
+                    [dataSource]="rightClickText"
+                    [width]="200"
+                    target="#R{{room.name}}"
+                    (onItemClick)="rightClick($event, room.name)">
+                </dx-context-menu>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<!--Popup when right click-->
-<!--<div *ngFor="let name of availableAndCheckedinRoomsName">-->
-<!--    <dx-context-menu-->
-<!--        [dataSource]="checkInCheckOutText"-->
-<!--        [width]="200"-->
-<!--        target="#R{{name}}"-->
-<!--        (onItemClick)="checkInCheckOut($event, name)">-->
-<!--    </dx-context-menu>-->
-<!--</div>-->
-<!--<div *ngFor="let name of bookedRoomsName">-->
-<!--    <dx-context-menu-->
-<!--        [dataSource]="updateBookingText"-->
-<!--        [width]="200"-->
-<!--        target="#R{{name}}"-->
-<!--        (onItemClick)="updateBooking($event, name)">-->
-<!--    </dx-context-menu>-->
-<!--</div>-->

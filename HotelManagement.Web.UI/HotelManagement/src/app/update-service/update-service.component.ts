@@ -66,6 +66,7 @@ export class UpdateServiceComponent implements OnInit {
         }
         this.invoice.totalAmount = this.invoice.totalAmount - this.invoice.totalServiceAmount + serviceMoney;
         this.invoice.totalServiceAmount = serviceMoney;
+        this.invoice.clients = null;
         await this.invoiceService.updateInvoice(this.invoice).toPromise().then();
         this.isVisibleUpdateServicePopup = false;
         window.location.reload();
@@ -99,7 +100,7 @@ export class UpdateServiceComponent implements OnInit {
     }
 
     getFilteredServices(options) {
-        if (options.data) {
+        if (options.data && options.data.service) {
             if (options.data.service.serviceTypeId === -1) {
                 return this.serviceSource;
             } else {

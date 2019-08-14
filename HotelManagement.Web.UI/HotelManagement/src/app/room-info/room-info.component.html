@@ -12,7 +12,7 @@
             <div class="col-sm-6 col-xs-6">
                 <h3 class="hotel-name">Enlab Hotel</h3>
                 <p>22 Tan An 4 Street, Hai Chau District, Da Nang City</p>
-                <p>(+84) 12345678</p>
+                <p>(+84) 236 3611 259</p>
             </div>
             <div class="col-sm-6 col-xs-6">
                 <img class="logo-img" src="../../assets/logo.png" alt="enlab">
@@ -23,34 +23,42 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-5 title">
-                        <p>Client Name </p>
+                        <p>Room </p>
                         <p>Checkin Date </p>
                         <p>Checkout Date </p>
                     </div>
                     <div class="col-sm-7">
-                        <p *ngIf="invoice.clients.length">{{invoice.clients[0].name}}</p>
-                        <p>{{roomCheckout.checkinTime.toLocaleDateString()}} {{roomCheckout.checkinTime.toLocaleTimeString()}}</p>
-                        <p>{{roomCheckout.checkoutTime.toLocaleDateString()}} {{roomCheckout.checkoutTime.toLocaleTimeString()}}</p>
+                        <p>{{room.name}} ({{room.type}})</p>
+                        <p>{{room.checkinTime.toLocaleDateString()}} {{room.checkinTime.toLocaleTimeString()}}</p>
+                        <dx-date-box
+                            type="datetime"
+                            [(value)]="room.checkoutTime">
+                        </dx-date-box>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-4 title">
-                        <p>Room </p>
                         <p>Price </p>
                         <p>Rent day </p>
                         <p>Room amount</p>
                     </div>
                     <div class="col-sm-8">
-                        <p>{{roomCheckout.name}} ({{roomCheckout.type}})</p>
-                        <p>{{roomCheckout.price | currency: 'USD'}}</p>
+                        <p>{{room.price | currency:'USD':'symbol':'.0'}}</p>
                         <p>{{invoice.rentTime}} (day)</p>
-                        <p>{{invoice.totalRoomAmount | currency}}</p>
+                        <p>{{invoice.totalRoomAmount | currency:'USD':'symbol':'.0'}}</p>
                     </div>
                 </div>
             </div>
         </div>
+        <hr>
+        <dx-data-grid
+            title="Clients"
+            [dataSource]="room.clients"
+            [columns]="['name', 'address', 'email', 'identityOrPassport', 'nationality', 'notes']"
+            [showBorders]="true">
+        </dx-data-grid>
         <hr>
         <dx-data-grid
             #serviceGrid
@@ -76,15 +84,15 @@
         <div class="row">
             <div class="col-sm-4">
                 <span class="title">Prepay &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span>{{invoice.prepay | currency}}</span>
+                <span>{{invoice.prepay | currency:'USD':'symbol':'.0'}}</span>
             </div>
             <div class="col-sm-4">
                 <span class="title">Discount &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span>{{invoice.discount | currency}}</span>
+                <span>{{invoice.discount | currency:'USD':'symbol':'.0'}}</span>
             </div>
             <div class="col-sm-4">
                 <span class="title">Total Amount &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span>{{invoice.totalAmount | currency}}</span>
+                <span>{{invoice.totalAmount | currency:'USD':'symbol':'.0'}}</span>
             </div>
         </div>
         <div style="margin-top: 15px">

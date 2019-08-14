@@ -40,5 +40,17 @@ namespace HotelManagement.Web.API.Controllers
         {           
             _service.Update(client);
         }
+
+        [HttpPost]
+        public void Post(Client client)
+        {
+            _service.Add(client);
+        }
+
+        [HttpDelete("/api/client/{id}")]
+        public void Delete([FromRoute] int id)
+        {
+            _service.Delete(id);
+        }
     }
 }

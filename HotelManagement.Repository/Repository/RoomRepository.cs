@@ -23,13 +23,13 @@ namespace HotelManagement.Repository.Repository
             return _context.Room.Where(_ => _.Name == roomName).FirstOrDefault();
         }
 
-        public IList<Room> GetRoomsBySearchKey(string searchKey)
+        public IList<Room> Search(string searchTerm)
         {
-            searchKey = searchKey.ToLower();
+            searchTerm = searchTerm.ToLower();
             var rooms = _context.Room.Include(_ => _.Clients).ToList();
             var roomsSearch = new List<Room>();
             roomsSearch.AddRange(_context.Room.Include(_ => _.Clients)
-                .Where(_ => (_.Name.ToLower().Contains(searchKey) || _.Status.ToLower().Contains(searchKey)) && _.Clients.Count != 0).ToList());
+                .Where(_ => (_.Name.ToLower().Contains(searchTerm) || _.Status.ToLower().Contains(searchTerm)) && _.Clients.Count != 0).ToList());
             foreach (var room in rooms)
             {
                 var r = roomsSearch.Where(_ => _.Name == room.Name).SingleOrDefault();
@@ -38,11 +38,11 @@ namespace HotelManagement.Repository.Repository
                     continue;
                 }
                 if (room.Clients.Where(
-                    _ => _.Email.ToLower().Contains(searchKey)
-                    || _.IdentityOrPassport.ToLower().Contains(searchKey)
-                    || _.Name.ToLower().Contains(searchKey)
-                    || _.Code.ToString().Contains(searchKey)
-                    ).SingleOrDefault() != null)
+                    _ => _.Email.ToLower().Contains(searchTerm)
+                    || _.IdentityOrPassport.ToLower().Contains(searchTerm)
+                    || _.Name.ToLower().Contains(searchTerm)
+                    || _.Code.ToString().Contains(searchTerm)
+                    ).FirstOrDefault() != null)
                 {
                     roomsSearch.Add(room);
                 }

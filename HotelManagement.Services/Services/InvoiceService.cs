@@ -27,5 +27,10 @@ namespace HotelManagement.Services.Services
         {
             return _invoiceRepository.Get(roomName);
         }
+
+        public int GetMaxId()
+        {
+            return _invoiceRepository.GetMaxId(_ => _.Id);
+        }
     }
 }

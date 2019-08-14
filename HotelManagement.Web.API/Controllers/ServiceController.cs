@@ -26,7 +26,24 @@ namespace HotelManagement.Web.API.Controllers
         [HttpPost]
         public void Post(Service service)
         {
+            if (service.ServiceType.Id != 0)
+            {
+                service.ServiceTypeId = service.ServiceType.Id;
+                service.ServiceType = null;
+            }
             _service.Add(service);
+        }
+
+        [HttpPut]
+        public void Put(Service service)
+        {
+            _service.Update(service);
+        }
+
+        [HttpDelete("/api/service/{id}")]
+        public void Delete([FromRoute]int id)
+        {
+            _service.Delete(id);
         }
     }
 }

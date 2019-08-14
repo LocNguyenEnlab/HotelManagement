@@ -17,6 +17,6 @@ namespace HotelManagement.Repository.Interfaces
 
         void Save();
 
-        //int GetMaxId(Func<T, decimal> columnSelector);
+        int GetMaxId(Func<T, int> columnSelector);
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using HotelManagement.Entities.Model;
 using HotelManagement.Services.Interfaces;
-using HotelManagement.Web.API.Reports;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Web.API.Controllers
@@ -13,14 +10,12 @@ namespace HotelManagement.Web.API.Controllers
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;
-        private readonly IClientService _clientService;
         private readonly IGenericService<ServiceOfInvoice> _serviceInvoiceService;
 
 
-        public InvoiceController(IInvoiceService service, IClientService clientService, IGenericService<ServiceOfInvoice> genericService)
+        public InvoiceController(IInvoiceService service, IGenericService<ServiceOfInvoice> genericService)
         {
             _invoiceService = service;
-            _clientService = clientService;
             _serviceInvoiceService = genericService;
         }
 
@@ -40,17 +35,30 @@ namespace HotelManagement.Web.API.Controllers
                 service.Service = null;
             }
             _invoiceService.Add(invoice);
-            foreach (var client in clients)
-            {
-                client.Invoice = invoice;
-                _clientService.Update(client);
-            }
+            //foreach (var client in clients)
+            //{
+            //    client.Invoice = invoice;
+            //    if (client.Id != 0)
+            //    {
+            //        _clientService.Update(client);
+            //    } 
+            //    else
+            //    {
+            //        _clientService.Add(client);
+            //    }
+            //}
         }
 
         [HttpGet("/api/invoice/roomname/{roomName}")]
         public Invoice Get(string roomName)
         {
             return _invoiceService.Get(roomName);
+        }
+
+        [HttpGet("/api/invoice/getmaxid")]
+        public int GetMaxId()
+        {
+            return _invoiceService.GetMaxId();
         }
 
         [HttpPut]

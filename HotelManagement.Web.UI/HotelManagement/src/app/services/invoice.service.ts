@@ -34,4 +34,8 @@ export class InvoiceService {
     exportInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
         return this.http.post<InvoiceModel>(ApiService.apiUrl + 'report/invoice/', invoice);
     }
+
+    getMaxId(): Observable<number> {
+        return this.http.get<number>(this.apiUrl + 'getmaxid');
+    }
 }

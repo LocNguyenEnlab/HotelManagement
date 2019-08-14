@@ -7,20 +7,18 @@ import {ServiceModel} from '../models/ServiceModel';
 import {ServiceTypeModel} from '../models/ServiceTypeModel';
 import notify from 'devextreme/ui/notify';
 import {ServiceService} from '../services/service.service';
-import {confirm} from 'devextreme/ui/dialog';
 import {ClientService} from '../services/client.service';
-import {ServiceOfInvoiceModel} from '../models/ServiceOfInvoiceModel';
 
 @Component({
     selector: 'app-check-out',
-    templateUrl: './check-out.component.html',
-    styleUrls: ['./check-out.component.scss']
+    templateUrl: './room-info.component.html',
+    styleUrls: ['./room-info.component.scss']
 })
-export class CheckOutComponent implements OnInit {
+export class RoomInfoComponent implements OnInit {
     @ViewChild('serviceGrid', {static: false}) serviceGrid;
     isVisiblePersonalCheckoutPopup = false;
     titlePersonalCheckout: string;
-    roomCheckout: RoomModel = new RoomModel();
+    room: RoomModel = new RoomModel();
     invoice: InvoiceModel = new InvoiceModel();
     serviceSource: ServiceModel[] = [];
     serviceQuantitySource: number[] = [];
@@ -30,6 +28,7 @@ export class CheckOutComponent implements OnInit {
         private invoiceService: InvoiceService,
         private roomService: RoomService,
         private service: ServiceService,
+        private clientService: ClientService,
     ) {}
 
     ngOnInit() {
@@ -44,13 +43,13 @@ export class CheckOutComponent implements OnInit {
         this.serviceTypeSource.push(allService);
     }
 
-    async onInit(roomCheckout: RoomModel) {
-        this.titlePersonalCheckout = 'Checkout for Room ' + roomCheckout.name;
-        roomCheckout.checkinTime = new Date(roomCheckout.checkinTime);
-        roomCheckout.checkoutTime = new Date();
-        this.roomCheckout = roomCheckout;
+    async onInit(room: RoomModel) {
+        this.titlePersonalCheckout = 'Room ' + room.name + ' (' + room.type + ')';
+        room.checkinTime = new Date(room.checkinTime);
+        room.checkoutTime = new Date();
+        this.room = room;
 
-        await this.invoiceService.getInvoiceByRoomName(this.roomCheckout.name).toPromise().then(data => {
+        await this.invoiceService.getInvoiceByRoomName(this.room.name).toPromise().then(data => {
             this.invoice = data;
         });
     }
@@ -60,20 +59,17 @@ export class CheckOutComponent implements OnInit {
     }
 
     async checkOut() {
-        // const result = confirm('Are you sure check out this room?', 'Confirm');
-        // result.then((dialogResult) => {
-        //     if (dialogResult) {
-        //         this.invoice.status = 'Paid';
-        //         this.invoiceService.updateInvoice(this.invoice).subscribe();
-        //         this.roomCheckout.clients = [];
-        //         this.roomCheckout.status = 'Available';
-        //         this.roomCheckout.checkinTime = new Date();
-        //         this.roomCheckout.checkoutTime = new Date();
-        //         this.roomService.updateRoom(this.roomCheckout);
-        //         this.isVisiblePersonalCheckoutPopup = false;
-        //     }
-        // });
-        await this.invoiceService.exportInvoice(this.invoice).toPromise().then();
+
+        this.invoice.checkoutTime = this.room.checkoutTime;
+        this.invoice.status = 'Paid';
+        await this.invoiceService.exportInvoice(this.invoice).toPromise();
+        for (const client of this.room.clients) {
+            await this.clientService.delete(client.id).toPromise();
+        }
+        this.room.clients = [];
+        this.room.status = 'Available';
+        await this.roomService.updateRoom(this.room).toPromise();
+
         this.isVisiblePersonalCheckoutPopup = false;
     }
 }

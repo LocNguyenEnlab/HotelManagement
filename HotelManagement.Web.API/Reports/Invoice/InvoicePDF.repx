@@ -106,7 +106,7 @@
               <StylePriority Ref="67" UseFont="false" />
             </Item1>
             <Item2 Ref="68" ControlType="XRLabel" Name="label2" Multiline="true" Text="22 Tan An 4 Street, Hai Chau District, Da Nang City" SizeF="324.318176,23" LocationFloat="9.999977, 50.70836" Padding="2,2,0,0,100" />
-            <Item3 Ref="69" ControlType="XRLabel" Name="label3" Multiline="true" Text="(+84) 12345678" SizeF="100,23" LocationFloat="9.999977, 73.70836" Padding="2,2,0,0,100" />
+            <Item3 Ref="69" ControlType="XRLabel" Name="label3" Multiline="true" Text="(+84) 236 3611 259" SizeF="150.386108,23" LocationFloat="9.999974, 73.70834" Padding="2,2,0,0,100" />
           </Controls>
         </Item10>
         <Item11 Ref="70" ControlType="XRPictureBox" Name="pictureBox1" ImageUrl="C:\Github\HotelManagement\HotelManagement.Web.UI\HotelManagement\src\assets\logo.png" Sizing="ZoomImage" SizeF="286.833344,111.916634" LocationFloat="364.166565, 16.6250381" />

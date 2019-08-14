@@ -41,6 +41,8 @@ namespace HotelManagement.Entities.Model
 
         public Room Room { get; set; }
 
+        public int? InvoiceId { get; set; }
+
         public Invoice Invoice { get; set; }
     }
 }

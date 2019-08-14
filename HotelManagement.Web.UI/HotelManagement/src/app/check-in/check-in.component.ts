@@ -30,6 +30,7 @@ export class CheckInComponent implements OnInit {
     invoice: InvoiceModel = new InvoiceModel();
     client: ClientModel = new ClientModel();
     currentPrice: number;
+    walkingCheckin = false;
 
     constructor(
         private roomService: RoomService,
@@ -57,15 +58,20 @@ export class CheckInComponent implements OnInit {
     }
 
     onInit(room: RoomModel) {
-        if (room != null) {
+        if (room.clients.length) {
             this.roomCheckin = room;
-            this.titlePersonalCheckin = 'Personal checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
-            // await this.clientService.getClientsByRoomName(this.roomCheckin.name).toPromise().then(data => {
-            //     this.roomCheckin.clients = data;
-            // });
+            this.titlePersonalCheckin = 'Checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
             this.invoice.discount = this.roomCheckin.clients[0].discount;
             this.invoice.prepay = this.roomCheckin.clients[0].prepay;
             this.roomCheckin.checkinTime = new Date();
+        } else {
+            this.walkingCheckin = true;
+            room.checkinTime = new Date();
+            room.checkoutTime = new Date();
+            room.checkoutTime.setDate(new Date().getDate() + 1);
+            room.checkoutTime.setHours(12, 0, 0);
+            this.roomCheckin = room;
+            this.titlePersonalCheckin = 'Checkin for room ' + this.roomCheckin.name + ' (' + this.roomCheckin.type + ')';
         }
     }
 
@@ -75,17 +81,31 @@ export class CheckInComponent implements OnInit {
 
     async checkinForPersonal() {
         if (this.roomCheckin.clients) {
-            this.roomCheckin.status = 'Checked in';
-            this.createInvoice();
-            await this.invoiceService.addInvoice(this.invoice).toPromise().then();
-            for (const client of this.roomCheckin.clients) {
-                client.status = 'Checked in';
-                await this.clientService.update(client).toPromise().then();
+            if (this.roomCheckin.type === 'Double' || this.roomCheckin.clients.length < 2) {
+                this.roomCheckin.status = 'Checked in';
+                this.createInvoice();
+                this.invoice.clients = null;
+                await this.invoiceService.addInvoice(this.invoice).toPromise();
+                for (const client of this.roomCheckin.clients) {
+                    client.status = 'Checked in';
+                    client.roomName = this.roomCheckin.name;
+                    await this.invoiceService.getMaxId().toPromise().then(data => {
+                        client.invoiceId = data;
+                    });
+                    if (client.id) {
+                        await this.clientService.update(client).toPromise();
+                    } else {
+                        await this.clientService.addClient(client).toPromise();
+                    }
+                }
+                this.roomCheckin.clients = null;
+                await this.roomService.updateRoom(this.roomCheckin).toPromise();
+                notify('Checkin successfully', 'success');
+                this.isVisiblePersonalCheckinPopup = false;
+                window.location.reload();
+            } else {
+                notify('Can not add more than 2 client for single room!', 'error');
             }
-            await this.roomService.updateRoom(this.roomCheckin).toPromise().then();
-            notify('Checkin successfully', 'success');
-            this.isVisiblePersonalCheckinPopup = false;
-            window.location.reload();
         } else {
             notify('Please add clients for this room!', 'error');
         }
@@ -112,24 +132,11 @@ export class CheckInComponent implements OnInit {
         this.invoice.checkoutTime = this.roomCheckin.checkoutTime;
     }
 
-    addClientInfoOfPersonalBooking() {
-        if (!this.roomCheckin.clients) {
-            this.roomCheckin.clients = [];
-        }
-        if ((this.roomCheckin.type === 'Single' && this.roomCheckin.clients.length < 2) || this.roomCheckin.type === 'Double') {
-            const clientTemp: ClientModel = Object.assign({}, this.client);
-            this.roomCheckin.clients.push(clientTemp);
-            // this.resetClientInput();
-        } else {
-            notify('Can not add more than one client for Single room!', 'warning');
-        }
-    }
-
     setPrice(rowData: ServiceOfInvoiceModel, value) {
         rowData.service = rowData.service || new ServiceModel();
         rowData.serviceId = value;
         const service = this.serviceSource.find(_ => _.id === value);
-        rowData.service = service;
+        // rowData.service = service;
         if (service) {
             rowData.service.price = service.price;
             this.currentPrice = service.price;

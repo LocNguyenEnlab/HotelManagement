@@ -12,7 +12,6 @@ import {Router} from '@angular/router';
     styleUrls: ['./booking.component.scss']
 })
 export class BookingComponent implements OnInit {
-    isVisibleGroupBookingPopup = false;
     isVisiblePersonalBookingPopup = false;
     updateBooking = false;
     clientsListBooking: ClientModel[] = [];
@@ -25,7 +24,6 @@ export class BookingComponent implements OnInit {
     constructor(
         private clientService: ClientService,
         private roomService: RoomService,
-        private router: Router,
     ) {
     }
 
@@ -43,9 +41,9 @@ export class BookingComponent implements OnInit {
             this.roomBooking.checkoutTime = new Date();
             this.roomBooking.checkoutTime.setDate(this.roomBooking.checkinTime.getDate() + 1);
             this.roomBooking.checkoutTime.setHours(12, 0, 0, 0);
-            if (new Date().getHours() < 14) {
-                this.roomBooking.checkinTime.setHours(14, 0, 0, 0);
-            }
+            // if (new Date().getHours() < 14) {
+            //     this.roomBooking.checkinTime.setHours(14, 0, 0, 0);
+            // }
             this.roomBooking.clients = [];
             this.bookingTitle = 'Booking room ' + roomBooking.name + ' (' + roomBooking.type + ')';
         }
