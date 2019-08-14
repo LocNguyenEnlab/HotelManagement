@@ -62,7 +62,11 @@ export class RoomInfoComponent implements OnInit {
 
         this.invoice.checkoutTime = this.room.checkoutTime;
         this.invoice.status = 'Paid';
-        await this.invoiceService.exportInvoice(this.invoice).toPromise();
+        await this.invoiceService.exportInvoice(this.invoice).toPromise().then(res => {
+            const file = new Blob([res], {type: 'application/pdf'});
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+        });
         for (const client of this.room.clients) {
             await this.clientService.delete(client.id).toPromise();
         }

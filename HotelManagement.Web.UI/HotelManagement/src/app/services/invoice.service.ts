@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {InvoiceModel} from '../models/InvoiceModel';
 import {Observable} from 'rxjs';
 import {ApiService} from './api.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -31,8 +31,10 @@ export class InvoiceService {
         return this.http.get<InvoiceModel>(this.apiUrl + 'roomname/' + roomName);
     }
 
-    exportInvoice(invoice: InvoiceModel): Observable<InvoiceModel> {
-        return this.http.post<InvoiceModel>(ApiService.apiUrl + 'report/invoice/', invoice);
+    exportInvoice(invoice: InvoiceModel): Observable<any> {
+        return this.http.post(ApiService.apiUrl + 'report/invoice', invoice, {
+            responseType: 'blob'
+        });
     }
 
     getMaxId(): Observable<number> {

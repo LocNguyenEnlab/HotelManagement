@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using HotelManagement.Entities.Model;
 using HotelManagement.Web.API.Reports;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Web.API.Controllers
@@ -9,12 +11,26 @@ namespace HotelManagement.Web.API.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        [HttpPost("/api/report/invoice")]
-        public void Post(Invoice invoice)
+        [HttpPost("/api/report/invoice/")]
+        public dynamic Post(Invoice invoice)
         {
             var invoicePDF = new InvoicePDF();
             invoicePDF.CreateInvoice(invoice);
-            invoicePDF.ExportToPdf("./Reports/Invoice/" + invoice.Id + invoice.Clients.First().Name + ".pdf");
+
+            var filePath = $"./Reports/Invoice/{invoice.Id + invoice.Clients.First().Name}.pdf";
+
+            invoicePDF.ExportToPdf(filePath);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Open))
+            {
+                using (var stream = new MemoryStream())
+                {
+                    fileStream.CopyTo(stream);
+
+                    return File(stream.ToArray(), "application/octet-stream");
+                }
+            }
+            // return new { data = "./Reports/Invoice/" + invoice.Id + invoice.Clients.First().Name + ".pdf" };
         }
     }
 }
